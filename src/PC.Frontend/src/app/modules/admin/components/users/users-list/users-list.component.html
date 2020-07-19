@@ -1,0 +1,15 @@
+<app-page-header>
+  <div class="w-100 d-flex justify-content-between">
+    <div class="app-page-header-label">Users</div>
+    <div class="d-inline-block" *appHasRole="'hrmanager'">
+      <a class="btn btn-outline-primary" routerLink="/admin/users/create">Create user</a>
+      <a class="btn btn-outline-secondary ml-1" routerLink="/admin/users/import" *appHasRole="'systemadministrator'"
+        >Import users</a
+      >
+    </div>
+  </div>
+</app-page-header>
+
+<div class="container mt-3">
+  <app-users-table *ngIf="userTableArguments" [args]="userTableArguments"></app-users-table>
+</div>

@@ -1,0 +1,8 @@
+$height: 60px;
+
+.header {
+  min-height: $height;
+  height: $height;
+  max-height: $height;
+  padding-left: $height;
+}

@@ -1,0 +1,113 @@
+<div class="sidebar" [hidden]="!isAuthenticated">
+  <nav class="sidebar-nav">
+    <ul class="nav">
+      <div class="nav-side-menu">
+        <div class="menu-list">
+          <div class="header fixed">
+            <div>
+              <div class="dynamic-part">
+                <div class="ul">
+                  <div class="li">
+                    <div>
+                      <b [routerLink]="['/']">Company <span class="fa fa-chevron-down ml-1 position-fixed"></span></b>
+                    </div>
+                    <div class="ul list-group">
+                      <div class="li list-group-item"><a routerLink="/me">Profile</a></div>
+                      <div class="li list-group-item"><a routerLink="/to-do-list">To-Do List</a></div>
+                      <div class="li list-group-item"><a href="#" (click)="signout()">Sign out</a></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="text-muted mr-3">{{ name }}</div>
+          </div>
+          <ul id="menu-content" class="menu-content collapse show">
+            <hr class="sidebar-hr" />
+            <li data-toggle="collapse" data-target="#service" class="collapsed" *appHasRole="'hrmanager'">
+              <div class="m-l-15"><i class="fa fa-user-ninja fa-lg mr-2"></i> Admin panel</div>
+            </li>
+            <ul class="sub-menu collapse" id="service" *appHasRole="'hrmanager'">
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a [routerLink]="['/admin/users']"><i class="fa fa-user-friends"></i> Users</a>
+              </li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a [routerLink]="['/admin/departments']"><i class="fa fa-cubes"></i> Departments</a>
+              </li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a routerLink="/admin/departments/requests"
+                  ><i class="fa fa-cube"></i> Department attachment requests</a
+                >
+              </li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a routerLink="/admin/projects"><i class="fa fa-parking"></i> Projects</a>
+              </li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a routerLink="/admin/projects/requests"><i class="fa fa-list"></i> Project assign requests</a>
+              </li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a routerLink="/admin/customers"><i class="fa fa-chess-board"></i> Customers</a>
+              </li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a routerLink="/admin/expenses"><i class="fa fa-money-bill-wave"></i> Expenses</a>
+              </li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a routerLink="/admin/month-work-hours"><i class="fa fa-history"></i> Month work hours</a>
+              </li>
+              <li
+                [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{ exact: true }"
+                *appHasRole="'systemadministrator'"
+              >
+                <a routerLink="/admin/background-jobs" title="Background jobs and tools"
+                  ><i class="fa fa-tools"></i> Tools</a
+                >
+              </li>
+            </ul>
+            <hr class="sidebar-hr" *appHasRole="'hrmanager'" />
+
+            <li data-toggle="collapse" data-target="#users" class="collapsed">
+              <div class="m-l-15"><i class="fa fa-user-friends mr-2"></i> Users</div>
+            </li>
+            <ul class="sub-menu collapse" id="users">
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a routerLink="/users"><i class="fa fa-sort-numeric-down"></i>Users</a>
+              </li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a routerLink="/users/my-subordinates"><i class="fa fa-sort-numeric-down"></i>My subordinates</a>
+              </li>
+            </ul>
+            <li data-toggle="collapse" data-target="#projects" class="collapsed">
+              <div class="m-l-15"><i class="fa fa-parking fa-lg mr-2"></i> Projects</div>
+            </li>
+            <ul class="sub-menu collapse" id="projects">
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a routerLink="/projects"><i class="fa fa-sort-numeric-down"></i>Projects</a>
+              </li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }" *appHasRole="'employee'">
+                <a routerLink="/projects/requests"><i class="fa fa-cube"></i>My assign requests</a>
+              </li>
+            </ul>
+
+            <li data-toggle="collapse" data-target="#departments" class="collapsed">
+              <div class="m-l-15"><i class="fa fa-cubes fa-lg mr-2"></i> Departments</div>
+            </li>
+
+            <ul class="sub-menu collapse" id="departments">
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a routerLink="/departments"><i class="fa fa-sort-numeric-down"></i>Departments</a>
+              </li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }" *appHasRole="'employee'">
+                <a routerLink="/departments/attachment-requests"><i class="fa fa-cube"></i>My attachment requests</a>
+              </li>
+            </ul>
+          </ul>
+        </div>
+
+        <div class="nav-side-env" *ngIf="showEnvName" title="Current environment">
+          {{ envName }}
+        </div>
+      </div>
+    </ul>
+  </nav>
+</div>
