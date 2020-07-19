@@ -1,0 +1,26 @@
+$weights: (
+  'thin': 100,
+  'light': 200,
+  'book': 300,
+  'regular': 400,
+  'medium': 500,
+  'bold': 700
+);
+
+@each $name, $value in $weights {
+  .font-#{$name} {
+    font-weight: #{$value};
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}

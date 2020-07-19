@@ -1,0 +1,7 @@
+<app-page-header>
+  <div class="app-page-header-label">
+    <b>{{ user?.fullName }}</b>
+  </div>
+</app-page-header>
+
+<app-user-profile *ngIf="userProfileArguments != null" [userProfileArguments]="userProfileArguments"></app-user-profile>

@@ -1,0 +1,40 @@
+<div class="welcome">
+  <div class="container" *ngIf="!showAwaitingBlock">
+    <div class="welcome-width mx-auto">
+      <div class="shadow-lg bg-white rounded">
+        <div class="text-center">
+          <div class="pt-3">
+            <img src="/assets/company-logo-no-text.png" class="w-25" />
+          </div>
+
+          <div class="mt-3">
+            <div class="welcome-title">
+              <div>
+                Welcome to the
+              </div>
+              <div class="welcome-title-name">Company.Intranet</div>
+            </div>
+
+            <div class="w-75 mx-auto welcome-text">
+              an application that allows you to manage projects, departments, and project loadings of the company.
+            </div>
+          </div>
+          <div class="login-button-wrapper">
+            <button type="button" class="btn btn-company-ai w-75" (click)="login()">
+              Login
+            </button>
+          </div>
+
+          <div class="mt-3">
+            <i>{{ environmentName }}</i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container" *ngIf="showAwaitingBlock">
+  <div class="text-center mt-5">
+    <div class="display-2">You are getting logged in</div>
+  </div>
+</div>

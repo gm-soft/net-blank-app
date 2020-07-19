@@ -1,0 +1,52 @@
+<div class="sidebar" [hidden]="!isAuthenticated">
+  <nav class="sidebar-nav">
+    <ul class="nav">
+      <div class="nav-side-menu">
+        <div class="menu-list">
+          <div class="header fixed">
+            <div>
+              <div class="dynamic-part">
+                <div class="ul">
+                  <div class="li">
+                    <div>
+                      <b [routerLink]="['/']">Company <span class="fa fa-chevron-down ml-1 position-fixed"></span></b>
+                    </div>
+                    <div class="ul list-group">
+                      <div class="li list-group-item"><a routerLink="/me">Profile</a></div>
+                      <div class="li list-group-item"><a href="#" (click)="signout()">Sign out</a></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="text-muted mr-3">{{ name }}</div>
+          </div>
+          <ul id="menu-content" class="menu-content collapse show">
+            <hr class="sidebar-hr" />
+            <li data-toggle="collapse" data-target="#service" class="collapsed" *appHasRole="'hrmanager'">
+              <div class="m-l-15"><i class="fa fa-user-ninja fa-lg mr-2"></i> Admin panel</div>
+            </li>
+            <ul class="sub-menu collapse" id="service" *appHasRole="'hrmanager'">
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a [routerLink]="['/admin/users']"><i class="fa fa-user-friends"></i> Users</a>
+              </li>
+            </ul>
+            <hr class="sidebar-hr" *appHasRole="'hrmanager'" />
+            <li data-toggle="collapse" data-target="#users" class="collapsed">
+              <div class="m-l-15"><i class="fa fa-user-friends mr-2"></i> Users</div>
+            </li>
+            <ul class="sub-menu collapse" id="users">
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a routerLink="/users"><i class="fa fa-sort-numeric-down"></i>Users</a>
+              </li>
+            </ul>
+          </ul>
+        </div>
+
+        <div class="nav-side-env" *ngIf="showEnvName" title="Current environment">
+          {{ envName }}
+        </div>
+      </div>
+    </ul>
+  </nav>
+</div>

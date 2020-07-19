@@ -1,0 +1,30 @@
+.aside-menu {
+  z-index: $zindex-sticky + 1;
+  width: $aside-menu-width;
+  color: $aside-menu-color;
+  background: $aside-menu-bg;
+}
+
+.aside-menu-tab {
+  width: $aside-menu-tab-width;
+  z-index: $zindex-sticky + 1;
+}
+
+.aside-menu-aside-row {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #f8f8f8;
+}
+
+@media (max-width: 767px) {
+  .aside-menu {
+    margin-left: -$aside-menu-width;
+    z-index: $zindex-sticky + 1;
+    color: $aside-menu-color;
+    width: 90vw - 1;
+  }
+
+  .app-header {
+    padding-left: $aside-menu-tab-width;
+  }
+}

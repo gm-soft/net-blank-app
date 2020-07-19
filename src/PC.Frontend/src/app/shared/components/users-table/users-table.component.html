@@ -1,0 +1,33 @@
+<div class="table-responsive" *ngIf="users != null">
+  <table class="table table-striped table-bordered table-hover" *ngIf="users.length > 0; else noUsers">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Last update</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of users; let i = index" title="Edit the user">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ item.fullName }}</td>
+        <td>{{ item.email }}</td>
+        <td>{{ item.role }}</td>
+        <td>
+          <span class="text-muted" title="Last update">
+            <small>{{ item.updatedAt | date: 'yyyy-MM-dd' }}</small>
+          </span>
+        </td>
+        <td>
+          <a routerLink="{{ item.link }}" title="Go to user page">View</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<ng-template #noUsers>
+  <div class="card">Nothing to show</div>
+</ng-template>

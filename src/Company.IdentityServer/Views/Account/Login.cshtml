@@ -1,0 +1,42 @@
+﻿@model Company.IdentityServer.Models.Account.LoginViewModel
+
+<div class="login">
+    <div class="container">
+        <div class="login-width mx-auto">
+            <div class="shadow-lg bg-white rounded">
+                <div class="text-center">
+                    <div class="pt-5">
+                        <h1>Sign in to CompanyName</h1>
+                    </div>
+                    <div class="text-center p-1 login-text">
+                        This workspace allows you to sign in with your <br /><b>@@gmail</b> Google account.
+                    </div>
+                    <div class="mt-3">
+                        <a class="btn btn-social text-center btn-google w-75"
+                           asp-action="LoginViaGoogle"
+                           asp-controller="External"
+                           asp-route-returnUrl="@Model.ReturnUrl">
+                            <img src="~/img/icons8-google-48.png" /><b>Sign in with Google</b>
+                        </a>
+                    </div>
+                    <hr class="separate w-50">
+                    @if (Model.ShowDevelopmentOptions)
+                    {
+                        <div class="separate-text">or</div>
+                        <div>
+                            <a class="btn btn-company-ai w-75"
+                               asp-action="LoginAsAnotherUser"
+                               asp-controller="Account"
+                               asp-route-returnUrl="@Model.ReturnUrl">
+                                <b>Sign in as another person</b>
+                            </a>
+                        </div>
+                        <div class="text-center mt-3 p-1 login-text">
+                            Available only for Development environment
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

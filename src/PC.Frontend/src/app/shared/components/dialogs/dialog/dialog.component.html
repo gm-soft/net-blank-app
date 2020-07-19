@@ -1,0 +1,24 @@
+<div *ngIf="show" class="modal d-block" tabindex="-1" role="dialog">
+  <div class="modal-dialog custom-alert" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><ng-content select="[header]"></ng-content></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="p-1">
+          <ng-content select="[body]"></ng-content>
+        </div>
+
+        <div class="p-1 confirm-button">
+          <button class="btn btn-outline-secondary" (click)="close()">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

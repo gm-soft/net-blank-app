@@ -1,0 +1,11 @@
+version: "3.4"
+
+services:
+  database:
+    container_name: "mssql-server-2019"
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    environment:
+      SA_PASSWORD: "StrongPassword"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"

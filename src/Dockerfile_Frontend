@@ -1,0 +1,19 @@
+FROM node:13.13.0-alpine AS compile-image
+
+WORKDIR /app
+COPY ./PC.Frontend .
+
+ENV PATH /app/node_modules/.bin:$PATH
+
+RUN npm update
+RUN npm install
+RUN npm install -g @angular/cli@9.1
+RUN npm run build-stage
+
+FROM nginx:1.17-alpine
+
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=compile-image  /app/dist/time /usr/share/nginx/html
+
+EXPOSE 80
+
