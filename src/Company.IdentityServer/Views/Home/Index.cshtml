@@ -1,0 +1,32 @@
+﻿@model Company.IdentityServer.Models.Home.HomeViewModel
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <div class="d-flex flex-row">
+            <img src="~/img/company-logo-no-text.png" width="200" title="company logo">
+            <div class="ml-3 d-flex align-items-end">
+                <div>
+                    <h1 class="display-3 d-block w-100">Company.Identity</h1>
+                    <p class="lead  d-block w-100">An Identity Server for Company.Core application</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-3">
+    @if (Model.HasLoggedUser)
+    {
+        <div class="h1">Hello again, @Model.LoggedUser.UserName</div>
+
+        <div class="mt-3 login-link-wrapper">
+            <a href="/account/logout" class="btn btn-outline-warning btn-block">Log out</a>
+        </div>
+    }
+    else
+    {
+        <div class="mt-3 login-link-wrapper">
+            <a href="/account/login" class="btn btn-outline-primary btn-block">Log in</a>
+        </div>
+    }
+</div>
