@@ -10,7 +10,6 @@ import {
   mostUsedServices,
   mostUsedImports
 } from '@shared/test-utils';
-import { TimeRecordService } from '@services/time-record.service';
 import { UserRole } from '@models/enums';
 import { UserEditForm } from '@modules/admin/components/users/users-edit/user-edit-form';
 import { of } from 'rxjs';
@@ -19,13 +18,12 @@ describe('Admin.UsersEditComponent', () => {
   let component: UsersEditComponent;
   let fixture: ComponentFixture<UsersEditComponent>;
   let userService: UserAdminService;
-  let timeRecordService: TimeRecordService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [...mostUsedImports],
       declarations: [UsersEditComponent],
-      providers: [...testUtilStubs, ...mostUsedServices, UserAdminService, AuthService, TimeRecordService],
+      providers: [...testUtilStubs, ...mostUsedServices, UserAdminService, AuthService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
@@ -33,12 +31,11 @@ describe('Admin.UsersEditComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UsersEditComponent);
     userService = TestBed.inject(UserAdminService);
-    timeRecordService = TestBed.inject(TimeRecordService);
     const userId = 1;
     spyOnCurrentUserServiceWithUserId(spyOn, userId);
 
     component = fixture.componentInstance;
-    component.user = new ApplicationUser({ id: userId, salaries: [] });
+    component.user = new ApplicationUser({ id: userId });
     component.userId = userId;
     fixture.detectChanges();
   });

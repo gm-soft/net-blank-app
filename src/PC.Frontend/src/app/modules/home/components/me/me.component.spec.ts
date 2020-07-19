@@ -4,7 +4,6 @@ import { MeComponent } from './me.component';
 import { AuthorizationService } from '@services/authorization.service';
 import { SharedModule } from '@shared/shared.module';
 import { testUtilStubs } from '@shared/test-utils';
-import { TimeRecordService } from '@services/time-record.service';
 import { ApplicationUser } from '@models/application-user';
 import { of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -20,7 +19,7 @@ describe('MeComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
       declarations: [MeComponent],
-      providers: [...testUtilStubs, AuthorizationService, TimeRecordService],
+      providers: [...testUtilStubs, AuthorizationService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));

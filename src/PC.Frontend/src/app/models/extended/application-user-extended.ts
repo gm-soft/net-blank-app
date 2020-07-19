@@ -40,7 +40,7 @@ export class ApplicationUserExtended {
   hasHRRole(): boolean {
     return this.hasRole(UserRole.HRManager);
   }
-  s;
+
   hasRole(role: UserRole): boolean {
     return this.instance.role >= role;
   }

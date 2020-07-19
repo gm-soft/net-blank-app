@@ -9,10 +9,7 @@ export class TestApplicationUser extends ApplicationUser {
       firstName: 'John',
       lastName: 'Smith',
       email: 'j.smith@gmail.com',
-      role,
-      participantInProjects: [],
-      salaries: [],
-      employeeInDepartments: []
+      role
     });
   }
 }

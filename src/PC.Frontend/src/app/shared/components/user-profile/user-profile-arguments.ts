@@ -3,7 +3,6 @@ import { ApplicationUser } from '@models/application-user';
 import Assertion from '@shared/validation/assertion';
 
 export class UserProfileArguments {
-  readonly hasTable: boolean;
   readonly hasCurrentUser: boolean;
   readonly currentUserOrNull: ApplicationUserExtended | null;
 

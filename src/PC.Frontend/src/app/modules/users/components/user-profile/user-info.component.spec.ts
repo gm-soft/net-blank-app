@@ -5,7 +5,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '@shared/shared.module';
 import { testUtilStubs } from '@shared/test-utils';
 import { UserService } from '@services/user.service';
-import { TimeRecordService } from '@services/time-record.service';
 import { AuthService } from '@shared/services/auth/auth.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestApplicationUser } from '@shared/test-utils/models';
@@ -21,7 +20,7 @@ describe('UserInfoComponent', () => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, RouterTestingModule, SharedModule, FormsModule],
       declarations: [UserInfoComponent],
-      providers: [...testUtilStubs, UserService, TimeRecordService, AuthService],
+      providers: [...testUtilStubs, UserService, AuthService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
