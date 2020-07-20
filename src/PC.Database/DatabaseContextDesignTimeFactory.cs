@@ -7,7 +7,7 @@ namespace PC.Database
     {
         // TODO Maxim: load connection string from settings
         private const string ConnectionString =
-            "Server=localhost;Database=companycore;Trusted_Connection=False;MultipleActiveResultSets=true;User ID=SA;Password=StrongPassword";
+            "Server=localhost;Database=companycore;Trusted_Connection=False;MultipleActiveResultSets=true;User ID=SA;Password=Str0ngPassword!";
 
         public DatabaseContext CreateDbContext(string[] args)
         {

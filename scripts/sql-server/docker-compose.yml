@@ -5,7 +5,7 @@ services:
     container_name: "mssql-server-2019"
     image: "mcr.microsoft.com/mssql/server:2019-latest"
     environment:
-      SA_PASSWORD: "StrongPassword"
+      SA_PASSWORD: "Str0ngPassword!"
       ACCEPT_EULA: "Y"
     ports:
       - "1433:1433"
