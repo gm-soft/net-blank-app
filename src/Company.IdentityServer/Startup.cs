@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Company.IdentityServer.Config;
 using Company.IdentityServer.Extensions;
+using Company.IdentityServer.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -87,7 +88,7 @@ namespace Company.IdentityServer
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseMiddleware<ExceptionHandlerMiddleware>();
 
                 // The default HSTS value is 30 days.
                 // You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.

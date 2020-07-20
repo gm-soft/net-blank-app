@@ -42,8 +42,9 @@ namespace Company.IdentityServer.Controllers
         /// </summary>
         /// <param name="errorId">Error Id.</param>
         /// <returns>Action result.</returns>
-        [HttpGet("error")]
-        public async Task<IActionResult> ErrorAsync(string errorId)
+#pragma warning disable UseAsyncSuffix
+        public async Task<IActionResult> Error(string errorId)
+#pragma warning restore UseAsyncSuffix
         {
             var vm = new ErrorViewModel();
 

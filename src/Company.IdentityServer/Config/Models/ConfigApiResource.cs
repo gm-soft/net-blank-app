@@ -18,13 +18,18 @@ namespace Company.IdentityServer.Config.Models
                    !Scope.NullOrEmpty();
         }
 
+        public ApiScope ApiScope()
+        {
+            return new ApiScope(Name, DisplayName);
+        }
+
         public ApiResource ApiResource()
         {
             return new ApiResource(Name, DisplayName)
             {
                 Scopes =
                 {
-                    new Scope(Scope)
+                    Scope
                 }
             };
         }

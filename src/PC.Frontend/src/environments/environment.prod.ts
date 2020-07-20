@@ -13,7 +13,7 @@ export const environment = {
     redirect_uri: 'https://example.com/auth-callback',
     post_logout_redirect_uri: 'https://example.com/',
     response_type: 'id_token token',
-    scope: 'openid profile email company.core.api',
+    scope: 'openid profile email api',
     filterProtocolClaims: true,
     loadUserInfo: true,
     automaticSilentRenew: true,
