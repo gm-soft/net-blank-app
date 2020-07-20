@@ -28,7 +28,6 @@
 #pragma warning restore SA1005, SA1515
 using AutoMapper;
 using Company.Core.Api.Config;
-using Company.Core.Api.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -43,6 +42,7 @@ using PC.BL.Logging;
 using PC.Database;
 using PC.Services.Mappings;
 using Serilog;
+using Utils.Middleware;
 
 namespace Company.Core.Api
 {
@@ -111,7 +111,7 @@ namespace Company.Core.Api
                 IdentityModelEventSource.ShowPII = true;
             }
 
-            app.UseMiddleware<ExceptionHandlerMiddleware>();
+            app.UseMiddleware<ServerErrorHandlerMiddleware>();
 
             app.UseApplicationLogger();
 

@@ -41,12 +41,27 @@ namespace Company.IdentityServer.Config
                 .AddInMemoryPersistedGrants()
                 .AddInMemoryIdentityResources(GetIdentityResources())
                 .AddInMemoryApiResources(GetApiResources(configuration))
+                .AddInMemoryApiScopes(GetScopes(configuration))
                 .AddInMemoryClients(GetClients(configuration))
                 .AddAspNetIdentity<DbUser>();
 
             services.AddAuthentication(IdentityConstants.ApplicationScheme);
 
             return services;
+        }
+
+        private static IEnumerable<ApiScope> GetScopes(IConfiguration configuration)
+        {
+            var resources = configuration
+                .GetSection("ApiResources")
+                .Get<IReadOnlyCollection<ConfigApiResource>>();
+
+            if (resources.Any(x => !x.Valid()))
+            {
+                throw new InvalidOperationException("There are invalid api resources");
+            }
+
+            return resources.Select(x => x.ApiScope());
         }
 
         private static IEnumerable<IdentityResource> GetIdentityResources()

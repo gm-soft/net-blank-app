@@ -1,4 +1,4 @@
-﻿namespace Company.Core.Api.Middleware
+﻿namespace Utils.Middleware
 {
     public class ErrorDetails
     {

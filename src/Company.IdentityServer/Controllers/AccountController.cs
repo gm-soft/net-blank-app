@@ -128,7 +128,7 @@ namespace Company.IdentityServer.Controllers
                 await _events.RaiseAsync(new UserLoginFailureEvent(
                     username: model.SelectedUserId.ToString(),
                     error: "invalid UserId",
-                    clientId: context?.ClientId));
+                    clientId: context?.Client?.ClientId));
 
                 ModelState.AddModelError(
                     nameof(LoginAsAnotherPersonViewModel.SelectedUserId),
@@ -221,56 +221,35 @@ namespace Company.IdentityServer.Controllers
 
         // Warning! This redirect was copypasted from
         // https://github.com/IdentityServer/IdentityServer4.Demo/blob/master/src/IdentityServer4Demo/Quickstart/Account/AccountController.cs
-        private async Task<IActionResult> RedirectToLoginPageAsync(AuthorizationRequest context, string returnUrl)
+        private Task<IActionResult> RedirectToLoginPageAsync(AuthorizationRequest context, string returnUrl)
         {
             if (context != null)
             {
-                // if the user cancels, send a result back into IdentityServer as if they
-                // denied the consent (even if this client does not require consent).
-                // this will send back an access denied OIDC error response to the client.
-                await _interaction.GrantConsentAsync(context, ConsentResponse.Denied);
-
-                // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-                if (await _clientStore.IsPkceClientAsync(context.ClientId))
-                {
-                    // if the client is PKCE then we assume it's native, so this change in how to
-                    // return the response is for better UX for the end user.
-                    return View("Redirect", new RedirectViewModel(returnUrl));
-                }
-
-                return Redirect(returnUrl);
+                throw new NotSupportedException();
             }
 
             // since we don't have a valid context, then we just go back to the home page
-            return Redirect("~/account/login");
+            return Task.FromResult((IActionResult)Redirect("~/account/login"));
         }
 
         // Warning! This redirect was copypasted from
         // https://github.com/IdentityServer/IdentityServer4.Demo/blob/master/src/IdentityServer4Demo/Quickstart/Account/AccountController.cs
-        private async Task<IActionResult> RedirectToReturnUrlAsync(AuthorizationRequest context, string returnUrl)
+        private Task<IActionResult> RedirectToReturnUrlAsync(AuthorizationRequest context, string returnUrl)
         {
             if (context != null)
             {
-                if (await _clientStore.IsPkceClientAsync(context.ClientId))
-                {
-                    // if the client is PKCE then we assume it's native, so this change in how to
-                    // return the response is for better UX for the end user.
-                    return View("Redirect", new RedirectViewModel(returnUrl));
-                }
-
-                // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-                return Redirect(returnUrl);
+                throw new NotSupportedException();
             }
 
             // request for a local page
             if (Url.IsLocalUrl(returnUrl))
             {
-                return Redirect(returnUrl);
+                return Task.FromResult((IActionResult)Redirect(returnUrl));
             }
 
             if (string.IsNullOrEmpty(returnUrl))
             {
-                return Redirect("~/");
+                return Task.FromResult((IActionResult)Redirect("~/"));
             }
 
             // user might have clicked on a malicious link - should be logged

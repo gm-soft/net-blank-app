@@ -16,7 +16,7 @@ export const environment = {
     redirect_uri: 'http://localhost:4200/auth-callback',
     post_logout_redirect_uri: 'http://localhost:4200/',
     response_type: 'id_token token',
-    scope: 'openid profile email company.core.api',
+    scope: 'openid profile email api',
     filterProtocolClaims: true,
     loadUserInfo: true,
     automaticSilentRenew: true,
