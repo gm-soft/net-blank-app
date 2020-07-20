@@ -1,4 +1,4 @@
-﻿namespace Company.IdentityServer.Middleware
+﻿namespace Utils.Middleware
 {
     public class ErrorDetails
     {

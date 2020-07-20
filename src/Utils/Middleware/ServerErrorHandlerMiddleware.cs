@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Utils.Exceptions;
 
-namespace Company.IdentityServer.Middleware
+namespace Utils.Middleware
 {
-    public class ExceptionHandlerMiddleware
+    public class ServerErrorHandlerMiddleware
     {
         private const string DefaultServerErrorMessage = "Internal Server Error";
 
@@ -21,11 +20,10 @@ namespace Company.IdentityServer.Middleware
             { typeof(NoPermissionsException), StatusCodes.Status403Forbidden },
             { typeof(ResourceNotFoundException), StatusCodes.Status404NotFound },
             { typeof(BadRequestException), StatusCodes.Status400BadRequest },
-            { typeof(InvalidOperationException), StatusCodes.Status400BadRequest },
-            { typeof(DbUpdateConcurrencyException), StatusCodes.Status409Conflict }
+            { typeof(InvalidOperationException), StatusCodes.Status400BadRequest }
         };
 
-        public ExceptionHandlerMiddleware(RequestDelegate next)
+        public ServerErrorHandlerMiddleware(RequestDelegate next)
         {
             _next = next;
         }
