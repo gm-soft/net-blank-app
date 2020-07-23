@@ -7,6 +7,8 @@ import { UserRole } from '@models/enums';
 import { ApplicationUser } from '@models/application-user';
 import { testUtilStubs, spyOnCurrentUserServiceWithUser } from '@shared/test-utils';
 import { TopManagerGuard } from './top-manager.guard';
+import { TestApplicationUser } from '@shared/test-utils/models';
+import { ApplicationUserExtended } from '@models/extended';
 
 describe('TopManagerGuard', () => {
   beforeEach(() => {
@@ -17,8 +19,7 @@ describe('TopManagerGuard', () => {
   });
 
   it('should return true for TopManager', () => {
-    const manager = new ApplicationUser();
-    manager.role = UserRole.TopManager;
+    const manager = new ApplicationUserExtended(new TestApplicationUser(UserRole.TopManager));
 
     const guard = new TopManagerGuard(TestBed.inject(Router), spyOnCurrentUserServiceWithUser(manager, spyOn));
     guard.canActivate(null, null).subscribe(canActivate => {
@@ -27,8 +28,7 @@ describe('TopManagerGuard', () => {
   });
 
   it('should return false for HRmanager', () => {
-    const manager = new ApplicationUser();
-    manager.role = UserRole.HRManager;
+    const manager = new ApplicationUserExtended(new TestApplicationUser(UserRole.HRManager));
 
     const guard = new TopManagerGuard(TestBed.inject(Router), spyOnCurrentUserServiceWithUser(manager, spyOn));
     guard.canActivate(null, null).subscribe(canActivate => {
@@ -37,8 +37,7 @@ describe('TopManagerGuard', () => {
   });
 
   it('should return true for SystemAdmininstrator', () => {
-    const manager = new ApplicationUser();
-    manager.role = UserRole.SystemAdministrator;
+    const manager = new ApplicationUserExtended(new TestApplicationUser(UserRole.SystemAdministrator));
 
     const guard = new TopManagerGuard(TestBed.inject(Router), spyOnCurrentUserServiceWithUser(manager, spyOn));
     guard.canActivate(null, null).subscribe(canActivate => {
@@ -47,8 +46,7 @@ describe('TopManagerGuard', () => {
   });
 
   it('should return false for Employee', () => {
-    const manager = new ApplicationUser();
-    manager.role = UserRole.Employee;
+    const manager = new ApplicationUserExtended(new TestApplicationUser(UserRole.Employee));
 
     const guard = new TopManagerGuard(TestBed.inject(Router), spyOnCurrentUserServiceWithUser(manager, spyOn));
     guard.canActivate(null, null).subscribe(canActivate => {

@@ -30,27 +30,25 @@ describe('ImportUsersComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('email tests', () => {
-    it('should assert empty users', () => {
-      const inputString = 'qwe, qwe, qwe@qwe.qwe';
-      component.contentForImport = inputString;
-      component.parseContent(component.contentForImport);
+  it('should assert empty users', () => {
+    const inputString = 'qwe, qwe, qwe@qwe.qwe';
+    component.contentForImport = inputString;
+    component.parseContent(component.contentForImport);
 
-      expect(component.usersForImport.length).toEqual(0);
-      expect(component.wrongEmailsArray.length).toEqual(1);
-      expect(component.wrongEmailsArray[0].trim()).toEqual('qwe@qwe.qwe');
-    });
+    expect(component.usersForImport.length).toEqual(0);
+    expect(component.wrongEmailsArray.length).toEqual(1);
+    expect(component.wrongEmailsArray[0].trim()).toEqual('qwe@qwe.qwe');
+  });
 
-    it('should assert valid email', () => {
-      const inputString = 'vlad, kim, v.kim@gmail.com';
-      component.contentForImport = inputString;
-      component.parseContent(component.contentForImport);
+  it('should assert valid email', () => {
+    const inputString = 'vlad, kim, v.kim@gmail.com';
+    component.contentForImport = inputString;
+    component.parseContent(component.contentForImport);
 
-      component.preview();
+    component.preview();
 
-      expect(component.usersForImport[0].email.trim()).toEqual('v.kim@gmail.com');
-      expect(component.usersForImport.length).toEqual(1);
-    });
+    expect(component.usersForImport[0].email.trim()).toEqual('v.kim@gmail.com');
+    expect(component.usersForImport.length).toEqual(1);
   });
 
   it('should create', () => {

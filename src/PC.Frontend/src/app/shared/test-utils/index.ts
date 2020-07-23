@@ -16,6 +16,7 @@ import { SharedModule } from '@shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AlertService } from '@shared/alert/services/alert.service';
+import { ApplicationUserExtended } from '@models/extended';
 
 export * from './mock-activated-route';
 export * from './mock-auth.service';
@@ -34,7 +35,7 @@ export const mostUsedServices = [AuthService, AlertService, IdentityHttpService]
 export const mostUsedImports = [ReactiveFormsModule, SharedModule, BrowserAnimationsModule, RouterTestingModule];
 
 // tslint:disable-next-line: ban-types
-export const spyOnCurrentUserServiceWithUser = (user: ApplicationUser, spyOnFn: Function): AuthService => {
+export const spyOnCurrentUserServiceWithUser = (user: ApplicationUserExtended, spyOnFn: Function): AuthService => {
   const authService = TestBed.inject(AuthService);
   spyOnFn(authService, 'getCurrentUser').and.returnValue(of(user));
   return authService;
@@ -47,6 +48,6 @@ export const spyOnCurrentUserServiceWithUserId = (
   role: UserRole = UserRole.Employee
 ): AuthService => {
   userId = userId != null ? userId : 1;
-  const user = new TestApplicationUser(role, userId);
+  const user = new ApplicationUserExtended(new TestApplicationUser(role, userId));
   return spyOnCurrentUserServiceWithUser(user, spyOnFn);
 };

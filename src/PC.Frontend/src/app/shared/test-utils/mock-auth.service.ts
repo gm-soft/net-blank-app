@@ -1,7 +1,7 @@
 import { Subject, of, Observable } from 'rxjs';
 import { IAuthService } from '../services/auth/auth.service';
-import { ApplicationUser } from '../../models';
 import { UserRole } from '@models/enums';
+import { ApplicationUserExtended } from '@models/extended';
 
 export class MockAuthService implements IAuthService {
   public readonly loggedOutInvoked$: Subject<void> = new Subject();
@@ -20,7 +20,7 @@ export class MockAuthService implements IAuthService {
 
   async completeAuthentication() {}
 
-  getCurrentUser(): Observable<ApplicationUser> {
+  getCurrentUser(): Observable<ApplicationUserExtended> {
     return of(null);
   }
 

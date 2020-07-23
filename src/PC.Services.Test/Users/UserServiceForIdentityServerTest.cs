@@ -21,9 +21,9 @@ namespace PC.Services.Test.Users
         {
             using (var context = InMemoryDatabaseHelper.GetDbContext())
             {
-                var userREpo = new UserRepository(context, AutomapperSingleton.Mapper);
+                var userREpo = new UserRepositoryForIdentity(context, AutomapperSingleton.Mapper);
                 await new ApplicationUserFactory(Role.Employee, email: "john.smith@gmail.com")
-                    .BuildAsync(userREpo);
+                    .BuildAsync(context);
 
                 var target = new UserServiceForIdentityServer(userREpo);
 
@@ -36,9 +36,9 @@ namespace PC.Services.Test.Users
         {
             using (var context = InMemoryDatabaseHelper.GetDbContext())
             {
-                var userREpo = new UserRepository(context, AutomapperSingleton.Mapper);
+                var userREpo = new UserRepositoryForIdentity(context, AutomapperSingleton.Mapper);
                 var addedUser = await new ApplicationUserFactory(Role.Employee, email: "john.smith@gmail.com")
-                        .BuildAsync(userREpo);
+                        .BuildAsync(context);
 
                 var target = new UserServiceForIdentityServer(userREpo);
 

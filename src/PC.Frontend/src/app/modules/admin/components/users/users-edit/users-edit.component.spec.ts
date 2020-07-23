@@ -55,14 +55,14 @@ describe('Admin.UsersEditComponent', () => {
   });
 
   it('should return False if User Role above mine', () => {
-    component.currentUser.role = UserRole.TopManager;
+    component.currentUser.instance.role = UserRole.TopManager;
     component.user.role = UserRole.SystemAdministrator;
 
     expect(component.enableUserRoleField(UserRole.Employee)).toBeFalsy();
   });
 
   it('should return True if User Role not above mine', () => {
-    component.currentUser.role = UserRole.SystemAdministrator;
+    component.currentUser.instance.role = UserRole.SystemAdministrator;
     const newUserId = 2;
     component.user.id = newUserId;
     component.user.role = UserRole.TopManager;
@@ -71,7 +71,7 @@ describe('Admin.UsersEditComponent', () => {
   });
 
   it('should throw Error When I set Role above mine', () => {
-    component.currentUser.role = UserRole.HRManager;
+    component.currentUser.instance.role = UserRole.HRManager;
     component.editForm = new UserEditForm(component.user);
     component.editForm.value.role = UserRole.TopManager;
     let errorWasThrown = false;

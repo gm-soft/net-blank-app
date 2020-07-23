@@ -5,8 +5,9 @@ import { SessionStorageWrapper } from '@shared/services/session-storage-wrapper.
 import { OidcUserManager } from '@shared/services/auth/oidc-user-manager.service';
 import { AuthorizationService } from '@services/authorization.service';
 import { UserRole } from '@models/enums';
-import { ApplicationUser } from '@models/application-user';
 import { testUtilStubs, spyOnCurrentUserServiceWithUser } from '@shared/test-utils';
+import { ApplicationUserExtended } from '@models/extended';
+import { TestApplicationUser } from '@shared/test-utils/models';
 
 describe('HrManagerGuard', () => {
   beforeEach(() => {
@@ -17,8 +18,7 @@ describe('HrManagerGuard', () => {
   });
 
   it('should return true for HRmanager', () => {
-    const manager = new ApplicationUser();
-    manager.role = UserRole.HRManager;
+    const manager = new ApplicationUserExtended(new TestApplicationUser(UserRole.HRManager));
 
     const guard = new HrManagerGuard(TestBed.inject(Router), spyOnCurrentUserServiceWithUser(manager, spyOn));
     guard.canActivate(null, null).subscribe(canActivate => {
@@ -27,8 +27,7 @@ describe('HrManagerGuard', () => {
   });
 
   it('should return true for SystemAdmininstrator', () => {
-    const manager = new ApplicationUser();
-    manager.role = UserRole.SystemAdministrator;
+    const manager = new ApplicationUserExtended(new TestApplicationUser(UserRole.SystemAdministrator));
 
     const guard = new HrManagerGuard(TestBed.inject(Router), spyOnCurrentUserServiceWithUser(manager, spyOn));
     guard.canActivate(null, null).subscribe(canActivate => {
@@ -37,8 +36,7 @@ describe('HrManagerGuard', () => {
   });
 
   it('should return false for Employee', () => {
-    const manager = new ApplicationUser();
-    manager.role = UserRole.Employee;
+    const manager = new ApplicationUserExtended(new TestApplicationUser(UserRole.Employee));
 
     const guard = new HrManagerGuard(TestBed.inject(Router), spyOnCurrentUserServiceWithUser(manager, spyOn));
     guard.canActivate(null, null).subscribe(canActivate => {

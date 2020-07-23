@@ -22,7 +22,7 @@ describe('UserProfileArguments', () => {
   it('.hasCurrentUser should return true if currentUser exists', () => {
     const target = new UserProfileArguments(
       new ApplicationUserExtended(new TestApplicationUser(UserRole.Employee)),
-      new TestApplicationUser(UserRole.Employee)
+      new ApplicationUserExtended(new TestApplicationUser(UserRole.Employee))
     );
 
     expect(target.currentUserOrNull).toBeTruthy();

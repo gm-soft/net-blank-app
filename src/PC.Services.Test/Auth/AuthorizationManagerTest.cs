@@ -25,8 +25,7 @@ namespace PC.Services.Test.Auth
         {
             var target = new AuthorizationManager(
                 new UserClaimsProviderMock(currentUserRole).GetObject(),
-                new Mock<IUserRepository>().Object,
-                AutomapperSingleton.Mapper);
+                new Mock<IUserRepository>().Object);
 
             Assert.False(target.HasCurrentUserRole(roleToCheck));
         }
@@ -41,8 +40,7 @@ namespace PC.Services.Test.Auth
         {
             var target = new AuthorizationManager(
                 new UserClaimsProviderMock(currentUserRole).GetObject(),
-                new Mock<IUserRepository>().Object,
-                AutomapperSingleton.Mapper);
+                new Mock<IUserRepository>().Object);
 
             Assert.True(target.HasCurrentUserRole(roleToCheck));
         }
@@ -57,8 +55,7 @@ namespace PC.Services.Test.Auth
         {
             var target = new AuthorizationManager(
                 new UserClaimsProviderMock(currentUserRole).GetObject(),
-                new Mock<IUserRepository>().Object,
-                AutomapperSingleton.Mapper);
+                new Mock<IUserRepository>().Object);
 
             // No exception was thrown
             target.HasCurrentUserRoleOrFail(roleToCheck);
@@ -73,8 +70,7 @@ namespace PC.Services.Test.Auth
         {
             var target = new AuthorizationManager(
                 new UserClaimsProviderMock(currentUserRole).GetObject(),
-                new Mock<IUserRepository>().Object,
-                AutomapperSingleton.Mapper);
+                new Mock<IUserRepository>().Object);
 
             Assert.Throws<NoPermissionsException>(() => target.HasCurrentUserRoleOrFail(roleToCheck));
         }
