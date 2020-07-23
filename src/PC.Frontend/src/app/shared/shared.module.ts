@@ -24,7 +24,7 @@ import { RouterModule } from '@angular/router';
 import { UsersTableComponent } from './components/users-table/users-table.component';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { AlertComponent } from './alert/component/alert.component';
-import { AlertService } from './alert/services/alert.service';
+import { ActiveUserGuard } from './guards/active-user.guard';
 
 @NgModule({
   imports: [CommonModule, FormsModule, NgbDatepickerModule, ReactiveFormsModule, RouterModule, TabsModule],
@@ -46,7 +46,7 @@ import { AlertService } from './alert/services/alert.service';
     UserProfileComponent,
     UsersTableComponent
   ],
-  providers: [AuthGuard, HrManagerGuard, AdminGuard, TopManagerGuard, AlertService],
+  providers: [AuthGuard, HrManagerGuard, AdminGuard, TopManagerGuard, ActiveUserGuard],
   exports: [
     AlertComponent,
     UserProfileComponent,

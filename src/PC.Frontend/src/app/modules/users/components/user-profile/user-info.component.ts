@@ -18,7 +18,7 @@ export class UserInfoComponent implements OnInit {
   user: ApplicationUserExtended | null = null;
   userProfileArguments: UserProfileArguments | null = null;
 
-  private currentUser: ApplicationUser | null = null;
+  private currentUser: ApplicationUserExtended | null = null;
   private readonly activatedRouteExtended: ActivatedRouteExtended;
 
   constructor(

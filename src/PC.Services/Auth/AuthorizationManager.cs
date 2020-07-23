@@ -13,16 +13,14 @@ namespace PC.Services.Auth
     {
         private readonly ClaimsUser _claimsUser;
         private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
         private readonly bool _executionWithinBackgroundTask;
 
         private ApplicationUser _applicationUser;
 
         public AuthorizationManager(
-            IUserClaimsProvider claimsProvider, IUserRepository userRepository, IMapper mapper)
+            IUserClaimsProvider claimsProvider, IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _mapper = mapper;
 
             if (claimsProvider.WithinWebRequest())
             {
@@ -44,7 +42,7 @@ namespace PC.Services.Auth
                     throw new InvalidOperationException("The current user is not available within background class");
                 }
 
-                _applicationUser = await FindUserByEmailAsync(_claimsUser.Email);
+                _applicationUser = await _userRepository.GetByEmailOrFailAsync(_claimsUser.Email);
                 _applicationUser.Role = _claimsUser.Role;
             }
 
@@ -70,14 +68,6 @@ namespace PC.Services.Auth
             }
 
             return _claimsUser.Role;
-        }
-
-        private async Task<ApplicationUser> FindUserByEmailAsync(string email)
-        {
-            ApplicationUser user = await _userRepository.GetByEmailOrNullAsync(email)
-                ?? throw new ResourceNotFoundException($"Cannot find user by email '{email}'");
-
-            return _mapper.Map<ApplicationUser>(user);
         }
     }
 }

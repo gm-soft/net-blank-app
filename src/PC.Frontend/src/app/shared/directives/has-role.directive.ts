@@ -1,9 +1,9 @@
 import { Input, Directive, ViewContainerRef, TemplateRef, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '@shared/services/auth/auth.service';
 import UserRoleParser from '@shared/value-objects/user-role-parser';
-import { ApplicationUser } from '@models/application-user';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ApplicationUserExtended } from '@models/extended';
 
 @Directive({
   selector: '[appHasRole]'
@@ -38,7 +38,7 @@ export class HasRoleDirective implements OnInit, OnDestroy {
     });
   }
 
-  private setPropertiesBasedOnUser(currentUser: ApplicationUser): void {
+  private setPropertiesBasedOnUser(currentUser: ApplicationUserExtended): void {
     if (currentUser == null) {
       this.clear();
       return;
@@ -47,7 +47,7 @@ export class HasRoleDirective implements OnInit, OnDestroy {
     const role = new UserRoleParser(this.role).get();
     // If the user has the role needed to
     // render this component we can add it
-    if (currentUser.role >= role) {
+    if (currentUser.hasRole(role)) {
       // If it is already visible (which can happen if
       // his roles changed) we do not need to add it a second time
       if (!this.isVisible) {

@@ -30,6 +30,10 @@ export class ApplicationUserExtended {
     return this.instance.deletedAt == null;
   }
 
+  get roleAsEnum(): UserRole {
+    return this.instance.role;
+  }
+
   constructor(public readonly instance: ApplicationUser) {
     Assertion.notNull(instance, 'instance', ApplicationUserExtended.name);
 

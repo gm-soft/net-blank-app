@@ -24,8 +24,16 @@ import { AppSidebarButtonComponent } from '@components/app-sidebar-menu/app-side
 import { SidebarToggleDirective } from '@components/app-sidebar-menu/directives/sidebar/sidebar.directive';
 import { MobileSidebarToggleDirective } from '@components/app-sidebar-menu/directives/sidebar/mobile-sidebar.directive';
 import { UsersModule } from '@modules/users/users.module';
+import { AlertService } from '@shared/alert/services/alert.service';
 
-const appServices = [SessionStorageWrapper, AuthService, UserService, AuthorizationService, SpinnerService];
+const appServices = [
+  SessionStorageWrapper,
+  AuthService,
+  UserService,
+  AuthorizationService,
+  SpinnerService,
+  AlertService
+];
 
 const appModules = [AdminModule, UsersModule];
 

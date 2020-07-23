@@ -1,12 +1,24 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PC.Database.Models.Users;
 using PC.Database.Repositories.Dto;
+using Utils.Enums;
 
 namespace PC.Database.Repositories.Users
 {
     public static class UserQueryExtensions
     {
+        public static Task<Role> RoleOfUserAsync(this DatabaseContext context, long userId)
+        {
+            IQueryable<Role> roleQuery = from identityUserRole in context.UserRoles
+                join identityRole in context.Roles on identityUserRole.RoleId equals identityRole.Id
+                where identityUserRole.UserId == userId
+                select identityRole.Role;
+
+            return roleQuery.FirstAsync();
+        }
+
         public static IQueryable<DbUser> SearchBy(
             this IQueryable<DbUser> query,
             long? id = null,

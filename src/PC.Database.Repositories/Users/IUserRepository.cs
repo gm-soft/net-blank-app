@@ -11,7 +11,7 @@ namespace PC.Database.Repositories.Users
 {
     public interface IUserRepository : IRepository<DbUser, ApplicationUser>
     {
-        Task<ApplicationUser> GetByEmailOrNullAsync(string email);
+        Task<ApplicationUser> GetByEmailOrFailAsync(string email);
 
         Task<bool> CheckHasUserWithEmailAsync(string email);
 

@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '@services/user.service';
-import { ApplicationUser } from '@models/application-user';
 import { Router } from '@angular/router';
 import { AlertService } from '@shared/alert/services/alert.service';
 import { AuthService } from '@shared/services/auth/auth.service';
-import { forkJoin } from 'rxjs';
 import { UserRole } from '@models/enums';
 import { CreateUserForm } from './create-user-form';
+import { ApplicationUserExtended } from '@models/extended';
 
 @Component({
   templateUrl: './create-user.component.html',
@@ -15,7 +14,7 @@ import { CreateUserForm } from './create-user-form';
 export class CreateUserComponent implements OnInit {
   wrongEmailsArray = [];
   addForm: CreateUserForm;
-  currentUser: ApplicationUser | null;
+  currentUser: ApplicationUserExtended | null;
 
   constructor(
     private readonly userService: UserService,

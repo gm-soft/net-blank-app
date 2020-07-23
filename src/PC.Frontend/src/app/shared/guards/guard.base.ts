@@ -14,7 +14,7 @@ export abstract class GuardBase implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this.authService.getCurrentUser().pipe(
       map(user => {
-        const hasAdminPermissions = user != null && user.role >= this.roleToCheck();
+        const hasAdminPermissions = user != null && user.hasRole(this.roleToCheck());
         if (!hasAdminPermissions) {
           this.router.navigateByUrl('not-permission');
           return false;

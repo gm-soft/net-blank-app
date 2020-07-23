@@ -1,16 +1,16 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ApplicationUser } from '@models/application-user';
-import { NumberExtended } from '@shared/value-objects';
 import Assertion from '@shared/validation/assertion';
 import { UserService } from '@services/user.service';
 import { environment } from '@environments/environment';
 import { Router } from '@angular/router';
 import { AlertService } from '@shared/alert/services/alert.service';
 import { UserRole } from '@models/enums';
+import { ApplicationUserExtended } from '@models/extended';
 
 export class CreateUserForm extends FormGroup {
   constructor(
-    currentUser: ApplicationUser,
+    currentUser: ApplicationUserExtended,
     private readonly userService: UserService,
     private readonly router: Router,
     private readonly alertService: AlertService

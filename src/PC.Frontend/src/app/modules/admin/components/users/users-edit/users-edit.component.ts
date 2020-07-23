@@ -12,6 +12,7 @@ import { ConfirmMsg } from '@shared/components/dialogs/models/confirm-msg';
 import { DialogMessage } from '@shared/components/dialogs/models/dialog-message';
 import { UserRoleSelectItem } from '@shared/value-objects/user-role-select-item';
 import { DeleteUserDialogMessage } from './delete-user-dialog-message';
+import { ApplicationUserExtended } from '@models/extended';
 
 @Component({
   templateUrl: 'users-edit.component.html'
@@ -22,7 +23,7 @@ export class UsersEditComponent implements OnInit {
 
   editForm: UserEditForm | null = null;
   user: ApplicationUser | null = null;
-  currentUser: ApplicationUser | null;
+  currentUser: ApplicationUserExtended | null;
   userRolesForSelect: UserRoleSelectItem[] = [];
   selectedUserRole: SelectItem<UserRole> | null = null;
 
@@ -73,13 +74,13 @@ export class UsersEditComponent implements OnInit {
       this.userName = user.userName;
       this.editForm = new UserEditForm(this.user);
       this.userRolesForSelect = this.getRolesForSelectBasedOnUserRole();
-      this.selectedUserRole = this.userRolesForSelect.find(x => x.item === this.currentUser.role);
+      this.selectedUserRole = this.userRolesForSelect.find(x => x.item === this.currentUser.roleAsEnum);
       this.isActive = user.deletedAt == null;
     });
   }
 
   onSubmit(): void {
-    if (this.currentUser.role < this.editForm.userRole()) {
+    if (!this.currentUser.hasRole(this.editForm.userRole())) {
       throw Error('You cannot set Role above your own');
     }
 
@@ -102,11 +103,11 @@ export class UsersEditComponent implements OnInit {
   enableUserRoleField(role: UserRole): boolean {
     return (
       this.currentUser != null &&
-      this.currentUser.role >= UserRole.HRManager &&
+      this.currentUser.hasRole(UserRole.HRManager) &&
       this.user != null &&
-      this.currentUser.role >= this.user.role &&
+      this.currentUser.hasRole(this.user.role) &&
       !(this.currentUser.id === this.user.id) &&
-      this.currentUser.role >= role
+      this.currentUser.hasRole(role)
     );
   }
 }

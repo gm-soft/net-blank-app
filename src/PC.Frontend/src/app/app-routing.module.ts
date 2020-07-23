@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthCallbackComponent } from './components/auth-callback/auth-callback.component';
 import { AuthGuard } from '@shared/guards/auth.guard';
 import { HrManagerGuard } from '@shared/guards/hr-manager.guard';
+import { ActiveUserGuard } from '@shared/guards/active-user.guard';
 
 const routes: Routes = [
   {
@@ -12,12 +13,12 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule),
-    canActivate: [AuthGuard, HrManagerGuard]
+    canActivate: [ActiveUserGuard, AuthGuard, HrManagerGuard]
   },
   {
     path: 'users',
     loadChildren: () => import('./modules/users/users.module').then(m => m.UsersModule),
-    canActivate: [AuthGuard]
+    canActivate: [ActiveUserGuard, AuthGuard]
   },
   { path: 'auth-callback', component: AuthCallbackComponent },
   // Fallback when no prior route is matched

@@ -83,11 +83,15 @@ namespace PC.Database.Repositories.Users
             return Mapper.Map<ApplicationUser>(user);
         }
 
-        public async Task<ApplicationUser> GetByEmailOrNullAsync(string email)
+        public async Task<ApplicationUser> GetByEmailOrFailAsync(string email)
         {
             email.ThrowIfNull(nameof(email));
 
-            var user = await GetAllUsersWithRoles(email: email).FirstOrDefaultAsync();
+            var user = await Context.Users
+                           .IncludeAllData()
+                           .SearchBy(email: email)
+                           .AttachRoles(Context).FirstOrDefaultAsync()
+                       ?? throw new ResourceNotFoundException($"Cannot find user by email '{email}'");
 
             return Mapper.Map<ApplicationUser>(user);
         }

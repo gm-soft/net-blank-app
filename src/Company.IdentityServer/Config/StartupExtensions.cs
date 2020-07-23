@@ -28,12 +28,15 @@ namespace Company.IdentityServer.Config
             services
                 .AddTransient<DatabaseConnectAwaiter>();
 
-            services.AddTransient<IProfileService, IdentityClaimsProfileService>();
+            services.AddTransient<IProfileService, ProfileService>();
             services.AddScoped<IUserIdentityService, UserIdentityService>();
 
             services.AddScoped<IUserClaimsProvider, UserClaimsProvider>();
             services.AddScoped<IAuthorizationManager, AuthorizationManager>();
-            services.AddScoped<IUserRepository, UserRepository>();
+            services
+                .AddScoped<IUserRepositoryForIdentity, UserRepositoryForIdentity>()
+                .AddScoped<IUserRepository, UserRepository>();
+
             services.AddScoped<IUserServiceForIdentityServer, UserServiceForIdentityServer>();
             services.AddTransient(c => new EmailDomainValidatorService(configuration["AllowedDomainEmails:Domains"]?.Trim()));
 

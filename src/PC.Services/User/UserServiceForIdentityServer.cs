@@ -9,28 +9,28 @@ namespace PC.Services.User
 {
     public class UserServiceForIdentityServer : IUserServiceForIdentityServer
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserRepositoryForIdentity _userRepository;
 
-        public UserServiceForIdentityServer(IUserRepository userRepository)
+        public UserServiceForIdentityServer(IUserRepositoryForIdentity userRepository)
         {
             _userRepository = userRepository;
         }
 
         public async Task<Role> RoleOfUserAsync(long userId)
         {
-            return await _userRepository.GetUserRoleAsync(userId);
+            return await _userRepository.RoleOfUserAsync(userId);
         }
 
         public async Task<IReadOnlyCollection<ApplicationUser>> UsersWithRoleAsync()
         {
-            return await _userRepository.GetAllAsync();
+            return await _userRepository.UsersWithRoleAsync();
         }
 
         public async Task<ApplicationUser> UserByEmailOrNullAsync(string email)
         {
             email.ThrowIfNull(nameof(email));
 
-            return await _userRepository.GetByEmailOrNullAsync(email);
+            return await _userRepository.UserByEmailOrNullAsync(email);
         }
     }
 }

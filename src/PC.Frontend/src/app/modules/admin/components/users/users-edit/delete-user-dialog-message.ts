@@ -3,13 +3,14 @@ import { UserAdminService } from '@modules/admin/services';
 import { Router } from '@angular/router';
 import { DialogMessage } from '@shared/components/dialogs/models/dialog-message';
 import { ConfirmMsg } from '@shared/components/dialogs/models/confirm-msg';
+import { ApplicationUserExtended } from '@models/extended';
 
 export class DeleteUserDialogMessage {
   private readonly title = 'Delete User';
   private readonly question = 'Are you sure to delete? This cannot be undone.';
 
   constructor(
-    private readonly currentUser: ApplicationUser,
+    private readonly currentUser: ApplicationUserExtended,
     private readonly userToDelete: ApplicationUser,
     private readonly userService: UserAdminService,
     private readonly router: Router

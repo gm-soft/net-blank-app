@@ -5,14 +5,15 @@ import { OidcUserManager } from './oidc-user-manager.service';
 import { SessionStorageWrapper } from '../session-storage-wrapper.service';
 import { ApplicationUser } from '../../../models';
 import { AuthorizationService } from '../../../services';
-import { tap, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { UserRole } from '@models/enums';
 import { IdentityHttpService } from '@services/identity.http.service';
+import { ApplicationUserExtended } from '@models/extended';
 
 export interface IAuthService {
   throwIfLess(role: UserRole): void;
 
-  getCurrentUser(): Observable<ApplicationUser>;
+  getCurrentUser(): Observable<ApplicationUserExtended>;
 
   login(): Promise<void>;
 
@@ -33,9 +34,9 @@ export class AuthService implements IAuthService {
   private readonly applicationUserStorageSessionKey = 'CurrentUser_AppUserInfo';
 
   private authorizationInfo: User | null = null;
-  private applicationUser: ApplicationUser | null = null;
+  private applicationUser: ApplicationUserExtended | null = null;
 
-  public readonly loggedIn$: Subject<ApplicationUser> = new Subject();
+  public readonly loggedIn$: Subject<ApplicationUserExtended> = new Subject();
   public readonly loggedOutInvoked$: Subject<void> = new Subject();
   public readonly loggedOut$: Subject<void> = new Subject();
 
@@ -52,7 +53,7 @@ export class AuthService implements IAuthService {
         throw Error('User is not authenticated');
       }
 
-      if (user.role < role) {
+      if (!user.hasRole(role)) {
         throw Error(`User's role is less than ${UserRole[role]}`);
       }
     });
@@ -64,13 +65,13 @@ export class AuthService implements IAuthService {
         throw Error('User is not authenticated');
       }
 
-      if (user.role < role && user.id !== userId) {
+      if (!user.hasRole(role) && user.id !== userId) {
         throw Error(`User's role is less than ${UserRole[role]}`);
       }
     });
   }
 
-  getCurrentUser(): Observable<ApplicationUser | null> {
+  getCurrentUser(): Observable<ApplicationUserExtended | null> {
     this.tryLoadUserFromSession();
 
     if (this.authorizationInfo == null) {
@@ -82,9 +83,9 @@ export class AuthService implements IAuthService {
     }
 
     return this.authorizationService.getMe().pipe(
-      tap(appUser => {
+      map(appUser => {
         this.saveCurrentUser(appUser);
-        return appUser;
+        return this.applicationUser;
       })
     );
   }
@@ -119,7 +120,7 @@ export class AuthService implements IAuthService {
   }
 
   private saveCurrentUser(appUser: ApplicationUser): void {
-    this.applicationUser = appUser;
+    this.applicationUser = new ApplicationUserExtended(appUser);
     this.sessionWrapper.setItem(this.applicationUserStorageSessionKey, this.applicationUser);
     this.loggedIn$.next(this.applicationUser);
   }
@@ -168,7 +169,8 @@ export class AuthService implements IAuthService {
   private tryLoadUserFromSession(): void {
     if (this.authorizationInfo == null) {
       this.authorizationInfo = this.sessionWrapper.getItem<User>(this.authorizationStorageSessionKey);
-      this.applicationUser = this.sessionWrapper.getItem<ApplicationUser>(this.applicationUserStorageSessionKey);
+      const user = this.sessionWrapper.getItem<ApplicationUser>(this.applicationUserStorageSessionKey);
+      this.applicationUser = user != null ? new ApplicationUserExtended(user) : null;
     }
   }
 }
