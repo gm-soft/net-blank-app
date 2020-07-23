@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '@services/user.service';
 import { ApplicationUser } from '@models/application-user';
 import { Router } from '@angular/router';
-import { AlertService } from '@help-modules/alert/services/alert.service';
+import { AlertService } from '@shared/alert/services/alert.service';
 import { AuthService } from '@shared/services/auth/auth.service';
 import { forkJoin } from 'rxjs';
 import { UserRole } from '@models/enums';

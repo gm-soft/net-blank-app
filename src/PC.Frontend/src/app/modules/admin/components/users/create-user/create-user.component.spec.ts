@@ -7,7 +7,7 @@ import { SharedModule } from '@shared/shared.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AlertService } from '@help-modules/alert/services/alert.service';
+import { AlertService } from '@shared/alert/services/alert.service';
 import { testUtilStubs } from '@shared/test-utils';
 
 describe('CreateUserComponent', () => {

@@ -6,7 +6,7 @@ import { UserRole, Status } from '@models/enums';
 import { SelectItem } from '@shared/value-objects';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ActivatedRouteExtended } from '@shared/routes/activated-route-extended';
-import { AlertService } from '@help-modules/alert/services/alert.service';
+import { AlertService } from '@shared/alert/services/alert.service';
 import { UserEditForm } from './user-edit-form';
 import { ConfirmMsg } from '@shared/components/dialogs/models/confirm-msg';
 import { DialogMessage } from '@shared/components/dialogs/models/dialog-message';

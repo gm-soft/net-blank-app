@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApplicationUser } from '@models/application-user';
 import { Router } from '@angular/router';
-import { AlertService } from '@help-modules/alert/services/alert.service';
+import { AlertService } from '@shared/alert/services/alert.service';
 import { environment } from '@environments/environment';
 import { AuthService } from '@shared/services/auth/auth.service';
 import { UserRole } from '@models/enums';

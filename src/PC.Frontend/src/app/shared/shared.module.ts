@@ -23,10 +23,13 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { RouterModule } from '@angular/router';
 import { UsersTableComponent } from './components/users-table/users-table.component';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { AlertComponent } from './alert/component/alert.component';
+import { AlertService } from './alert/services/alert.service';
 
 @NgModule({
   imports: [CommonModule, FormsModule, NgbDatepickerModule, ReactiveFormsModule, RouterModule, TabsModule],
   declarations: [
+    AlertComponent,
     FieldErrorComponent,
     DisableControlDirective,
     OnlyNumberDirective,
@@ -43,8 +46,9 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     UserProfileComponent,
     UsersTableComponent
   ],
-  providers: [AuthGuard, HrManagerGuard, AdminGuard, TopManagerGuard],
+  providers: [AuthGuard, HrManagerGuard, AdminGuard, TopManagerGuard, AlertService],
   exports: [
+    AlertComponent,
     UserProfileComponent,
     UsersTableComponent,
     FieldErrorComponent,

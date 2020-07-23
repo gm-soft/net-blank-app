@@ -4,7 +4,7 @@ import { Injector, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth/auth.service';
 import { tap } from 'rxjs/operators';
-import { AlertService } from '../../help-modules/alert/services/alert.service';
+import { AlertService } from '@shared/alert/services/alert.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

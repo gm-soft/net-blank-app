@@ -8,7 +8,6 @@ import { TestBed } from '@angular/core/testing';
 import { ApplicationUser } from '@models/application-user';
 import { of } from 'rxjs';
 import { UserRole } from '@models/enums';
-import { AlertService } from '@help-modules/alert/services/alert.service';
 import { IdentityHttpService } from '@services/identity.http.service';
 import { SpyLocation } from '@angular/common/testing';
 import { TestApplicationUser } from './models';
@@ -16,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AlertService } from '@shared/alert/services/alert.service';
 
 export * from './mock-activated-route';
 export * from './mock-auth.service';

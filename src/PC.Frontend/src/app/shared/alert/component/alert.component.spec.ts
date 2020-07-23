@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AlertComponent } from './alert.component';
-import { AlertService } from '@help-modules/alert/services/alert.service';
+import { AlertService } from '@shared/alert/services/alert.service';
 import { Router } from '@angular/router';
 import { RouterStub } from '@shared/test-utils/router-stub';
 import { SharedModule } from '@shared/shared.module';

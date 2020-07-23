@@ -13,8 +13,6 @@ import { OidcUserManager } from './shared/services/auth/oidc-user-manager.servic
 import { SessionStorageWrapper } from './shared/services/session-storage-wrapper.service';
 import { AuthCallbackComponent } from './components/auth-callback/auth-callback.component';
 import { AuthorizationService } from './services';
-import { AlertComponent } from './help-modules/alert/components/alert/alert.component';
-import { AlertService } from './help-modules/alert/services/alert.service';
 import { UserService } from '@services/user.service';
 import { SpinnerService } from '@shared/services/spinners/spinner-service';
 import { SpinnerInterceptor } from '@shared/interceptors/spinner-interceptor';
@@ -27,14 +25,7 @@ import { SidebarToggleDirective } from '@components/app-sidebar-menu/directives/
 import { MobileSidebarToggleDirective } from '@components/app-sidebar-menu/directives/sidebar/mobile-sidebar.directive';
 import { UsersModule } from '@modules/users/users.module';
 
-const appServices = [
-  SessionStorageWrapper,
-  AuthService,
-  UserService,
-  AuthorizationService,
-  AlertService,
-  SpinnerService
-];
+const appServices = [SessionStorageWrapper, AuthService, UserService, AuthorizationService, SpinnerService];
 
 const appModules = [AdminModule, UsersModule];
 
@@ -42,7 +33,6 @@ const appModules = [AdminModule, UsersModule];
   declarations: [
     AppComponent,
     AuthCallbackComponent,
-    AlertComponent,
     AppSidebarComponent,
     AppSidebarButtonComponent,
     SidebarToggleDirective,

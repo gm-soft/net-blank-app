@@ -5,7 +5,7 @@ import Assertion from '@shared/validation/assertion';
 import { UserService } from '@services/user.service';
 import { environment } from '@environments/environment';
 import { Router } from '@angular/router';
-import { AlertService } from '@help-modules/alert/services/alert.service';
+import { AlertService } from '@shared/alert/services/alert.service';
 import { UserRole } from '@models/enums';
 
 export class CreateUserForm extends FormGroup {
