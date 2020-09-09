@@ -1,21 +1,29 @@
 ﻿using System;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using PC.BL.Configurations;
 using Serilog.Core;
 
 namespace PC.BL.Logging
 {
     public class ApplicationLoggerBuilder
     {
-        private const string MessageTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}";
-
         private readonly ElkLoggerBuilder _elkLoggerBuilder;
 
         private readonly FileLoggerBuilder _fileLoggerBuilder;
 
-        public ApplicationLoggerBuilder(IConfiguration configuration)
+        private readonly LoggingMessageTemplate _messageTemplate;
+
+        public ApplicationLoggerBuilder(IConfiguration configuration, IHostEnvironment environment)
         {
-            _elkLoggerBuilder = new ElkLoggerBuilder(configuration);
-            _fileLoggerBuilder = new FileLoggerBuilder(configuration);
+            _messageTemplate = new LoggingMessageTemplate(configuration);
+
+            _elkLoggerBuilder = new ElkLoggerBuilder(new ElasticSearchConfig(configuration, environment));
+
+            _fileLoggerBuilder = new FileLoggerBuilder(
+                messageTemplate: _messageTemplate,
+                writeToFiles: new WriteToFilesConfig(configuration),
+                configuration: configuration);
         }
 
         public Logger Logger()
@@ -25,7 +33,7 @@ namespace PC.BL.Logging
                 return _elkLoggerBuilder.Logger();
             }
 
-            if (!_fileLoggerBuilder.CreateLogger().Created())
+            if (!_fileLoggerBuilder.TryCreateLogger().Created())
             {
                 throw new InvalidOperationException(
                     "Cannot create file logger", _fileLoggerBuilder.ThrownException());
@@ -34,9 +42,10 @@ namespace PC.BL.Logging
             Logger logger = _fileLoggerBuilder.Logger();
 
             logger.Error(
-                exception: new InvalidOperationException(
-                    "Logging to ELK is not available. Started to log in file", _elkLoggerBuilder.ThrownException()),
-                messageTemplate: MessageTemplate);
+                new InvalidOperationException(
+                    "Logging to ELK is not available. Started to log in file",
+                    _elkLoggerBuilder.ThrownException()),
+                messageTemplate: _messageTemplate.Value());
 
             return logger;
         }

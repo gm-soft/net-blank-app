@@ -8,9 +8,24 @@ namespace TestUtils.Auth
 {
     public class AuthManagerMockHelper
     {
+        public IAuthorizationManager Manager
+        {
+            get
+            {
+                if (_manager == null)
+                {
+                    _manager = GetManager();
+                }
+
+                return _manager;
+            }
+        }
+
         private readonly ApplicationUser _currentUser;
 
         private readonly Mock<IAuthorizationManager> _managerMock;
+
+        private IAuthorizationManager _manager;
 
         public AuthManagerMockHelper(ApplicationUser currentUser)
         {
@@ -25,7 +40,7 @@ namespace TestUtils.Auth
                 Id = userId,
                 FirstName = "John",
                 LastName = "Smith",
-                Email = "j.smith@Gmail.com",
+                Email = "j.smith@petrel.ai",
                 Role = role
             })
         {

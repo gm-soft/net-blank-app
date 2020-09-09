@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using Utils.Authorization;
@@ -27,6 +28,11 @@ namespace PC.Services.Claims
         {
             _principal = principal ?? throw new ArgumentNullException(paramName: nameof(principal));
             _throwExIfNotFound = throwExIfNotFound;
+        }
+
+        public IEnumerable<Claim> Claims()
+        {
+            return _principal.Claims;
         }
 
         public bool HasAuth

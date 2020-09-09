@@ -7,9 +7,11 @@ using PC.Models.Email;
 using PC.Models.Users;
 using PC.Services.Auth;
 using PC.Services.Email;
+using PC.Services.Email.Models;
 using Utils.Enums;
 using Utils.Exceptions;
 using Utils.Helpers;
+using Utils.Interfaces;
 using Utils.Validators;
 
 namespace PC.Services.User
@@ -21,7 +23,7 @@ namespace PC.Services.User
         private readonly EmailDomainValidatorService _emailDomainValidatorService;
         private readonly IEmailSender _emailSender;
         private readonly IViewRenderer _viewRenderer;
-        private readonly IInvitationUrlProvider _invitationUrlProvider;
+        private readonly IBaseUrls _baseUrls;
 
         public UserService(
             IUserRepository userRepository,
@@ -29,14 +31,14 @@ namespace PC.Services.User
             EmailDomainValidatorService emailDomainValidatorService,
             IEmailSender emailSender,
             IViewRenderer viewRenderer,
-            IInvitationUrlProvider invitationUrlProvider)
+            IBaseUrls baseUrls)
         {
             _userRepository = userRepository;
             _authorizationManager = authorizationManager;
             _emailDomainValidatorService = emailDomainValidatorService;
             _emailSender = emailSender;
             _viewRenderer = viewRenderer;
-            _invitationUrlProvider = invitationUrlProvider;
+            _baseUrls = baseUrls;
         }
 
         public async Task<int> ImportAsync(IReadOnlyCollection<ApplicationUser> users)
@@ -224,20 +226,12 @@ namespace PC.Services.User
 
         private async Task SendInviteEmailAsync(ApplicationUser user)
         {
-            var viewModel = new InvitationEmailViewModel
-            {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Url = _invitationUrlProvider.GetInvitationUrl()
-            };
-
-            var recipients = new List<string>
-            {
-                user.Email
-            };
-
-            string body = await _viewRenderer.RenderAsync("/Content/EmailTemplates/Invitation.cshtml", viewModel);
-            await _emailSender.SendSingleEmailAsync(body, "Invitation letter", recipients);
+            await _emailSender.SendSingleEmailAsync(
+                await new UserInvitationEmail(
+                        user: user,
+                        urls: _baseUrls,
+                        renderer: _viewRenderer)
+                    .RenderAsync());
         }
     }
 }

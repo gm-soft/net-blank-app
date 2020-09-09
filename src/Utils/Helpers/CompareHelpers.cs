@@ -40,9 +40,39 @@ namespace Utils.Helpers
             return first.Year == second.Year && first.Month == second.Month;
         }
 
+        public static bool SameMonth(this Date first, Date second)
+        {
+            first.ThrowIfNull(nameof(first));
+            second.ThrowIfNull(nameof(second));
+
+            return first.Year == second.Year && first.Month == second.Month;
+        }
+
         public static bool SameDay(this DateTimeOffset first, DateTimeOffset second)
         {
             return first.SameMonth(second) && first.Day == second.Day;
+        }
+
+        public static bool SameDay(this DateTimeOffset? first, DateTimeOffset? second)
+        {
+            return first.HasValue && second.HasValue &&
+                   first.Value.SameMonth(second.Value) && first.Value.Day == second.Value.Day;
+        }
+
+        public static bool SameDay(this DateTimeOffset first, Date second)
+        {
+            return first.SameMonth(second.Source) && first.Day == second.Source.Day;
+        }
+
+        public static bool SameDay(this DateTimeOffset? first, Date second)
+        {
+            return first.HasValue && first.Value.SameMonth(second.Source) && first.Value.Day == second.Source.Day;
+        }
+
+        public static bool IsToday(this DateTimeOffset date)
+        {
+            var today = Date.Today;
+            return date.SameMonth(today.Source) && date.Day == today.Source.Day;
         }
 
         public static bool Earlier(this DateTimeOffset first, DateTimeOffset second)
@@ -60,6 +90,26 @@ namespace Utils.Helpers
             return first.Value.Earlier(second.Value);
         }
 
+        public static bool EarlierOrEqual(this DateTimeOffset? first, DateTimeOffset? second)
+        {
+            if (first == null || second == null)
+            {
+                return false;
+            }
+
+            return first.Value.EarlierOrEqual(second.Value);
+        }
+
+        public static bool EarlierOrEqual(this DateTimeOffset? first, Date second)
+        {
+            if (first == null || second == null)
+            {
+                return false;
+            }
+
+            return first.Value.EarlierOrEqual(second.EndOfTheDay());
+        }
+
         public static bool Later(this DateTimeOffset first, DateTimeOffset second)
         {
             return Compare(first, second) > 0;
@@ -75,7 +125,7 @@ namespace Utils.Helpers
             return first.Value.Later(second.Value);
         }
 
-        public static bool Later(this DateTimeOffsetExtended first, DateTimeOffsetExtended second)
+        public static bool Later(this Date first, Date second)
         {
             return Compare(first.Source, second.Source) > 0;
         }

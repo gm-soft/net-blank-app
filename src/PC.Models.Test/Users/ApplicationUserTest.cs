@@ -11,43 +11,6 @@ namespace PC.Models.Test.Users
 {
     public class ApplicationUserTest
     {
-        [Fact]
-        public void Ctor_hasClaims_Ok()
-        {
-            ClaimsPrincipal claims = new ClaimsPrincipalFactory()
-                .AddClaim(ClaimTypes.GivenName, "John")
-                .AddClaim(ClaimTypes.Surname, "Smith")
-                .AddClaim(ClaimTypes.Email, "j.sminth@gmail.com")
-                .AddClaim(CustomClaimTypes.Username, "j.sminth@gmail.com")
-                .AddClaim(ClaimTypes.Role, Role.Employee.ToString())
-                .Build();
-
-            Assert.NotNull(claims.Identity);
-
-            var target = new ApplicationUser(claims);
-
-            Assert.Equal("John", target.FirstName);
-            Assert.Equal("Smith", target.LastName);
-            Assert.Equal("j.sminth@gmail.com", target.Email);
-            Assert.Equal("j.sminth@gmail.com", target.UserName);
-            Assert.Equal(Role.Employee, target.Role);
-        }
-
-        [Fact]
-        public void Ctor_NoClaims_Exception()
-        {
-            Assert.Throws<ArgumentNullException>(() => new ApplicationUser(null));
-        }
-
-        [Fact]
-        public void Ctor_EmptyClaims_Exception()
-        {
-            var claims = new ClaimsPrincipalFactory().Build();
-
-            Assert.Empty(claims.Claims);
-            Assert.Throws<InvalidOperationException>(() => new ApplicationUser(claims));
-        }
-
         [Theory]
         [InlineData(Role.Employee, true)]
         [InlineData(Role.HRManager, true)]

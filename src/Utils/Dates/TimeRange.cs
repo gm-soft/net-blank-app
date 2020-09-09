@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Utils.Helpers;
+using Utils.Interfaces;
 
 namespace Utils.Dates
 {
@@ -11,38 +12,59 @@ namespace Utils.Dates
     /// </summary>
     public class TimeRange
     {
-        public static DateTimeOffset Max { get; } = new DateTimeOffsetExtended(2100, 12, 31).EndOfTheDay();
+        public static DateTimeOffset Max { get; } = new Date(2100, 12, 31).EndOfTheDay();
 
-        public static DateTimeOffset Min { get; } = new DateTimeOffsetExtended(2000, 1, 1).StartOfTheDay();
+        public static DateTimeOffset Min { get; } = new Date(2000, 1, 1).StartOfTheDay();
 
-        private readonly DateTimeOffsetExtended _from;
+        private readonly Date _from;
 
-        private readonly DateTimeOffsetExtended _to;
+        private readonly Date _to;
 
         /// <summary>
         /// Gets start of the range.
         /// </summary>
-        public DateTimeOffset From => _from.Source;
+        public DateTimeOffset From { get; }
 
         /// <summary>
         /// Gets finish date of the range.
         /// </summary>
-        public DateTimeOffset To => _to.Source;
+        public DateTimeOffset To { get; }
 
-        public TimeRange(DateTimeOffset date)
+        public TimeRange(Date date)
             : this(date, date)
         {
         }
 
-        public TimeRange(DateTimeOffset @from, DateTimeOffset? to)
+        public TimeRange(Date from, Date to)
         {
-            _from = new DateTimeOffsetExtended(@from);
-            _to = new DateTimeOffsetExtended(to ?? @from);
+            from.ThrowIfNull(nameof(from));
+            to.ThrowIfNull(nameof(to));
+
+            _from = from;
+            _to = to;
 
             if (_from.Later(_to))
             {
                 throw new InvalidOperationException($"'{nameof(From)}' should not be later than '{nameof(To)}'");
             }
+
+            From = _from.StartOfTheDay();
+            To = _to.EndOfTheDay();
+
+            if (From.Earlier(Min) || From.Later(Max))
+            {
+                throw new InvalidOperationException($"The 'From':{From} is invalid date");
+            }
+
+            if (To.Earlier(Min) || To.Later(Max))
+            {
+                throw new InvalidOperationException($"The 'To':{To} is invalid date");
+            }
+        }
+
+        public TimeRange(DateTimeOffset @from, DateTimeOffset? to)
+            : this(new Date(@from), new Date(to ?? @from))
+        {
         }
 
         /// <summary>
@@ -66,7 +88,7 @@ namespace Utils.Dates
 
             for (DateTimeOffset currentDay = from; currentDay <= to; currentDay = currentDay.AddDays(1))
             {
-                list.Add(new DayRange(new DateTimeOffsetExtended(currentDay)));
+                list.Add(new DayRange(new Date(currentDay)));
             }
 
             return list;
@@ -96,7 +118,7 @@ namespace Utils.Dates
             // Add All months days in between
             for (var st = From.AddMonths(1); st < firstDayOfTheLastTimelineMonth; st = st.AddMonths(1))
             {
-                var extended = new DateTimeOffsetExtended(st);
+                var extended = new Date(st);
                 list.Add(new MonthRange(extended.FirstDayOfMonth(), extended.LastDayOfMonth()));
             }
 
@@ -106,13 +128,11 @@ namespace Utils.Dates
             return list;
         }
 
-        // TODO Maxim: unittests
         public bool SameMonth()
         {
-            return _from.Source.SameMonth(_to.Source);
+            return _from.SameMonth(_to);
         }
 
-        // TODO Maxim: unittests
         public bool FullMonth()
         {
             if (!SameMonth())
@@ -123,7 +143,6 @@ namespace Utils.Dates
             return _from.IsFirstDayOfMonth() && _to.IsLastDayOfMonth();
         }
 
-        // TODO Maxim: unittests
         public bool Contains(TimeRange range)
         {
             return range._from.Source >= _from.Source &&
@@ -146,18 +165,14 @@ namespace Utils.Dates
                 second.To.LaterOrEqual(_from.Source) &&
                 second.To.EarlierOrEqual(_to.Source))
             {
-                return new TimeRange(
-                    new DateTimeOffsetExtended(From).StartOfTheDay(),
-                    new DateTimeOffsetExtended(second.To).EndOfTheDay());
+                return new TimeRange(_from.Clone(), new Date(second.To));
             }
 
             if (second.From.LaterOrEqual(_from.Source) &&
                 second.From.EarlierOrEqual(_to.Source) &&
                 second.To.LaterOrEqual(_to.Source))
             {
-                return new TimeRange(
-                    new DateTimeOffsetExtended(second.From).StartOfTheDay(),
-                    new DateTimeOffsetExtended(_to.Source).EndOfTheDay());
+                return new TimeRange(new Date(second.From), _to.Clone());
             }
 
             return null;
@@ -191,7 +206,7 @@ namespace Utils.Dates
 
         public bool Equals(TimeRange range)
         {
-            return range != null && _from.Source.Equal(range.From) && _to.Source.Equal(range.To);
+            return range != null && From.Equal(range.From) && To.Equal(range.To);
         }
     }
 }

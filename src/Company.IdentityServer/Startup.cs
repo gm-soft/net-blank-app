@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
 using PC.BL.Logging;
+using PC.BL.Middlewares;
 using PC.Database;
 using PC.Services.Mappings;
 using Serilog;
@@ -27,7 +28,7 @@ namespace Company.IdentityServer
             Configuration = configuration;
             Environment = environment;
 
-            _loggerBuilder = new ApplicationLoggerBuilder(configuration);
+            _loggerBuilder = new ApplicationLoggerBuilder(configuration, environment);
         }
 
         public IConfiguration Configuration { get; }
@@ -116,6 +117,8 @@ namespace Company.IdentityServer
             });
 
             app.WaitForDatabase();
+
+            app.UseMiddleware<DefaultNotFoundPageMiddleware>();
         }
     }
 }

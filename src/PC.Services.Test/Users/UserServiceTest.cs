@@ -128,9 +128,9 @@ namespace PC.Services.Test.Users
                 userRepository: new UserRepository(context, AutomapperSingleton.Mapper),
                 authorizationManager: auth,
                 emailDomainValidatorService: new EmailDomainValidatorService("gmail.com|hipo.kz"),
-                emailSender: EmailSender.CreateWithClient(new SendGridClientFake()),
+                emailSender: new EmailSender(new SendGridClientFake()),
                 viewRenderer: new ViewRendererFake(),
-                invitationUrlProvider: new InvitationUrlProvider(_config));
+                baseUrls: new BaseUrls(_config));
         }
 
         [Fact]
@@ -251,9 +251,9 @@ namespace PC.Services.Test.Users
                 userRepository: userRepoMock.Object,
                 authorizationManager: new Mock<IAuthorizationManager>().Object,
                 emailDomainValidatorService: new EmailDomainValidatorService("gmail.com|hipo.kz"),
-                emailSender: EmailSender.CreateWithClient(new SendGridClientFake()),
+                emailSender: new EmailSender(new SendGridClientFake()),
                 viewRenderer: new ViewRendererFake(),
-                invitationUrlProvider: new InvitationUrlProvider(_config));
+                baseUrls: new BaseUrls(_config));
 
             await Assert.ThrowsAsync<BadRequestException>(() => service.ImportAsync(listOfUsersToImport));
         }
@@ -265,9 +265,9 @@ namespace PC.Services.Test.Users
                 userRepository: new Mock<IUserRepository>().Object,
                 authorizationManager: new Mock<IAuthorizationManager>().Object,
                 emailDomainValidatorService: new EmailDomainValidatorService("gmail.com|hipo.kz"),
-                emailSender: EmailSender.CreateWithClient(new SendGridClientFake()),
+                emailSender: new EmailSender(new SendGridClientFake()),
                 viewRenderer: new ViewRendererFake(),
-                invitationUrlProvider: new InvitationUrlProvider(_config));
+                baseUrls: new BaseUrls(_config));
 
             await Assert.ThrowsAsync<ArgumentNullException>(() => service.ImportAsync(null));
         }
@@ -288,9 +288,9 @@ namespace PC.Services.Test.Users
                     userRepository: new UserRepository(context, AutomapperSingleton.Mapper),
                     authorizationManager: new Mock<IAuthorizationManager>().Object,
                     emailDomainValidatorService: new EmailDomainValidatorService("gmail.com|hipo.kz"),
-                    emailSender: EmailSender.CreateWithClient(new SendGridClientFake()),
+                    emailSender: new EmailSender(new SendGridClientFake()),
                     viewRenderer: new ViewRendererFake(),
-                    invitationUrlProvider: new InvitationUrlProvider(_config));
+                    baseUrls: new BaseUrls(_config));
 
                 await Assert.ThrowsAsync<BadRequestException>(() => service.ImportAsync(listOfUsersToImport));
             }
@@ -303,9 +303,9 @@ namespace PC.Services.Test.Users
                 userRepository: new Mock<IUserRepository>().Object,
                 authorizationManager: new Mock<IAuthorizationManager>().Object,
                 emailDomainValidatorService: new EmailDomainValidatorService("gmail.com|hipo.kz"),
-                emailSender: EmailSender.CreateWithClient(new SendGridClientFake()),
+                emailSender: new EmailSender(new SendGridClientFake()),
                 viewRenderer: new ViewRendererFake(),
-                invitationUrlProvider: new InvitationUrlProvider(_config));
+                baseUrls: new BaseUrls(_config));
 
             await Assert.ThrowsAsync<BadRequestException>(() => service.ImportAsync(new List<ApplicationUser>()));
         }
@@ -317,9 +317,9 @@ namespace PC.Services.Test.Users
                 userRepository: new Mock<IUserRepository>().Object,
                 authorizationManager: new Mock<IAuthorizationManager>().Object,
                 emailDomainValidatorService: new EmailDomainValidatorService("gmail.com|hipo.kz"),
-                emailSender: EmailSender.CreateWithClient(new SendGridClientFake()),
+                emailSender: new EmailSender(new SendGridClientFake()),
                 viewRenderer: new ViewRendererFake(),
-                invitationUrlProvider: new InvitationUrlProvider(_config));
+                baseUrls: new BaseUrls(_config));
 
             await Assert.ThrowsAsync<ArgumentNullException>(() => service.InsertAsync(null));
         }
@@ -399,9 +399,9 @@ namespace PC.Services.Test.Users
                     userRepository: userRepo,
                     authorizationManager: new AuthManagerMockHelper(Role.SystemAdministrator).GetManager(),
                     emailDomainValidatorService: new EmailDomainValidatorService("gmail.com|hipo.kz"),
-                    emailSender: EmailSender.CreateWithClient(new SendGridClientFake()),
+                    emailSender: new EmailSender(new SendGridClientFake()),
                     viewRenderer: new ViewRendererFake(),
-                    invitationUrlProvider: new InvitationUrlProvider(_config));
+                    baseUrls: new BaseUrls(_config));
 
                 await target.UpdateAsync(newUserData);
 
@@ -446,9 +446,9 @@ namespace PC.Services.Test.Users
                     userRepository: userRepo,
                     authorizationManager: new AuthManagerMockHelper(Role.SystemAdministrator).GetManager(),
                     emailDomainValidatorService: new EmailDomainValidatorService("gmail.com|hipo.kz"),
-                    emailSender: EmailSender.CreateWithClient(new SendGridClientFake()),
+                    emailSender: new EmailSender(new SendGridClientFake()),
                     viewRenderer: new ViewRendererFake(),
-                    invitationUrlProvider: new InvitationUrlProvider(_config));
+                    baseUrls: new BaseUrls(_config));
 
                 await target.UpdateAsync(newUserData);
 
@@ -493,9 +493,9 @@ namespace PC.Services.Test.Users
                     userRepository: userRepo,
                     authorizationManager: new AuthManagerMockHelper(Role.Employee).GetManager(),
                     emailDomainValidatorService: new EmailDomainValidatorService("gmail.com|hipo.kz"),
-                    emailSender: EmailSender.CreateWithClient(new SendGridClientFake()),
+                    emailSender: new EmailSender(new SendGridClientFake()),
                     viewRenderer: new ViewRendererFake(),
-                    invitationUrlProvider: new InvitationUrlProvider(_config));
+                    baseUrls: new BaseUrls(_config));
 
                 await Assert.ThrowsAsync<NoPermissionsException>(() => target.UpdateAsync(newUserData));
             }
@@ -586,9 +586,9 @@ namespace PC.Services.Test.Users
                     userRepo,
                     new AuthManagerMockHelper(userInDb).GetManager(),
                     emailDomainValidatorService: new EmailDomainValidatorService("gmail.com|hipo.kz"),
-                    emailSender: EmailSender.CreateWithClient(new SendGridClientFake()),
+                    emailSender: new EmailSender(new SendGridClientFake()),
                     viewRenderer: new ViewRendererFake(),
-                    invitationUrlProvider: new InvitationUrlProvider(_config));
+                    baseUrls: new BaseUrls(_config));
 
                 await Assert.ThrowsAsync<BadRequestException>(() => target.UpdateAsync(newUserData));
             }

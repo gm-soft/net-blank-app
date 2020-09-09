@@ -6,6 +6,7 @@ using Company.IdentityServer.Security;
 using IdentityServer4.Extensions;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
+using PC.BL.Health;
 using PC.Models.Users;
 
 namespace Company.IdentityServer.Controllers
@@ -22,19 +23,17 @@ namespace Company.IdentityServer.Controllers
 
         public IActionResult Index()
         {
-            ClaimsPrincipal user = User;
-
-            var viewModel = new HomeViewModel
-            {
-                HasLoggedUser = User != null && User.IsAuthenticated()
-            };
-
-            if (viewModel.HasLoggedUser)
-            {
-                viewModel.LoggedUser = new ApplicationUser(user);
-            }
+            var viewModel = User != null && User.IsAuthenticated()
+                ? new HomeViewModel(User.Identity.Name)
+                : new HomeViewModel();
 
             return View("Index", viewModel);
+        }
+
+        [HttpGet("info")]
+        public IActionResult Info()
+        {
+            return Ok(new WebAppInfo<Startup>());
         }
 
         /// <summary>

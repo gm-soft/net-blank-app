@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Utils.Dates
+﻿namespace Utils.Dates
 {
     /// <summary>
     /// Represents Time Range between start and end of the one single day.
@@ -10,22 +8,22 @@ namespace Utils.Dates
         /// <summary>
         /// Gets month that the day belongs to.
         /// </summary>
-        public int Month => _source.Source.Month;
+        public int Month => _source.Month;
 
         /// <summary>
         /// Gets year that the day belongs to.
         /// </summary>
-        public int Year => _source.Source.Year;
+        public int Year => _source.Year;
 
         /// <summary>
         /// Gets day itself as int value.
         /// </summary>
-        public int Day => _source.Source.Day;
+        public int Day => _source.Day;
 
-        private readonly DateTimeOffsetExtended _source;
+        private readonly Date _source;
 
-        public DayRange(DateTimeOffsetExtended source)
-            : base(source.StartOfTheDay(), source.EndOfTheDay())
+        public DayRange(Date source)
+            : base(source)
         {
             _source = source;
         }
@@ -34,7 +32,6 @@ namespace Utils.Dates
         /// Returns true if the day is weekend.
         /// </summary>
         /// <returns>True if weekend.</returns>
-        public bool Weekend() => _source.Source.DayOfWeek == DayOfWeek.Saturday ||
-                                 _source.Source.DayOfWeek == DayOfWeek.Sunday;
+        public bool Weekend() => _source.Weekend();
     }
 }

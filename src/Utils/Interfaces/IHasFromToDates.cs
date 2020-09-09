@@ -7,5 +7,7 @@ namespace Utils.Interfaces
         DateTimeOffset From { get; set; }
 
         DateTimeOffset? To { get; set; }
+
+        DateTimeOffset ToOrFail();
     }
 }

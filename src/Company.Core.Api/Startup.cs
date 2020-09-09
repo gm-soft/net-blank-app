@@ -39,6 +39,7 @@ using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using PC.BL.Logging;
+using PC.BL.Middlewares;
 using PC.Database;
 using PC.Services.Mappings;
 using Serilog;
@@ -57,7 +58,7 @@ namespace Company.Core.Api
             Configuration = configuration;
             Environment = environment;
 
-            _loggerBuilder = new ApplicationLoggerBuilder(Configuration);
+            _loggerBuilder = new ApplicationLoggerBuilder(Configuration, Environment);
         }
 
         public IConfiguration Configuration { get; }
@@ -86,11 +87,7 @@ namespace Company.Core.Api
             });
 
             // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Company Core API", Version = "v1" });
-                c.TryAddComments();
-            });
+            services.AddSwaggerGen(SwaggerConfig.SwaggerGenConfig);
 
             services
                 .AddAutoMapper(CoreMappings.GetAssembly())
@@ -111,7 +108,7 @@ namespace Company.Core.Api
                 IdentityModelEventSource.ShowPII = true;
             }
 
-            app.UseMiddleware<ServerErrorHandlerMiddleware>();
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
 
             app.UseApplicationLogger();
 
@@ -120,11 +117,7 @@ namespace Company.Core.Api
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Company Core API V1");
-                c.RoutePrefix = string.Empty;
-            });
+            app.UseSwaggerUI(SwaggerConfig.SwaggerUIConfig);
 
             app.UseHttpsRedirection();
 
@@ -143,6 +136,8 @@ namespace Company.Core.Api
             app.SetupSchedulerTasks();
 
             app.MigrateOrFail();
+
+            app.UseMiddleware<DefaultNotFoundPageMiddleware>();
         }
     }
 }

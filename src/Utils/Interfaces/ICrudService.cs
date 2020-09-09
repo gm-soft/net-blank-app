@@ -10,7 +10,7 @@ namespace Utils.Interfaces
 
         Task<IReadOnlyCollection<TModel>> GetAllAsync();
 
-        Task<long> InsertAsync(TModel model);
+        Task<long> InsertAsync(TModel data);
 
         Task UpdateAsync(TModel data);
 

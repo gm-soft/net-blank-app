@@ -1,5 +1,4 @@
 ﻿using System;
-using TestUtils.Dates;
 using Utils.Dates;
 using Xunit;
 
@@ -65,7 +64,7 @@ namespace Utils.Test.Dates
 
         private DateTimeOffset Date(int year, int month, int day, int hour = 0, int minute = 0, int sec = 0)
         {
-            return new Date(year, month, day, hour, minute, sec).TimeOffset();
+            return new DateTimeOffset(year, month, day, hour, minute, sec, DateTimeOffset.Now.Offset);
         }
     }
 }

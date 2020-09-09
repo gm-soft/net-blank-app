@@ -15,6 +15,8 @@ namespace Utils.Test.Helpers
         [InlineData("js*@proseware.com", false)]
         [InlineData("js@proseware..com", false)]
         [InlineData("j.@server1.proseware.com", false)]
+        [InlineData("j.smith@gmail.com", true)]
+        [InlineData("j.smith@petrel.ai", true)]
         public void EmailValidationTest(string email, bool result)
         {
             Assert.Equal(result, StringHelpers.IsValidEmail(email));

@@ -17,34 +17,54 @@ namespace Utils.Validators
             new EntityValidator<T>(entity).ThrowIfInvalid();
         }
 
-        /// <summary>
-        /// Returns true if a model entity is valid by it's annotation validation attributes.
-        /// </summary>
-        /// <typeparam name="T">Generic.</typeparam>
-        /// <param name="entity">Entity instance.</param>
-        /// <returns>True if the entity is valid.</returns>
-        public static bool Valid<T>(this T entity)
+        public static void ThrowIfDateRangeIsOutOfAllowedLimits<T>(this T instance)
+            where T : IHasFromToDates
         {
-            return new EntityValidator<T>(entity).Valid();
+            instance.ThrowIfNull(nameof(instance));
+
+            if (instance.From.Earlier(TimeRange.Min) || instance.From.Later(TimeRange.Max))
+            {
+                throw new InvalidOperationException(
+                    $"{nameof(TimeRange.From)} is not within allowed range");
+            }
+
+            if (instance.To.Earlier(TimeRange.Min) || instance.To.Later(TimeRange.Max))
+            {
+                throw new InvalidOperationException(
+                    $"{nameof(TimeRange.To)} is not within allowed range");
+            }
         }
 
-        public static void ThrowIfDateRangeIsNotValid<T>(this T instance)
-            where T : IHasTimeRange
+        public static void ThrowIfDateRangeIsNotValid<T>(this T instance, bool toIsRequired)
+            where T : IHasFromToDates
         {
             if (instance.From.Earlier(TimeRange.Min))
             {
-                throw new InvalidOperationException("A From Date of the Project should not be equal to MinValue");
+                throw new InvalidOperationException(
+                    $"A From Date of the {typeof(T).Name} should not be earlier than MinValue");
             }
 
-            if (!instance.To.HasValue)
+            if (toIsRequired && !instance.To.HasValue)
             {
-                throw new ArgumentNullException(nameof(instance.To), "A To Date of the Project should not be null");
+                throw new ArgumentNullException(nameof(instance.To), $"A To Date of the {typeof(T).Name} should not be null");
             }
 
-            if (instance.From.Later(instance.To.Value))
+            if (instance.RangeReversed(toIsRequired))
             {
                 throw new InvalidOperationException("To date cannot be greater than From date");
             }
+
+            if (instance.To.HasValue && instance.To.Value.Later(TimeRange.Max))
+            {
+                throw new InvalidOperationException(
+                    $"A To Date of the {typeof(T).Name} should not be later than MaxValue");
+            }
+        }
+
+        public static bool RangeReversed<T>(this T instance, bool toIsRequired)
+            where T : IHasFromToDates
+        {
+            return (toIsRequired || instance.To.HasValue) && instance.From.Later(instance.ToOrFail());
         }
     }
 }

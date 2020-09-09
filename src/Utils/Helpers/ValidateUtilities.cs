@@ -18,29 +18,41 @@ namespace Utils.Helpers
                 return;
             }
 
-            var exception = customErrorMessage == null
+            var exception = customErrorMessage.NullOrEmpty()
                 ? new ArgumentNullException(paramName: paramName)
                 : new ArgumentNullException(paramName: paramName, message: customErrorMessage);
 
             throw exception;
         }
 
-        public static IReadOnlyCollection<T> ThrowIfNullOrEmpty<T>(this IReadOnlyCollection<T> collection, string paramName)
+        public static void ThrowIfNullOrEmpty<T>(this T[] collection, string paramName)
             where T : class
         {
             paramName.ThrowIfNullOrEmpty(nameof(paramName));
-
-            if (collection == null)
-            {
-                throw new ArgumentNullException(paramName: paramName);
-            }
+            collection.ThrowIfNull(paramName);
 
             if (!collection.Any())
             {
                 throw new InvalidOperationException($"You should not pass empty collection: {paramName}");
             }
+        }
 
-            return collection;
+        public static void ThrowIfNullOrEmpty<T>(this IReadOnlyCollection<T> collection, string paramName)
+            where T : class
+        {
+            paramName.ThrowIfNullOrEmpty(nameof(paramName));
+            collection.ThrowIfNull(paramName);
+
+            if (!collection.Any())
+            {
+                throw new InvalidOperationException($"You should not pass empty collection: {paramName}");
+            }
+        }
+
+        public static void ThrowIfNullOrEmpty<T>(this ICollection<T> collection, string paramName)
+            where T : class
+        {
+            (collection?.ToArray()).ThrowIfNullOrEmpty(paramName);
         }
 
         public static bool NullOrEmpty(this string @string)
@@ -50,12 +62,12 @@ namespace Utils.Helpers
 
         public static void ThrowIfNullOrEmpty(this string @string, string paramName)
         {
-            if (string.IsNullOrEmpty(paramName))
+            if (paramName.NullOrEmpty())
             {
                 throw new InvalidOperationException("You should not pass null or empty string a paramName");
             }
 
-            if (string.IsNullOrEmpty(@string?.Trim()))
+            if (@string.NullOrEmpty())
             {
                 throw new ArgumentNullException(paramName: paramName);
             }

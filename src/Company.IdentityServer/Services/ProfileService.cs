@@ -53,28 +53,27 @@ namespace Company.IdentityServer.Services
             context.IssuedClaims = AddClaims(claims, user);
         }
 
-        private List<Claim> AddClaims(List<Claim> claims, UserWithRole userWithRole)
+        private List<Claim> AddClaims(List<Claim> claims, UserWithRole user)
         {
-            var user = userWithRole.User;
-            claims.Add(new Claim(JwtClaimTypes.GivenName, user.FirstName));
-            claims.Add(new Claim(JwtClaimTypes.FamilyName, user.LastName));
-            claims.Add(new Claim(JwtClaimTypes.Email, user.Email));
-            claims.Add(new Claim(type: JwtClaimTypes.NickName, value: user.UserName));
+            claims.Add(new Claim(JwtClaimTypes.GivenName, user.User.FirstName));
+            claims.Add(new Claim(JwtClaimTypes.FamilyName, user.User.LastName));
+            claims.Add(new Claim(JwtClaimTypes.Email, user.User.Email));
+            claims.Add(new Claim(type: JwtClaimTypes.NickName, value: user.User.UserName));
 
-            claims.Add(new Claim(ClaimTypes.Email, user.Email));
-            claims.Add(new Claim(IdentityServerConstants.StandardScopes.Email, user.Email));
+            claims.Add(new Claim(ClaimTypes.Email, user.User.Email));
+            claims.Add(new Claim(IdentityServerConstants.StandardScopes.Email, user.User.Email));
 
-            claims.Add(new Claim(CustomClaimTypes.FirstName, user.FirstName));
-            claims.Add(new Claim(CustomClaimTypes.LastName, user.LastName));
-            claims.Add(new Claim(CustomClaimTypes.Username, user.UserName));
+            claims.Add(new Claim(CustomClaimTypes.FirstName, user.User.FirstName));
+            claims.Add(new Claim(CustomClaimTypes.LastName, user.User.LastName));
+            claims.Add(new Claim(CustomClaimTypes.Username, user.User.UserName));
 
-            claims.Add(new Claim(ClaimTypes.GivenName, user.FirstName));
-            claims.Add(new Claim(ClaimTypes.Surname, user.LastName));
+            claims.Add(new Claim(ClaimTypes.GivenName, user.User.FirstName));
+            claims.Add(new Claim(ClaimTypes.Surname, user.User.LastName));
 
             // note: to dynamically add roles (ie. for users other than consumers - simply look them up by sub id
             // need this for role-based authorization
             // https://stackoverflow.com/questions/40844310/role-based-authorization-with-identityserver4
-            claims.Add(new Claim(type: ClaimTypes.Role, value: userWithRole.Role.ToString()));
+            claims.Add(new Claim(type: ClaimTypes.Role, value: user.Role.ToString()));
 
             return claims;
         }

@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Security.Claims;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Company.IdentityServer.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PC.Database.Models.Users;
 using PC.Services.Claims;
 using PC.Services.User;
-using Utils.Authorization;
 using Utils.Enums;
 using Utils.Exceptions;
 using Utils.Helpers;
@@ -53,14 +52,9 @@ namespace Company.IdentityServer.Services.User
                 throw CreateException($"Cannot add role '{role}' to user '{claimsUser.Email}'\r\n", roleAddingResult);
             }
 
-            var claimsAddingResult = await _userManager.AddClaimsAsync(user, new List<Claim>
-            {
-                new Claim(CustomClaimTypes.Username, user.UserName),
-                new Claim(ClaimTypes.GivenName, user.FirstName),
-                new Claim(ClaimTypes.Surname, user.LastName),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, role)
-            });
+            var claimsAddingResult = await _userManager.AddClaimsAsync(
+                user: user,
+                claims: claimsUser.Claims().Concat(user.Claims(role)));
 
             if (!claimsAddingResult.Succeeded)
             {
@@ -103,13 +97,13 @@ namespace Company.IdentityServer.Services.User
             claimsUser.ThrowIfNull(nameof(claimsUser));
 
             DbUser dbUser =
-                await FindByEmailInternalAsync(claimsUser.Email) ??
+                await ByEmailOrNullAsync(claimsUser.Email) ??
                 await CreateUserAsync(claimsUser);
 
             return dbUser;
         }
 
-        private async Task<DbUser> FindByEmailInternalAsync(string email)
+        private async Task<DbUser> ByEmailOrNullAsync(string email)
         {
             _emailDomainValidatorService.Validate(email);
 

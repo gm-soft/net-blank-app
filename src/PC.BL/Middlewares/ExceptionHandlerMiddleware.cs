@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Utils.Exceptions;
 
-namespace Utils.Middleware
+namespace PC.BL.Middlewares
 {
-    public class ServerErrorHandlerMiddleware
+    public class ExceptionHandlerMiddleware : IMiddleware
     {
         private const string DefaultServerErrorMessage = "Internal Server Error";
 
@@ -19,21 +20,17 @@ namespace Utils.Middleware
             { typeof(AuthenticationException), StatusCodes.Status401Unauthorized },
             { typeof(NoPermissionsException), StatusCodes.Status403Forbidden },
             { typeof(ResourceNotFoundException), StatusCodes.Status404NotFound },
-            { typeof(BadRequestException), StatusCodes.Status400BadRequest },
-            { typeof(InvalidOperationException), StatusCodes.Status400BadRequest }
+            { typeof(BadAssException), StatusCodes.Status400BadRequest },
+            { typeof(InvalidOperationException), StatusCodes.Status400BadRequest },
+            { typeof(DbUpdateConcurrencyException), StatusCodes.Status409Conflict }
         };
 
-        public ServerErrorHandlerMiddleware(RequestDelegate next)
+        public ExceptionHandlerMiddleware(RequestDelegate next)
         {
             _next = next;
         }
 
-        // We have to use UseAsyncSuffix rule disable because the method Invoke has to be named 'as is' without any suffixes.
-        // But some pipelines checks the method for the rule suitability, and that's why the pipeline makes a build failed.
-        // To avoid this situation, we use pragma warning disable here.
-#pragma warning disable UseAsyncSuffix // Use Async suffix
-        public async Task Invoke(HttpContext context)
-#pragma warning restore UseAsyncSuffix // Use Async suffix
+        public async Task InvokeAsync(HttpContext context)
         {
             try
             {
@@ -45,7 +42,7 @@ namespace Utils.Middleware
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             var statusCode = StatusCodes.Status500InternalServerError;
             string message = null;
@@ -59,13 +56,11 @@ namespace Utils.Middleware
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = statusCode;
 
-            var errorContent = new ErrorDetails
+            await context.Response.WriteAsync(JsonConvert.SerializeObject(new ErrorDetails
             {
                 StatusCode = statusCode,
                 Message = message ?? DefaultServerErrorMessage
-            };
-
-            return context.Response.WriteAsync(JsonConvert.SerializeObject(errorContent));
+            }));
         }
     }
 }

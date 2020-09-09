@@ -8,13 +8,13 @@ namespace PC.BL.ScheduleJobs
 {
     public abstract class InvocableJobBase : IInvocable
     {
-        protected ILogger Logger { get; }
+        private readonly ILogger _logger;
 
         private string JobName => GetType().Name;
 
         protected InvocableJobBase(ILogger logger)
         {
-            Logger = logger;
+            _logger = logger;
         }
 
         protected abstract Task InvokeAsync();
@@ -32,14 +32,14 @@ namespace PC.BL.ScheduleJobs
 
                 stopwatch.Stop();
 
-                Logger.LogInformation(
+                _logger.LogInformation(
                     $"Finished background task {JobName}. Execution time: {stopwatch.ElapsedMilliseconds}");
             }
             catch (Exception exception)
             {
                 stopwatch?.Stop();
 
-                Logger.LogError(
+                _logger.LogError(
                     exception,
                     $"A task {JobName} has error: {exception.Message}");
             }

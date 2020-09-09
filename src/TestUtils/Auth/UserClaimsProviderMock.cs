@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
 using Moq;
+using PC.Models.Users;
 using PC.Services.Auth;
+using Utils.Authorization;
 using Utils.Enums;
 
 namespace TestUtils.Auth
@@ -12,10 +14,19 @@ namespace TestUtils.Auth
 
         private readonly Role _currentUserClaimRole;
 
+        private readonly ApplicationUser _user;
+
         public UserClaimsProviderMock(Role currentUserClaimRole)
         {
             _mock = new Mock<IUserClaimsProvider>();
             _currentUserClaimRole = currentUserClaimRole;
+        }
+
+        public UserClaimsProviderMock(ApplicationUser user)
+        {
+            _mock = new Mock<IUserClaimsProvider>();
+            _currentUserClaimRole = user.Role;
+            _user = user;
         }
 
         public IUserClaimsProvider GetObject()
@@ -33,10 +44,20 @@ namespace TestUtils.Auth
 
         private ClaimsPrincipal CreateClaimsPrincipal(Role role)
         {
-            return new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+            var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Role, role.ToString())
-            }));
+            };
+
+            if (_user != null)
+            {
+                claims.Add(new Claim(ClaimTypes.Email, _user.Email));
+                claims.Add(new Claim(ClaimTypes.GivenName, _user.FirstName));
+                claims.Add(new Claim(ClaimTypes.Surname, _user.LastName));
+                claims.Add(new Claim(CustomClaimTypes.Username, _user.UserName));
+            }
+
+            return new ClaimsPrincipal(new ClaimsIdentity(claims));
         }
     }
 }

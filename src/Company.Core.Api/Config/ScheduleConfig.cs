@@ -10,8 +10,7 @@ namespace Company.Core.Api.Config
         public static IServiceCollection AddCoravelScheduler(this IServiceCollection services)
         {
             services
-                .AddScheduler()
-                .AddTransient<SayHelloJob>();
+                .AddScheduler();
 
             return services;
         }
@@ -20,9 +19,6 @@ namespace Company.Core.Api.Config
         {
             app.ApplicationServices.UseScheduler((scheduler) =>
             {
-                scheduler
-                    .Schedule<SayHelloJob>()
-                    .DailyAtHour(0);
             });
         }
     }

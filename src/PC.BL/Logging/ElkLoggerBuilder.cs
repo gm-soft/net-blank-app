@@ -1,6 +1,6 @@
 ﻿using System;
 using Elasticsearch.Net;
-using Microsoft.Extensions.Configuration;
+using PC.BL.Configurations;
 using Serilog;
 using Serilog.Core;
 using Serilog.Formatting.Elasticsearch;
@@ -8,21 +8,17 @@ using Serilog.Sinks.Elasticsearch;
 
 namespace PC.BL.Logging
 {
-    public class ElkLoggerBuilder
+    public class ElkLoggerBuilder : ILoggerBuilder
     {
-        private const string ElkConnectionStringConfigKey = "ElasticSearch";
-
-        private readonly string _elkConnectionString;
-        private readonly IConfiguration _configuration;
+        private readonly ElasticSearchConfig _config;
 
         private Logger _logger;
 
         private ElasticsearchClientException _elkCreateException;
 
-        public ElkLoggerBuilder(IConfiguration configuration)
+        public ElkLoggerBuilder(ElasticSearchConfig config)
         {
-            _configuration = configuration;
-            _elkConnectionString = configuration.GetConnectionString(ElkConnectionStringConfigKey);
+            _config = config;
         }
 
         public Logger Logger()
@@ -45,12 +41,12 @@ namespace PC.BL.Logging
             return _elkCreateException;
         }
 
-        public ElkLoggerBuilder TryCreateLogger()
+        public ILoggerBuilder TryCreateLogger()
         {
             try
             {
                 _logger = new LoggerConfiguration()
-                    .ReadFrom.Configuration(_configuration)
+                    .ReadFrom.Configuration(_config.Configuration)
                     .WriteTo.Elasticsearch(ElasticsearchSinkOptions())
                     .WriteTo.Console()
                     .WriteTo.Debug()
@@ -68,8 +64,9 @@ namespace PC.BL.Logging
 
         private ElasticsearchSinkOptions ElasticsearchSinkOptions()
         {
-            return new ElasticsearchSinkOptions(new Uri(_elkConnectionString))
+            return new ElasticsearchSinkOptions(_config.ConnectionUri)
             {
+                IndexFormat = $"logstash-{_config.AppName}-{_config.Environment}",
                 AutoRegisterTemplate = true,
                 OverwriteTemplate = true,
                 DetectElasticsearchVersion = true,

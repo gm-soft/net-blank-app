@@ -1,4 +1,5 @@
 ﻿using System;
+using Utils.Dates;
 using Utils.Helpers;
 using Xunit;
 
@@ -54,6 +55,24 @@ namespace Utils.Test.Helpers
         public void EqualTo_DoubleNullable_Ok(double? first, double? second, bool expected)
         {
             Assert.Equal(expected, first.EqualTo(second));
+        }
+
+        [Fact]
+        public void IsToday_DifferentCases_Ok()
+        {
+            Assert.False(Date.Yesterday.EndOfTheDay().IsToday());
+
+            Assert.False(Date.Yesterday.StartOfTheDay().IsToday());
+
+            Assert.False(Date.Tomorrow.EndOfTheDay().IsToday());
+
+            Assert.False(Date.Tomorrow.StartOfTheDay().IsToday());
+
+            Assert.True(Date.Today.EndOfTheDay().IsToday());
+
+            Assert.True(Date.Today.StartOfTheDay().IsToday());
+
+            Assert.True(DateTimeOffset.Now.IsToday());
         }
     }
 }

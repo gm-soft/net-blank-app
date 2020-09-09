@@ -1,13 +1,16 @@
 ﻿using System;
 using Microsoft.Extensions.Configuration;
+using PC.BL.Configurations;
 using Serilog;
 using Serilog.Core;
 
 namespace PC.BL.Logging
 {
-    public class FileLoggerBuilder
+    public class FileLoggerBuilder : ILoggerBuilder
     {
-        private const string MessageTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}";
+        private readonly LoggingMessageTemplate _messageTemplate;
+
+        private readonly WriteToFilesConfig _writeToFiles;
 
         private readonly IConfiguration _configuration;
 
@@ -15,8 +18,11 @@ namespace PC.BL.Logging
 
         private Exception _exception;
 
-        public FileLoggerBuilder(IConfiguration configuration)
+        public FileLoggerBuilder(
+            LoggingMessageTemplate messageTemplate, WriteToFilesConfig writeToFiles, IConfiguration configuration)
         {
+            _messageTemplate = messageTemplate;
+            _writeToFiles = writeToFiles;
             _configuration = configuration;
         }
 
@@ -40,7 +46,7 @@ namespace PC.BL.Logging
             return _exception;
         }
 
-        public FileLoggerBuilder CreateLogger()
+        public ILoggerBuilder TryCreateLogger()
         {
             try
             {
@@ -49,14 +55,13 @@ namespace PC.BL.Logging
                     .WriteTo.Debug()
                     .WriteTo.Console();
 
-                if (_configuration.GetSection("Serilog")["WriteToFileAllowed"] != null)
+                if (_writeToFiles.Value())
                 {
-                    // TODO Maxim: write to a file only when necessary config value exists.
                     loggerConfiguration = loggerConfiguration.WriteTo.File(
                         "../logs/log.txt",
                         rollingInterval: RollingInterval.Day,
                         shared: true,
-                        outputTemplate: MessageTemplate);
+                        outputTemplate: _messageTemplate.Value());
                 }
 
                 _logger = loggerConfiguration.CreateLogger();

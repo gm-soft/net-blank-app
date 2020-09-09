@@ -5,7 +5,7 @@ using Utils.Helpers;
 
 namespace Utils.Exceptions
 {
-    public class EntityInvalidException : BadRequestException
+    public class EntityInvalidException : BadAssException
     {
         private EntityInvalidException(string message)
             : base(message)

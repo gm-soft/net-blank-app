@@ -2,7 +2,7 @@
 {
     public enum Status
     {
-        Undefined,
+        Undefined = 0,
 
         Active,
 
