@@ -396,6 +396,12 @@ app-root {
   }
 }
 
+tbody tr:hover {
+  cursor: pointer;
+  background: #ccc;
+  color: #fff;
+}
+
 .navbar-toggler {
   z-index: $zindex-sticky + 2;
 }
@@ -435,4 +441,13 @@ app-root {
 
 ul#menu-content {
   padding-top: $navbar-menu-content-padding-top;
+}
+
+div#admin-panel ul li a i {
+  margin-left: 15px;
+}
+
+div#admin-panel li div i {
+  margin-left: 15px;
+  margin-right: 0.5rem !important;
 }

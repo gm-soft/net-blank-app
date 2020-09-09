@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { HttpOptions } from './api.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -19,6 +18,6 @@ export class IdentityHttpService {
   }
 }
 
-export class LogoutResponse {
+export interface LogoutResponse {
   redirectUrl: string;
 }

@@ -1,0 +1,5 @@
+<a tabindex="0" role="button" [ngbPopover]="popContent" triggers="mouseenter:mouseleave" popoverTitle="{{ title }}"
+  ><i class="{{ icon }}"></i
+></a>
+
+<ng-template #popContent><ng-content></ng-content></ng-template>

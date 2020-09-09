@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '@shared/services/auth/auth.service';
-import { Subscription, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { SpinnerService } from '@shared/services/spinners/spinner-service';
 import { environment } from '@environments/environment';
 
 @Component({
@@ -13,7 +12,6 @@ import { environment } from '@environments/environment';
 export class AppSidebarComponent implements OnInit, OnDestroy {
   name: string;
   isAuthenticated: boolean;
-  subscription: Subscription;
   envName: string;
   private unsubscribe: Subject<void> = new Subject();
 

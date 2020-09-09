@@ -8,7 +8,10 @@ export class MobileSidebarToggleDirective {
   @HostListener('click', ['$event'])
   toggleOpen($event: any) {
     $event.preventDefault();
-    document.querySelector('aside').classList.add('d-none');
+    if (document.querySelector('aside') != null) {
+      document.querySelector('aside').classList.add('d-none');
+    }
+
     document.querySelector('body').classList.toggle('sidebar-mobile-show');
   }
 }

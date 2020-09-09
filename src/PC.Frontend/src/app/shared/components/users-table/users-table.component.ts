@@ -1,7 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UserTableItem } from './user-table-item';
 import Assertion from '@shared/validation/assertion';
-import { UserTableArguments } from './user-table-arguments';
+import { ApplicationUser } from '@models/application-user';
+import { PaginatedList } from '@models/paginated-list';
+import { ApplicationUserExtended } from '@models/extended';
 
 @Component({
   selector: 'app-users-table',
@@ -9,13 +11,21 @@ import { UserTableArguments } from './user-table-arguments';
   styleUrls: ['./users-table.component.scss']
 })
 export class UsersTableComponent {
-  users: Array<UserTableItem> = [];
+  public paginatedList: PaginatedList<ApplicationUser>;
+  public users: Array<UserTableItem> = [];
 
-  @Input('args')
-  set setArguments(args: UserTableArguments) {
-    Assertion.notNull(args, 'args');
-    this.users = args.userTableItems();
+  @Input('paginatedList')
+  set setArguments(paginatedList: PaginatedList<ApplicationUser>) {
+    Assertion.notNull(paginatedList, 'paginatedList');
+    Assertion.notNull(paginatedList.results, 'paginatedList.results');
+
+    this.paginatedList = paginatedList;
+    this.users = paginatedList.results.map(x => new UserTableItem(x, paginatedList.linkPrefix));
   }
 
-  constructor() {}
+  @Output() public pageChange: EventEmitter<number> = new EventEmitter<number>();
+
+  public changePage(page: number): void {
+    this.pageChange.emit(page);
+  }
 }

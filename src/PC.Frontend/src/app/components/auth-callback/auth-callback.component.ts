@@ -28,6 +28,6 @@ export class AuthCallbackComponent implements OnInit {
     }
 
     await this.authService.completeAuthentication();
-    this.router.navigate(['/']);
+    this.router.navigate(['/me']);
   }
 }

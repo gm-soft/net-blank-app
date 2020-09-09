@@ -1,0 +1,13 @@
+<app-page-header>
+  <div class="w-100 d-flex justify-content-between">
+    <div class="app-page-header-label">Inactive users</div>
+  </div>
+</app-page-header>
+
+<div class="container mt-3">
+  <app-users-table
+    *ngIf="paginatedList?.results"
+    [paginatedList]="paginatedList"
+    (pageChange)="loadUsers($event)"
+  ></app-users-table>
+</div>

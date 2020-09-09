@@ -6,27 +6,30 @@
         <th>Full Name</th>
         <th>Email</th>
         <th>Role</th>
-        <th>Last update</th>
-        <th></th>
+        <th *appHasRole="'hrmanager'">Status</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of users; let i = index" title="Edit the user">
-        <th scope="row">{{ i + 1 }}</th>
+      <tr routerLink="{{ item.link }}" title="Go to user page" *ngFor="let item of users; let i = index">
+        <th scope="row">{{ (paginatedList.currentPage - 1) * paginatedList.pageSize + i + 1 }}</th>
         <td>{{ item.fullName }}</td>
         <td>{{ item.email }}</td>
         <td>{{ item.role }}</td>
-        <td>
-          <span class="text-muted" title="Last update">
-            <small>{{ item.updatedAt | date: 'yyyy-MM-dd' }}</small>
-          </span>
-        </td>
-        <td>
-          <a routerLink="{{ item.link }}" title="Go to user page">View</a>
+        <td *appHasRole="'hrmanager'">
+          <span class="badge badge-warning" *ngIf="!item.emailConfirmed; else confirmed">Not confirmed</span>
+          <ng-template #confirmed>
+            <span class="badge badge-success" *ngIf="item.isActive; else inActive">Active</span>
+            <ng-template #inActive>
+              <span class="badge badge-warning">Inactive</span>
+            </ng-template>
+          </ng-template>
         </td>
       </tr>
     </tbody>
   </table>
+  <div class="d-flex justify-content-center">
+    <app-table-pagination [paginatedList]="paginatedList" (pageChange)="changePage($event)"></app-table-pagination>
+  </div>
 </div>
 <ng-template #noUsers>
   <div class="card">Nothing to show</div>

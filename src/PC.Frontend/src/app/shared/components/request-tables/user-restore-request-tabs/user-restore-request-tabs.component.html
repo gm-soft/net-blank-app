@@ -1,0 +1,20 @@
+<tabset>
+  <tab>
+    <ng-template tabHeading>Active</ng-template>
+    <app-user-restore-request
+      *ngIf="requestsActive.length > 0; else noItems"
+      [requests]="requestsActive"
+    ></app-user-restore-request>
+  </tab>
+  <tab>
+    <ng-template tabHeading>Processed</ng-template>
+    <app-user-restore-request
+      *ngIf="requestsProcessed.length > 0; else noItems"
+      [requests]="requestsProcessed"
+    ></app-user-restore-request>
+  </tab>
+</tabset>
+
+<ng-template #noItems>
+  <div class="card">Nothing to show</div>
+</ng-template>

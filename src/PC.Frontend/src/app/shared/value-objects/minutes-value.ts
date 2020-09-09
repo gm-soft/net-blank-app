@@ -1,11 +1,11 @@
 export class MinutesValue {
-  readonly fullTime: string;
+  readonly total: string;
   readonly minutesOrDefault: number;
 
   constructor(public readonly minutes: number, showZeroAsDefault: boolean) {
     if (this.minutes === 0 || this.minutes == null) {
       this.minutesOrDefault = 0;
-      this.fullTime = showZeroAsDefault ? '0' : '';
+      this.total = showZeroAsDefault ? '0' : '';
       return;
     }
 
@@ -14,9 +14,9 @@ export class MinutesValue {
     const minutesOnly = this.minutes % 60;
 
     if (hours > 0) {
-      this.fullTime = minutesOnly > 0 ? `${hours}h ${minutesOnly}m` : `${hours}h`;
+      this.total = minutesOnly > 0 ? `${hours}h ${minutesOnly}m` : `${hours}h`;
     } else {
-      this.fullTime = `${minutesOnly}min`;
+      this.total = `${minutesOnly}min`;
     }
   }
 }

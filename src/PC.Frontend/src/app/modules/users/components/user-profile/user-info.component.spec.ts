@@ -3,9 +3,8 @@ import { UserInfoComponent } from './user-info.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '@shared/shared.module';
-import { testUtilStubs } from '@shared/test-utils';
+import { testUtilStubs, mostUsedServices } from '@shared/test-utils';
 import { UserService } from '@services/user.service';
-import { AuthService } from '@shared/services/auth/auth.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestApplicationUser } from '@shared/test-utils/models';
 import { UserRole } from '@models/enums';
@@ -20,7 +19,7 @@ describe('UserInfoComponent', () => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, RouterTestingModule, SharedModule, FormsModule],
       declarations: [UserInfoComponent],
-      providers: [...testUtilStubs, UserService, AuthService],
+      providers: [...testUtilStubs, ...mostUsedServices, UserService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));

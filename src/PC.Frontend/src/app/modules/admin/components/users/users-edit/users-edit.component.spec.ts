@@ -1,29 +1,29 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UsersEditComponent } from './users-edit.component';
-import { AuthService } from '@shared/services/auth/auth.service';
-import { ApplicationUser } from '@models/application-user';
 import { UserAdminService } from '@modules/admin/services/user.admin.service';
-import {
-  spyOnCurrentUserServiceWithUserId,
-  testUtilStubs,
-  mostUsedServices,
-  mostUsedImports
-} from '@shared/test-utils';
+import { testUtilStubs, mostUsedServices, mostUsedImports, spyOnCurrentUserServiceWithUser } from '@shared/test-utils';
+import { WorklogService } from '@services/worklog.service';
 import { UserRole } from '@models/enums';
 import { UserEditForm } from '@modules/admin/components/users/users-edit/user-edit-form';
-import { of } from 'rxjs';
+import { TestApplicationUser } from '@shared/test-utils/models';
+import { ApplicationUserExtended } from '@models/extended';
+import { AlertService } from '@shared/alert/services/alert.service';
+import { UserRestoreRequestService } from '@admin-services/user-restore-request-service';
 
 describe('Admin.UsersEditComponent', () => {
   let component: UsersEditComponent;
   let fixture: ComponentFixture<UsersEditComponent>;
   let userService: UserAdminService;
+  let timeRecordService: WorklogService;
+
+  const user = new ApplicationUserExtended(new TestApplicationUser(UserRole.Employee, 1));
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [...mostUsedImports],
       declarations: [UsersEditComponent],
-      providers: [...testUtilStubs, ...mostUsedServices, UserAdminService, AuthService],
+      providers: [...testUtilStubs, ...mostUsedServices, UserAdminService, WorklogService, UserRestoreRequestService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
@@ -31,20 +31,21 @@ describe('Admin.UsersEditComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UsersEditComponent);
     userService = TestBed.inject(UserAdminService);
-    const userId = 1;
-    spyOnCurrentUserServiceWithUserId(spyOn, userId);
+    timeRecordService = TestBed.inject(WorklogService);
 
     component = fixture.componentInstance;
-    component.user = new ApplicationUser({ id: userId });
-    component.userId = userId;
+    component.user = user;
+    component.userId = user.id;
     fixture.detectChanges();
   });
 
   it('should create', () => {
+    spyOnCurrentUserServiceWithUser(user, spyOn);
     expect(component).toBeTruthy();
   });
 
   it('should show confirm modal if I try to remove my own account', () => {
+    spyOnCurrentUserServiceWithUser(user, spyOn);
     let errorWasThrown = false;
     try {
       component.deleteUser();
@@ -55,24 +56,33 @@ describe('Admin.UsersEditComponent', () => {
   });
 
   it('should return False if User Role above mine', () => {
-    component.currentUser.instance.role = UserRole.TopManager;
-    component.user.role = UserRole.SystemAdministrator;
+    const currentUser = new ApplicationUserExtended(new TestApplicationUser(UserRole.HRManager, 2));
+    spyOnCurrentUserServiceWithUser(currentUser, spyOn);
+    component.currentUser = currentUser;
+    component.user = new ApplicationUserExtended(new TestApplicationUser(UserRole.Employee, 1));
 
-    expect(component.enableUserRoleField(UserRole.Employee)).toBeFalsy();
+    expect(component.enableUserRoleField(UserRole.SystemAdministrator)).toBe(false);
   });
 
   it('should return True if User Role not above mine', () => {
-    component.currentUser.instance.role = UserRole.SystemAdministrator;
-    const newUserId = 2;
-    component.user.id = newUserId;
-    component.user.role = UserRole.TopManager;
+    const currentUser = new ApplicationUserExtended(new TestApplicationUser(UserRole.HRManager, 2));
+    spyOnCurrentUserServiceWithUser(currentUser, spyOn);
+    component.currentUser = currentUser;
+    component.user = new ApplicationUserExtended(new TestApplicationUser(UserRole.Employee, 1));
 
-    expect(component.enableUserRoleField(UserRole.Employee)).toBeTruthy();
+    expect(component.enableUserRoleField(UserRole.HRManager)).toBe(true);
   });
 
   it('should throw Error When I set Role above mine', () => {
-    component.currentUser.instance.role = UserRole.HRManager;
-    component.editForm = new UserEditForm(component.user);
+    const currentUser = new ApplicationUserExtended(new TestApplicationUser(UserRole.HRManager, 2));
+    spyOnCurrentUserServiceWithUser(currentUser, spyOn);
+
+    component.editForm = new UserEditForm(
+      component.user,
+      TestBed.inject(UserAdminService),
+      TestBed.inject(AlertService)
+    );
+
     component.editForm.value.role = UserRole.TopManager;
     let errorWasThrown = false;
     try {

@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class DeclineForm extends FormGroup {
   constructor() {
     super({
-      declineComment: new FormControl('', [Validators.required])
+      comment: new FormControl('', [Validators.required])
     });
   }
 
@@ -17,6 +17,6 @@ export class DeclineForm extends FormGroup {
   }
 
   private get comment(): string {
-    return this.value.declineComment as string;
+    return this.value.comment as string;
   }
 }

@@ -10,12 +10,24 @@ export class ApplicationUserExtended {
     return this.instance.id;
   }
 
+  get firstName(): string {
+    return this.instance.firstName;
+  }
+
+  get lastName(): string {
+    return this.instance.lastName;
+  }
+
   get email(): string {
     return this.instance.email;
   }
 
   get userName(): string {
     return this.instance.userName;
+  }
+
+  get emailConfirmed(): boolean {
+    return this.instance.emailConfirmed;
   }
 
   get phoneNumber(): string {
@@ -47,5 +59,11 @@ export class ApplicationUserExtended {
 
   hasRole(role: UserRole): boolean {
     return this.instance.role >= role;
+  }
+
+  hasRoleOrFail(role: UserRole): void {
+    if (!this.hasRole(role)) {
+      throw Error('You have no permission to execute this operation');
+    }
   }
 }

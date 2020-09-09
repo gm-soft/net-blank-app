@@ -8,5 +8,6 @@ export class ApplicationUser extends BaseModel<ApplicationUser> {
   firstName: string | null;
   lastName: string | null;
   role: UserRole;
-  deletedAt: Date;
+  emailConfirmed: boolean;
+  deletedAt: Date | null;
 }

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@shared/services/auth/auth.service';
-import { Subscription, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { SpinnerService } from '@shared/services/spinners/spinner-service';
 
 @Component({
   selector: 'app-sidebar-button',
@@ -10,10 +9,9 @@ import { SpinnerService } from '@shared/services/spinners/spinner-service';
 })
 export class AppSidebarButtonComponent implements OnInit {
   isAuthenticated: boolean;
-  subscription: Subscription;
   private unsubscribe: Subject<void> = new Subject();
 
-  constructor(private readonly authService: AuthService, private readonly spinner: SpinnerService) {}
+  constructor(private readonly authService: AuthService) {}
 
   ngOnInit() {
     this.setupSubscribers();

@@ -9,11 +9,12 @@
                 <div class="ul">
                   <div class="li">
                     <div>
-                      <b [routerLink]="['/']">Company <span class="fa fa-chevron-down ml-1 position-fixed"></span></b>
+                      <b [routerLink]="['/']">Petrel AI <span class="fa fa-chevron-down ml-1 position-fixed"></span></b>
                     </div>
                     <div class="ul list-group">
                       <div class="li list-group-item"><a routerLink="/me">Profile</a></div>
-                      <div class="li list-group-item"><a href="#" (click)="signout()">Sign out</a></div>
+                      <div class="li list-group-item"><a routerLink="/to-do-list">To-Do List</a></div>
+                      <div class="li list-group-item"><a routerLink="" (click)="signout()">Sign out</a></div>
                     </div>
                   </div>
                 </div>
@@ -23,16 +24,60 @@
           </div>
           <ul id="menu-content" class="menu-content collapse show">
             <hr class="sidebar-hr" />
-            <li data-toggle="collapse" data-target="#service" class="collapsed" *appHasRole="'hrmanager'">
+
+            <li data-toggle="collapse" data-target="#admin-panel" class="collapsed" *appHasRole="'hrmanager'">
               <div class="m-l-15"><i class="fa fa-user-ninja fa-lg mr-2"></i> Admin panel</div>
             </li>
-            <ul class="sub-menu collapse" id="service" *appHasRole="'hrmanager'">
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
-                <a [routerLink]="['/admin/users']"><i class="fa fa-user-friends"></i> Users</a>
+            <div class="sub-menu collapse" id="admin-panel" *appHasRole="'hrmanager'">
+              <li data-toggle="collapse" data-target="#admin-users" class="collapsed">
+                <div class="m-l-15"><i class="fa fa-user-friends fa-lg"></i> Users</div>
               </li>
-            </ul>
+              <ul class="sub-menu collapse" id="admin-users">
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a [routerLink]="['/admin/users']"><i class="fa fa-sort-numeric-down"></i> Users</a>
+                </li>
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a [routerLink]="['/admin/inactive-users']"><i class="fa fa-user-lock"></i> Inactive users</a>
+                </li>
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a [routerLink]="['/admin/inactive-users/requests']"
+                    ><i class="fa fa-user-times"></i> User restore requests</a
+                  >
+                </li>
+              </ul>
+
+              <li data-toggle="collapse" data-target="#administrative-stuff" class="collapsed">
+                <div class="m-l-15"><i class="fa fa-box-open"></i> Administrative stuff</div>
+              </li>
+              <ul class="sub-menu collapse" id="administrative-stuff">
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a routerLink="/admin/email-preview"><i class="fa fa-envelope"></i> Emails</a>
+                </li>
+              </ul>
+
+              <li
+                data-toggle="collapse"
+                data-target="#admin-stuff"
+                class="collapsed"
+                *appHasRole="'systemadministrator'"
+              >
+                <div class="m-l-15"><i class="fa fa-tools fa-lg"></i> Admin stuff</div>
+              </li>
+              <ul class="sub-menu collapse" id="admin-stuff">
+                <li
+                  [routerLinkActive]="['active']"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  *appHasRole="'systemadministrator'"
+                >
+                  <a routerLink="/admin/background-jobs" title="Background jobs and tools"
+                    ><i class="fa fa-sort-numeric-down"></i> Admin stuff</a
+                  >
+                </li>
+              </ul>
+            </div>
             <hr class="sidebar-hr" *appHasRole="'hrmanager'" />
-            <li data-toggle="collapse" data-target="#users" class="collapsed">
+
+            <li data-toggle="collapse" data-target="#users" class="collapsed" *appIsDesktop>
               <div class="m-l-15"><i class="fa fa-user-friends mr-2"></i> Users</div>
             </li>
             <ul class="sub-menu collapse" id="users">

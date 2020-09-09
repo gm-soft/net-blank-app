@@ -15,6 +15,10 @@ export interface HttpOptions {
   withCredentials?: boolean;
 }
 
+export const applicationsJsonHttpOptions: HttpOptions = {
+  headers: { 'Content-Type': 'application/json' }
+};
+
 @Injectable({
   providedIn: 'root'
 })

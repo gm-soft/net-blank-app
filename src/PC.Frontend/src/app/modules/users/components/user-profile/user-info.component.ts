@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ApplicationUser } from '@models/application-user';
-import { UserRole } from '@models/enums';
 import { UserService } from '@services/user.service';
 import { ActivatedRouteExtended } from '@shared/routes/activated-route-extended';
 import { ActivatedRoute } from '@angular/router';
@@ -8,6 +6,7 @@ import { forkJoin } from 'rxjs';
 import { AuthService } from '@shared/services/auth/auth.service';
 import { UserProfileArguments } from '@shared/components/user-profile/user-profile-arguments';
 import { ApplicationUserExtended } from '@models/extended';
+import { TitleService } from '@services/title.service';
 
 @Component({
   selector: 'app-user-info',
@@ -24,7 +23,8 @@ export class UserInfoComponent implements OnInit {
   constructor(
     private readonly userService: UserService,
     private readonly authService: AuthService,
-    route: ActivatedRoute
+    route: ActivatedRoute,
+    private readonly titleService: TitleService
   ) {
     this.activatedRouteExtended = new ActivatedRouteExtended(route);
   }
@@ -41,6 +41,8 @@ export class UserInfoComponent implements OnInit {
       this.currentUser = currentUser;
       this.user = new ApplicationUserExtended(user);
       this.userProfileArguments = new UserProfileArguments(this.user, currentUser);
+
+      this.titleService.setTitle(`User ${this.user.fullName}`);
     });
   }
 }

@@ -2,6 +2,9 @@
   <div class="mt-3">
     <div class="card">
       <ul class="list-group list-group-flush">
+        <li class="list-group-item list-group-item-warning" *ngIf="inactiveUser">
+          <span class="h3">Inactive user</span>
+        </li>
         <li class="list-group-item">
           <div>
             <div class="d-flex justify-content-between text-muted">
@@ -29,9 +32,19 @@
       </ul>
       <div class="card-body d-flex justify-content-between">
         <app-go-back-button></app-go-back-button>
-
-        <div class="d-inline-block" *ngIf="showGoToAdminButton">
-          <a routerLink="/admin/users/{{ user.id }}" class="btn btn-outline-secondary">Admin page</a>
+        <div class="d-inline-block">
+          <div *ngIf="showGoToAdminButton">
+            <button
+              *ngIf="showResendInvitationButton"
+              class="btn btn-outline-primary mr-1"
+              (click)="sendInvitationEmail()"
+            >
+              Resend Invitation
+            </button>
+            <button routerLink="/admin/users/{{ user.id }}" class="btn btn-outline-secondary">
+              Admin page
+            </button>
+          </div>
         </div>
       </div>
     </div>

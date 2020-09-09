@@ -2,17 +2,14 @@ import { Subject, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { User } from 'oidc-client';
 import { OidcUserManager } from './oidc-user-manager.service';
-import { SessionStorageWrapper } from '../session-storage-wrapper.service';
-import { ApplicationUser } from '../../../models';
-import { AuthorizationService } from '../../../services';
+import { ApplicationUser } from '@models/application-user';
+import { AuthorizationService } from '@services/authorization.service';
 import { map } from 'rxjs/operators';
-import { UserRole } from '@models/enums';
 import { IdentityHttpService } from '@services/identity.http.service';
 import { ApplicationUserExtended } from '@models/extended';
+import { AuthSessionService } from './auth.session.service';
 
 export interface IAuthService {
-  throwIfLess(role: UserRole): void;
-
   getCurrentUser(): Observable<ApplicationUserExtended>;
 
   login(): Promise<void>;
@@ -30,9 +27,6 @@ export interface IAuthService {
   providedIn: 'root'
 })
 export class AuthService implements IAuthService {
-  private readonly authorizationStorageSessionKey = 'CurrentUser_AuthInfo';
-  private readonly applicationUserStorageSessionKey = 'CurrentUser_AppUserInfo';
-
   private authorizationInfo: User | null = null;
   private applicationUser: ApplicationUserExtended | null = null;
 
@@ -41,35 +35,11 @@ export class AuthService implements IAuthService {
   public readonly loggedOut$: Subject<void> = new Subject();
 
   constructor(
-    private readonly sessionWrapper: SessionStorageWrapper,
+    private readonly session: AuthSessionService,
     private readonly oidcManager: OidcUserManager,
     private readonly authorizationService: AuthorizationService,
     private readonly identityHttpService: IdentityHttpService
   ) {}
-
-  throwIfLess(role: UserRole): void {
-    this.getCurrentUser().subscribe(user => {
-      if (user == null) {
-        throw Error('User is not authenticated');
-      }
-
-      if (!user.hasRole(role)) {
-        throw Error(`User's role is less than ${UserRole[role]}`);
-      }
-    });
-  }
-
-  throwIfLessOrNotManager(role: UserRole, userId: number): void {
-    this.getCurrentUser().subscribe(user => {
-      if (user == null) {
-        throw Error('User is not authenticated');
-      }
-
-      if (!user.hasRole(role) && user.id !== userId) {
-        throw Error(`User's role is less than ${UserRole[role]}`);
-      }
-    });
-  }
 
   getCurrentUser(): Observable<ApplicationUserExtended | null> {
     this.tryLoadUserFromSession();
@@ -112,7 +82,7 @@ export class AuthService implements IAuthService {
   }
 
   private reloadInternalProperties(): void {
-    this.sessionWrapper.setItem(this.authorizationStorageSessionKey, this.authorizationInfo);
+    this.session.auth = this.authorizationInfo;
 
     this.authorizationService.getMe().subscribe(appUser => {
       this.saveCurrentUser(appUser);
@@ -121,7 +91,7 @@ export class AuthService implements IAuthService {
 
   private saveCurrentUser(appUser: ApplicationUser): void {
     this.applicationUser = new ApplicationUserExtended(appUser);
-    this.sessionWrapper.setItem(this.applicationUserStorageSessionKey, this.applicationUser);
+    this.session.applicationUser = appUser;
     this.loggedIn$.next(this.applicationUser);
   }
 
@@ -157,8 +127,7 @@ export class AuthService implements IAuthService {
   }
 
   public clearSession(): void {
-    this.sessionWrapper.removeItem(this.authorizationStorageSessionKey);
-    this.sessionWrapper.removeItem(this.applicationUserStorageSessionKey);
+    this.session.clear();
 
     this.authorizationInfo = null;
     this.applicationUser = null;
@@ -168,8 +137,8 @@ export class AuthService implements IAuthService {
 
   private tryLoadUserFromSession(): void {
     if (this.authorizationInfo == null) {
-      this.authorizationInfo = this.sessionWrapper.getItem<User>(this.authorizationStorageSessionKey);
-      const user = this.sessionWrapper.getItem<ApplicationUser>(this.applicationUserStorageSessionKey);
+      this.authorizationInfo = this.session.auth;
+      const user = this.session.applicationUser;
       this.applicationUser = user != null ? new ApplicationUserExtended(user) : null;
     }
   }

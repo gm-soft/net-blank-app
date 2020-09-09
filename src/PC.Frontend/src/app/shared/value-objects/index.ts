@@ -6,3 +6,4 @@ export * from './date-extended';
 export * from './iso-8601-date';
 export * from './minutes-value';
 export * from './number-space-split';
+export * from './admin-table-item';

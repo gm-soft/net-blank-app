@@ -3,6 +3,8 @@ import { AuthService } from '@shared/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { SpinnerService } from '@shared/services/spinners/spinner-service';
 import { environment } from '@environments/environment';
+import { HealthCheckService } from '@shared/health-check/health-check.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-login-page',
@@ -12,11 +14,14 @@ import { environment } from '@environments/environment';
 export class LoginPageComponent implements OnInit {
   showAwaitingBlock = false;
   environmentName = '';
+  loginButtonAvailable = false;
+  healthCheckError = false;
 
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
-    private readonly spinner: SpinnerService
+    private readonly spinner: SpinnerService,
+    private readonly healthService: HealthCheckService
   ) {}
 
   ngOnInit(): void {
@@ -26,9 +31,23 @@ export class LoginPageComponent implements OnInit {
     }
 
     this.environmentName = environment.name;
+
+    this.healthService.appHealth().subscribe(
+      () => {
+        this.loginButtonAvailable = true;
+      },
+      err => {
+        console.log(err);
+        this.healthCheckError = true;
+      }
+    );
   }
 
   login(): void {
+    if (!this.loginButtonAvailable) {
+      return;
+    }
+
     this.spinner.showTimer();
     this.showAwaitingBlock = true;
     this.authService.login().then();

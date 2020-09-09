@@ -12,4 +12,8 @@ export class TestApplicationUser extends ApplicationUser {
       role
     });
   }
+
+  asExtended(): ApplicationUserExtended {
+    return new ApplicationUserExtended(this);
+  }
 }

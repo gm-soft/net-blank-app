@@ -5,6 +5,9 @@ import { TestApplicationUser } from '@shared/test-utils/models';
 import { UserRole } from '@models/enums';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ApplicationUserExtended } from '@models/extended';
+import { UserService } from '@services/user.service';
+import { AlertService } from '@shared/alert/services/alert.service';
+import { testUtilStubs } from '@shared/test-utils';
 
 describe('UserProfileComponent', () => {
   let component: UserProfileComponent;
@@ -13,7 +16,8 @@ describe('UserProfileComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UserProfileComponent],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [...testUtilStubs, UserService, AlertService]
     }).compileComponents();
   }));
 

@@ -5,15 +5,15 @@ import { SessionStorageWrapper } from '@shared/services/session-storage-wrapper.
 import { OidcUserManager } from '@shared/services/auth/oidc-user-manager.service';
 import { AuthorizationService } from '@services/authorization.service';
 import { UserRole } from '@models/enums';
-import { testUtilStubs, spyOnCurrentUserServiceWithUser } from '@shared/test-utils';
-import { ApplicationUserExtended } from '@models/extended';
+import { testUtilStubs, spyOnCurrentUserServiceWithUser, mostUsedServices } from '@shared/test-utils';
 import { TestApplicationUser } from '@shared/test-utils/models';
+import { ApplicationUserExtended } from '@models/extended';
 
 describe('HrManagerGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterModule.forRoot([])],
-      providers: [HrManagerGuard, ...testUtilStubs, SessionStorageWrapper, OidcUserManager, AuthorizationService]
+      providers: [HrManagerGuard, ...testUtilStubs, ...mostUsedServices, OidcUserManager, AuthorizationService]
     });
   });
 

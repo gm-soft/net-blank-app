@@ -20,25 +20,25 @@ describe('DateExtended', () => {
     expect(target(null, false).minutesOrDefault).toBe(0);
   });
 
-  it('.fullTime should return hours and minutes if 130 min passed', () => {
-    expect(target(130, true).fullTime).toBe('2h 10m');
+  it('.total should return hours and minutes if 130 min passed', () => {
+    expect(target(130, true).total).toBe('2h 10m');
   });
 
-  it('.fullTime should return hours only if 120 min passed', () => {
-    expect(target(120, true).fullTime).toBe('2h');
+  it('.total should return hours only if 120 min passed', () => {
+    expect(target(120, true).total).toBe('2h');
   });
 
-  it('.fullTime should return minutes only if 59 min passed', () => {
-    expect(target(59, true).fullTime).toBe('59min');
+  it('.total should return minutes only if 59 min passed', () => {
+    expect(target(59, true).total).toBe('59min');
   });
 
-  it('.fullTime should return empty string if 0 or null passed and showZeroAsDefault is false', () => {
-    expect(target(0, false).fullTime).toBe('');
-    expect(target(null, false).fullTime).toBe('');
+  it('.total should return empty string if 0 or null passed and showZeroAsDefault is false', () => {
+    expect(target(0, false).total).toBe('');
+    expect(target(null, false).total).toBe('');
   });
 
-  it('.fullTime should return "0" if 0 or null passed and showZeroAsDefault is true', () => {
-    expect(target(0, true).fullTime).toBe('0');
-    expect(target(null, true).fullTime).toBe('0');
+  it('.total should return "0" if 0 or null passed and showZeroAsDefault is true', () => {
+    expect(target(0, true).total).toBe('0');
+    expect(target(null, true).total).toBe('0');
   });
 });

@@ -11,7 +11,7 @@ export class DeleteUserDialogMessage {
 
   constructor(
     private readonly currentUser: ApplicationUserExtended,
-    private readonly userToDelete: ApplicationUser,
+    private readonly userToDelete: ApplicationUserExtended,
     private readonly userService: UserAdminService,
     private readonly router: Router
   ) {}

@@ -1,3 +1,4 @@
+// TODO Maxim: rename to NumberEx
 export class NumberExtended {
   private readonly source: any;
 

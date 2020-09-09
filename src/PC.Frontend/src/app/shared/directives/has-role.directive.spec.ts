@@ -12,51 +12,10 @@ import {
   NgModuleRef,
   ComponentRef
 } from '@angular/core';
-import { spyOnCurrentUserServiceWithUserId, testUtilStubs } from '@shared/test-utils';
+import { spyOnCurrentUserServiceWithUserId, testUtilStubs, mostUsedServices } from '@shared/test-utils';
 import { TestBed, async } from '@angular/core/testing';
-
-class TemplateRefStub extends TemplateRef<any> {
-  elementRef: ElementRef<any>;
-  createEmbeddedView(context: any): EmbeddedViewRef<any> {
-    return null;
-  }
-}
-
-class ViewContainerRefStub extends ViewContainerRef {
-  element: ElementRef<any>;
-  injector: Injector;
-  parentInjector: Injector;
-  length: number;
-  clear(): void {}
-  get(index: number): ViewRef {
-    return null;
-  }
-  createEmbeddedView<C>(templateRef: TemplateRef<C>, context?: C, index?: number): EmbeddedViewRef<C> {
-    return null;
-  }
-  createComponent<C>(
-    componentFactory: ComponentFactory<C>,
-    index?: number,
-    injector?: Injector,
-    projectableNodes?: any[][],
-    ngModule?: NgModuleRef<any>
-  ): ComponentRef<C> {
-    return null;
-  }
-  insert(viewRef: ViewRef, index?: number): ViewRef {
-    return null;
-  }
-  move(viewRef: ViewRef, currentIndex: number): ViewRef {
-    return null;
-  }
-  indexOf(viewRef: ViewRef): number {
-    return null;
-  }
-  remove(index?: number): void {}
-  detach(index?: number): ViewRef {
-    return null;
-  }
-}
+import { ViewContainerRefStub } from '@shared/test-utils/view-container-ref-stub';
+import { TemplateRefStub } from '@shared/test-utils/template-ref-stub';
 
 describe('HasRoleDirective', () => {
   const target = (role: string, authService: AuthService): HasRoleDirective => {
@@ -70,7 +29,7 @@ describe('HasRoleDirective', () => {
     TestBed.configureTestingModule({
       imports: [],
       declarations: [],
-      providers: [...testUtilStubs, AuthService],
+      providers: [...testUtilStubs, ...mostUsedServices],
       schemas: []
     }).compileComponents();
   }));

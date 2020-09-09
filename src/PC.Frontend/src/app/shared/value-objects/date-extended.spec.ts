@@ -41,6 +41,18 @@ describe('DateExtended', () => {
     expect(date.value.getSeconds()).toBe(0);
   });
 
+  it('.endOfTheMonth() should return today, 23:59:59', () => {
+    const january = target('2020-01-23');
+    const march = target('2020-03-03');
+    const april = target('2020-04-09');
+    const may = target('2020-05-30');
+
+    expect(january.endOfTheMonth()).toEqual(target('2020-01-31').endOfTheDay());
+    expect(march.endOfTheMonth()).toEqual(target('2020-03-31').endOfTheDay());
+    expect(april.endOfTheMonth()).toEqual(target('2020-04-30').endOfTheDay());
+    expect(may.endOfTheMonth()).toEqual(target('2020-05-31').endOfTheDay());
+  });
+
   it('.startOfTheDay() should return today, 00:00:00', () => {
     const now = new Date(Date.now());
 

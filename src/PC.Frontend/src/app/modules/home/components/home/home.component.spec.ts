@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomeComponent } from './home.component';
 import { SharedModule } from '@shared/shared.module';
 import { AuthService } from '@shared/services/auth/auth.service';
-import { MockAuthService, testUtilStubs } from '@shared/test-utils';
+import { MockAuthService, testUtilStubs, mostUsedServices } from '@shared/test-utils';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SpinnerService } from '@shared/services/spinners/spinner-service';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -18,6 +18,7 @@ describe('HomeComponent', () => {
       providers: [
         { provide: AuthService, useClass: MockAuthService },
         ...testUtilStubs,
+        ...mostUsedServices,
         NgxSpinnerService,
         SpinnerService
       ],

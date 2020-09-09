@@ -6,6 +6,8 @@ import { environment } from '@environments/environment';
 import { AuthService } from '@shared/services/auth/auth.service';
 import { UserRole } from '@models/enums';
 import { UserAdminService } from '@modules/admin/services';
+import { TitleService } from '@services/title.service';
+import { ApplicationUserExtended } from '@models/extended';
 
 @Component({
   selector: 'app-import-users',
@@ -20,15 +22,23 @@ export class ImportUsersComponent implements OnInit {
 
   contentForImport: string | null = null;
 
+  private currentUser: ApplicationUserExtended | null = null;
+
   constructor(
     private readonly userService: UserAdminService,
     private readonly router: Router,
     private readonly alertService: AlertService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly titleService: TitleService
   ) {}
 
   ngOnInit() {
-    this.authService.throwIfLess(UserRole.SystemAdministrator);
+    this.authService.getCurrentUser().subscribe(x => {
+      this.currentUser = x;
+
+      this.currentUser.hasRoleOrFail(UserRole.SystemAdministrator);
+      this.titleService.setTitle('Import users');
+    });
   }
 
   preview(): void {

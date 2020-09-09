@@ -8,7 +8,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AlertService } from '@shared/alert/services/alert.service';
-import { testUtilStubs } from '@shared/test-utils';
+import { testUtilStubs, mostUsedServices } from '@shared/test-utils';
 
 describe('CreateUserComponent', () => {
   let component: CreateUserComponent;
@@ -18,7 +18,7 @@ describe('CreateUserComponent', () => {
     TestBed.configureTestingModule({
       declarations: [CreateUserComponent],
       imports: [ReactiveFormsModule, RouterTestingModule, SharedModule, FormsModule, BrowserAnimationsModule],
-      providers: [...testUtilStubs, UserService, AlertService],
+      providers: [...testUtilStubs, ...mostUsedServices, UserService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));

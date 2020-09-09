@@ -11,9 +11,6 @@ class AuthStub extends AuthService {
     super(null, null, null, null);
   }
 
-  throwIfLess(role: UserRole): void {
-    throw new Error('Method not implemented.');
-  }
   getCurrentUser(): Observable<ApplicationUserExtended> {
     return of(this.user != null ? new ApplicationUserExtended(this.user) : null);
   }

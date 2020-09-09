@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApplicationUser } from '@models/application-user';
 import { AuthService } from '@shared/services/auth/auth.service';
 import { UserAdminService } from '@modules/admin/services/user.admin.service';
-import { UserRole, Status } from '@models/enums';
+import { UserRole } from '@models/enums';
 import { SelectItem } from '@shared/value-objects';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ActivatedRouteExtended } from '@shared/routes/activated-route-extended';
@@ -13,6 +13,9 @@ import { DialogMessage } from '@shared/components/dialogs/models/dialog-message'
 import { UserRoleSelectItem } from '@shared/value-objects/user-role-select-item';
 import { DeleteUserDialogMessage } from './delete-user-dialog-message';
 import { ApplicationUserExtended } from '@models/extended';
+import { TitleService } from '@services/title.service';
+import { RestoreUserDialogMessage } from '@modules/admin/components/users/users-edit/restore-user-dialog-message';
+import { UserRestoreRequestService } from '@admin-services/user-restore-request-service';
 
 @Component({
   templateUrl: 'users-edit.component.html'
@@ -22,7 +25,9 @@ export class UsersEditComponent implements OnInit {
   userName = '';
 
   editForm: UserEditForm | null = null;
-  user: ApplicationUser | null = null;
+
+  functionManagers: Array<ApplicationUser> = [];
+  user: ApplicationUserExtended | null = null;
   currentUser: ApplicationUserExtended | null;
   userRolesForSelect: UserRoleSelectItem[] = [];
   selectedUserRole: SelectItem<UserRole> | null = null;
@@ -37,14 +42,18 @@ export class UsersEditComponent implements OnInit {
   ];
 
   private readonly activatedRouteExtended: ActivatedRouteExtended;
-  isActive: boolean | false;
+  isActive = false;
+  showRestoreRequestButton = false;
+  showGoToSalariesButton = false;
 
   constructor(
     private readonly userService: UserAdminService,
+    private readonly userRestoreRequestService: UserRestoreRequestService,
     private readonly authService: AuthService,
     private readonly router: Router,
     private readonly alertService: AlertService,
-    activatedRoute: ActivatedRoute
+    activatedRoute: ActivatedRoute,
+    private readonly titleService: TitleService
   ) {
     this.activatedRouteExtended = new ActivatedRouteExtended(activatedRoute);
   }
@@ -58,7 +67,7 @@ export class UsersEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRouteExtended.getParamAsNumber('id').subscribe(userId => {
+    this.activatedRouteExtended.getIdFromRoute().subscribe(userId => {
       this.authService.getCurrentUser().subscribe(currentUser => {
         this.currentUser = currentUser;
 
@@ -69,29 +78,33 @@ export class UsersEditComponent implements OnInit {
   }
 
   private reloadUser(): void {
-    this.userService.getById(this.userId).subscribe(user => {
+    this.userService.userForAdminPanel(this.userId).subscribe(user => {
       this.user = user;
       this.userName = user.userName;
-      this.editForm = new UserEditForm(this.user);
+      this.editForm = new UserEditForm(this.user, this.userService, this.alertService);
+
       this.userRolesForSelect = this.getRolesForSelectBasedOnUserRole();
       this.selectedUserRole = this.userRolesForSelect.find(x => x.item === this.currentUser.roleAsEnum);
-      this.isActive = user.deletedAt == null;
+      this.isActive = user.isActive;
+      this.titleService.setTitle(`Edit ${this.user.fullName}`);
+      this.checkIfRestoreRequestCreated();
+      this.showGoToSalariesButton = this.isActive && this.currentUser?.hasRole(UserRole.TopManager);
     });
   }
 
   onSubmit(): void {
-    if (!this.currentUser.hasRole(this.editForm.userRole())) {
-      throw Error('You cannot set Role above your own');
-    }
-
-    this.editForm.fill(this.user);
-    this.userService.update(this.user).subscribe(() => {
+    this.editForm.onSuccessSubmit(this.currentUser, () => {
       // TODO Maxim: add alert message here
       this.router.navigate(['admin', 'users']);
     });
   }
 
   deleteUser() {
+    if (!this.isActive) {
+      this.alertService.warn('User is inactive');
+      return;
+    }
+
     this.confirmDeletionMessage = new DeleteUserDialogMessage(
       this.currentUser,
       this.user,
@@ -103,11 +116,32 @@ export class UsersEditComponent implements OnInit {
   enableUserRoleField(role: UserRole): boolean {
     return (
       this.currentUser != null &&
-      this.currentUser.hasRole(UserRole.HRManager) &&
       this.user != null &&
-      this.currentUser.hasRole(this.user.role) &&
-      !(this.currentUser.id === this.user.id) &&
+      this.currentUser.hasRole(this.user.roleAsEnum) &&
+      this.currentUser.id !== this.user.id &&
       this.currentUser.hasRole(role)
     );
+  }
+
+  restoreUser() {
+    if (!this.isActive) {
+      this.confirmDeletionMessage = new RestoreUserDialogMessage(
+        this.currentUser,
+        this.user,
+        this.userRestoreRequestService,
+        this.router
+      ).create();
+    } else {
+      this.alertService.warn('User is active');
+      return;
+    }
+  }
+
+  private checkIfRestoreRequestCreated() {
+    if (!this.isActive) {
+      this.userRestoreRequestService.isRequested(this.userId).subscribe(result => {
+        this.showRestoreRequestButton = !result;
+      });
+    }
   }
 }

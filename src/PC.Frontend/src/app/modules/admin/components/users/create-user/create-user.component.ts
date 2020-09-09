@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '@services/user.service';
+import { ApplicationUser } from '@models/application-user';
 import { Router } from '@angular/router';
 import { AlertService } from '@shared/alert/services/alert.service';
 import { AuthService } from '@shared/services/auth/auth.service';
+import { forkJoin } from 'rxjs';
 import { UserRole } from '@models/enums';
 import { CreateUserForm } from './create-user-form';
 import { ApplicationUserExtended } from '@models/extended';
+import { TitleService } from '@services/title.service';
 
 @Component({
   templateUrl: './create-user.component.html',
@@ -14,20 +17,24 @@ import { ApplicationUserExtended } from '@models/extended';
 export class CreateUserComponent implements OnInit {
   wrongEmailsArray = [];
   addForm: CreateUserForm;
+  users: ApplicationUser[];
   currentUser: ApplicationUserExtended | null;
 
   constructor(
     private readonly userService: UserService,
     private readonly router: Router,
     private readonly alertService: AlertService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly titleService: TitleService
   ) {}
 
   ngOnInit() {
-    this.authService.getCurrentUser().subscribe(currentUser => {
+    forkJoin([this.userService.getAll(), this.authService.getCurrentUser()]).subscribe(([users, currentUser]) => {
       this.currentUser = currentUser;
+      this.users = users;
       this.initFormGroup();
     });
+    this.titleService.setTitle('Create user');
   }
 
   initFormGroup(): void {
@@ -35,7 +42,7 @@ export class CreateUserComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.authService.throwIfLess(UserRole.HRManager);
+    this.currentUser.hasRoleOrFail(UserRole.HRManager);
     this.addForm.createUser();
   }
 }

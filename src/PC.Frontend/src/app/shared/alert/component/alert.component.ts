@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Alert, AlertType } from '../models';
+import { AlertService } from '@shared/alert/services/alert.service';
 import { takeUntil } from 'rxjs/operators';
-import { AlertService } from '../services/alert.service';
+import { Alert } from '../models/alert.model';
+import { AlertType } from '../models/alert-type.model';
 
 @Component({
   selector: 'app-alert',

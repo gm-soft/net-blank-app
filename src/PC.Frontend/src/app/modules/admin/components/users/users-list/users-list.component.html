@@ -11,5 +11,9 @@
 </app-page-header>
 
 <div class="container mt-3">
-  <app-users-table *ngIf="userTableArguments" [args]="userTableArguments"></app-users-table>
+  <app-users-table
+    *ngIf="paginatedList?.results"
+    [paginatedList]="paginatedList"
+    (pageChange)="loadUsers($event)"
+  ></app-users-table>
 </div>

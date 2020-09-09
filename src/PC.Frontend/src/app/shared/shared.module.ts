@@ -8,7 +8,7 @@ import { LatinCharactersDirective } from '@shared/directives/latin-characters.di
 import { DateRangeValidator } from '@shared/directives/date-range.directive';
 import { AppPageHeaderComponent } from './components/app-page-header/app-page-header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepickerModule, NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmDialogComponent } from './components/dialogs/confirm-dialog/confirm-dialog.component';
 import { DeclineDialogComponent } from './components/dialogs/decline-dialog/decline-dialog.component';
 import { DialogComponent } from './components/dialogs/dialog/dialog.component';
@@ -23,13 +23,28 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { RouterModule } from '@angular/router';
 import { UsersTableComponent } from './components/users-table/users-table.component';
 import { TabsModule } from 'ngx-bootstrap/tabs';
-import { AlertComponent } from './alert/component/alert.component';
 import { ActiveUserGuard } from './guards/active-user.guard';
+import { AlertComponent } from './alert/component/alert.component';
+import { SubmitButtonComponent } from './components/submit-button/submit-button.component';
+import { PopoverComponent } from './components/popover/popover.component';
+import { IsDesktopDirective } from './directives/is-desktop.directive';
+import { IsMobileDirective } from './directives/is-mobile.directive';
+import { TablePaginationComponent } from './table-pagination/table-pagination.component';
+import { NoSanitizePipe } from './directives/no-sanitize.directive';
+import { UserRestoreRequestTableComponent, UserRestoreRequestTabsComponent } from '@shared/components/request-tables';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, NgbDatepickerModule, ReactiveFormsModule, RouterModule, TabsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    NgbDatepickerModule,
+    NgbPopoverModule,
+    ReactiveFormsModule,
+    RouterModule,
+    TabsModule,
+    NgbModule
+  ],
   declarations: [
-    AlertComponent,
     FieldErrorComponent,
     DisableControlDirective,
     OnlyNumberDirective,
@@ -44,7 +59,16 @@ import { ActiveUserGuard } from './guards/active-user.guard';
     DateRangePickerComponent,
     GoBackButtonComponent,
     UserProfileComponent,
-    UsersTableComponent
+    UsersTableComponent,
+    AlertComponent,
+    SubmitButtonComponent,
+    PopoverComponent,
+    IsDesktopDirective,
+    IsMobileDirective,
+    NoSanitizePipe,
+    TablePaginationComponent,
+    UserRestoreRequestTableComponent,
+    UserRestoreRequestTabsComponent
   ],
   providers: [AuthGuard, HrManagerGuard, AdminGuard, TopManagerGuard, ActiveUserGuard],
   exports: [
@@ -62,7 +86,13 @@ import { ActiveUserGuard } from './guards/active-user.guard';
     DateRangeValidator,
     YearRangeValidator,
     DateRangePickerComponent,
-    GoBackButtonComponent
+    GoBackButtonComponent,
+    SubmitButtonComponent,
+    PopoverComponent,
+    IsDesktopDirective,
+    IsMobileDirective,
+    NoSanitizePipe,
+    UserRestoreRequestTabsComponent
   ]
 })
 export class SharedModule {}

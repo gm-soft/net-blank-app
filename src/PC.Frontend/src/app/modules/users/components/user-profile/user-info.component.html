@@ -1,8 +1,21 @@
 <app-page-header>
-  <div class="app-page-header-label">
-    <b>{{ user?.fullName }}</b>
+  <div class="w-100 d-flex justify-content-between">
+    <div class="app-page-header-label">
+      <b>{{ user?.fullName }}</b>
 
-    <div *ngIf="!user?.isActive" class="badge badge-warning ml-1">Inactive</div>
+      <div class="d-inline-block ml-1" *ngIf="!user?.emailConfirmed">
+        <div class="badge badge-info">not-confirmed user</div>
+        <app-popover class="ml-1" [title]="'About not-confirmed user'" [icon]="'far fa-warn fa-question-circle'">
+          User has not logged in yet.
+          <br />
+          <br />
+          Employee with HRManager and above Roles can resend an Invitation Letter, if user didn't get the e-mail.
+        </app-popover>
+      </div>
+    </div>
+    <div class="d-inline-block">
+      <div *ngIf="!user?.isActive" class="badge badge-warning">Inactive</div>
+    </div>
   </div>
 </app-page-header>
 

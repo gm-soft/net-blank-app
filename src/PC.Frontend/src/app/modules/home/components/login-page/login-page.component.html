@@ -19,20 +19,32 @@
               an application that allows you to manage projects, departments, and project loadings of the company.
             </div>
           </div>
-          <div class="login-button-wrapper">
+          <div class="login-button-wrapper" *ngIf="!healthCheckError; else healthCheckErrorBlock">
             <button type="button" class="btn btn-company-ai w-75" (click)="login()">
               Login
             </button>
           </div>
 
-          <div class="mt-3">
-            <i>{{ environmentName }}</i>
-          </div>
+          <ng-template #healthCheckErrorBlock>
+            <div class="mt-1 alert alert-danger w-75 mx-auto">
+              <div>Something wrong with backend side.</div>
+              <div class="mt-2 h5">
+                Please, contact your System Administrator
+              </div>
+            </div>
+          </ng-template>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<div class="envname-wrapper">
+  <span
+    ><i>{{ environmentName }}</i></span
+  >
+</div>
+
 <div class="container" *ngIf="showAwaitingBlock">
   <div class="text-center mt-5">
     <div class="display-2">You are getting logged in</div>

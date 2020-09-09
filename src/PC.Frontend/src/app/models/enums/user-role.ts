@@ -3,9 +3,10 @@
  */
 export enum UserRole {
   None = 0,
-  Employee = 1,
-  HRManager = 2,
-  TopManager = 128,
+  Partner = 1,
+  Employee = 8,
+  HRManager = 32,
+  TopManager = 256,
   SystemAdministrator = 512,
   System = 1024
 }

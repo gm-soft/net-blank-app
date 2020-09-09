@@ -3,12 +3,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AuthService } from '@shared/services/auth/auth.service';
-import { MockAuthService } from '@shared/test-utils';
+import { MockAuthService, mostUsedServices } from '@shared/test-utils';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: AuthService, useClass: MockAuthService }],
+      providers: [...mostUsedServices, { provide: AuthService, useClass: MockAuthService }],
       imports: [RouterTestingModule],
       declarations: [AppComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]

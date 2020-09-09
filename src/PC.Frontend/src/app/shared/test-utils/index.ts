@@ -5,9 +5,9 @@ import { RouterStub } from './router-stub';
 import { ActivatedRouteMock } from './mock-activated-route';
 import { AuthService } from '@shared/services/auth/auth.service';
 import { TestBed } from '@angular/core/testing';
-import { ApplicationUser } from '@models/application-user';
 import { of } from 'rxjs';
 import { UserRole } from '@models/enums';
+import { AlertService } from '@shared/alert/services/alert.service';
 import { IdentityHttpService } from '@services/identity.http.service';
 import { SpyLocation } from '@angular/common/testing';
 import { TestApplicationUser } from './models';
@@ -15,8 +15,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AlertService } from '@shared/alert/services/alert.service';
 import { ApplicationUserExtended } from '@models/extended';
+import { CheckDeviceService } from '@shared/services/check-device/check-device.service';
+import { AuthSessionService } from '@shared/services/auth/auth.session.service';
+import { SessionStorageWrapper } from '@shared/services/session-storage-wrapper.service';
 
 export * from './mock-activated-route';
 export * from './mock-auth.service';
@@ -30,7 +32,14 @@ export const testUtilStubs = [
   { provide: Location, useClass: SpyLocation }
 ];
 
-export const mostUsedServices = [AuthService, AlertService, IdentityHttpService];
+export const mostUsedServices = [
+  SessionStorageWrapper,
+  AuthSessionService,
+  AuthService,
+  AlertService,
+  IdentityHttpService,
+  CheckDeviceService
+];
 
 export const mostUsedImports = [ReactiveFormsModule, SharedModule, BrowserAnimationsModule, RouterTestingModule];
 

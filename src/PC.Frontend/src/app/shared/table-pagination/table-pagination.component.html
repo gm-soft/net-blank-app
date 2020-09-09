@@ -1,0 +1,8 @@
+<ngb-pagination
+  *ngIf="paginatedList?.results.length > 0"
+  [collectionSize]="paginatedList?.totalItems"
+  [page]="paginatedList?.currentPage"
+  [pageSize]="paginatedList?.pageSize"
+  (pageChange)="setPage($event)"
+  [boundaryLinks]="true"
+></ngb-pagination>

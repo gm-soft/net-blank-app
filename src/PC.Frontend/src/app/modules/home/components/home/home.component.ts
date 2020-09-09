@@ -3,6 +3,7 @@ import { AuthService } from '@shared/services/auth/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { TitleService } from '@services/title.service';
 
 @Component({
   selector: 'app-home',
@@ -14,17 +15,22 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private unsubscribe: Subject<void> = new Subject();
 
-  constructor(private readonly authService: AuthService, private readonly router: Router) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly router: Router,
+    private readonly titleService: TitleService
+  ) {}
 
   ngOnInit() {
     this.setupSubscribers();
-    this.authService.getCurrentUser().subscribe(x => {
-      if (x == null) {
+    this.authService.getCurrentUser().subscribe(currentUser => {
+      if (currentUser == null) {
         this.router.navigateByUrl('/login');
       } else {
         this.showHomePage = true;
       }
     });
+    this.titleService.resetTitle();
   }
 
   private setupSubscribers(): void {

@@ -14,15 +14,9 @@
           <form [formGroup]="declineForm" *ngIf="declineForm != null">
             <br />
             <div class="form-group">
-              <input
-                type="text"
-                class="form-control"
-                formControlName="declineComment"
-                placeholder="Decline comment"
-                required
-              />
-              <small class="form-text text-muted">Field is required</small>
-              <app-field-error [formGroup]="declineForm" [fieldName]="'declineComment'"></app-field-error>
+              <input type="text" class="form-control" formControlName="comment" placeholder="Comment" required />
+              <small class="form-text text-muted">Comment is required</small>
+              <app-field-error [formGroup]="declineForm" [fieldName]="'comment'"></app-field-error>
             </div>
           </form>
         </div>

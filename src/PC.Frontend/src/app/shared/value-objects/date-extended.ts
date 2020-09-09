@@ -10,8 +10,24 @@ export class DateExtended {
     return new DateExtended(DateExtended.now().startOfTheDay());
   }
 
+  static tomorrow(): DateExtended {
+    return new DateExtended(
+      DateExtended.now()
+        .addDays(1)
+        .startOfTheDay()
+    );
+  }
+
+  static yesterday(): DateExtended {
+    return new DateExtended(
+      DateExtended.now()
+        .addDays(-1)
+        .startOfTheDay()
+    );
+  }
+
   static fromNgbStruct(date: NgbDateStruct): DateExtended {
-    Assertion.notNull(date, 'date', 'DateExtended');
+    Assertion.notNull(date, 'date', DateExtended.name);
     return new DateExtended(new Date(date.year, date.month - 1, date.day));
   }
 
@@ -45,6 +61,10 @@ export class DateExtended {
     return new DateExtended(date);
   }
 
+  subtractDays(days: number): DateExtended {
+    return this.addDays(-1 * days);
+  }
+
   startOfTheDay(): Date {
     return new Date(this.value.getFullYear(), this.value.getMonth(), this.value.getDate(), 0, 0, 0, 0);
   }
@@ -53,29 +73,46 @@ export class DateExtended {
     return new Date(this.value.getFullYear(), this.value.getMonth(), this.value.getDate(), 23, 59, 59, 0);
   }
 
-  earlierThan(second: Date | DateExtended): boolean {
-    Assertion.notNull(second, 'date');
+  endOfTheMonth(): Date {
+    return new DateExtended(new Date(this.value.getFullYear(), this.value.getMonth() + 1, 0)).endOfTheDay();
+  }
 
-    const dateSource: Date = second instanceof DateExtended ? second.value : second;
-    return this.value < dateSource;
+  asDateStruct(): NgbDateStruct {
+    return {
+      year: this.value.getFullYear(),
+      month: this.value.getMonth() + 1,
+      day: this.value.getDate()
+    };
+  }
+
+  earlierThan(second: Date | DateExtended): boolean {
+    return this.value < this.fetchDate(second);
+  }
+
+  earlierOrEqual(second: Date | DateExtended): boolean {
+    return this.value <= this.fetchDate(second);
   }
 
   laterThan(second: Date | DateExtended): boolean {
-    Assertion.notNull(second, 'date');
+    return this.value > this.fetchDate(second);
+  }
 
-    const dateSource: Date = second instanceof DateExtended ? second.value : second;
-    return this.value > dateSource;
+  laterOrEqual(second: Date | DateExtended): boolean {
+    return this.value >= this.fetchDate(second);
   }
 
   sameDay(second: Date | DateExtended): boolean {
-    Assertion.notNull(second, 'date');
-
-    const dateSource: Date = second instanceof DateExtended ? second.value : second;
+    const dateSource = this.fetchDate(second);
 
     return (
       this.value.getFullYear() === dateSource.getFullYear() &&
       this.value.getMonth() === dateSource.getMonth() &&
       this.value.getDate() === dateSource.getDate()
     );
+  }
+
+  private fetchDate(date: Date | DateExtended): Date {
+    Assertion.notNull(date, 'date');
+    return date instanceof DateExtended ? date.value : date;
   }
 }
