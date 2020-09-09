@@ -22,6 +22,7 @@ matrix:
         - npm install
       script:
         - npm set progress=false
-        - npm run build
+        - npm install --no-optional
         - npm run lint
+        - npm run build-stage
         - npm run test-headless-ci-only
