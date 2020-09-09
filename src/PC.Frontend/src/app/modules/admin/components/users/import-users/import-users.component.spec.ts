@@ -42,13 +42,14 @@ describe('ImportUsersComponent', () => {
     });
 
     it('should assert valid email', () => {
-      const inputString = 'vlad, kim, v.kim@petrel.ai';
+      const inputString = 'vlad, kim, v.kim@j.smith@gmail.com';
       component.contentForImport = inputString;
       component.parseContent(component.contentForImport);
 
       component.preview();
 
-      expect(component.usersForImport[0].email.trim()).toEqual('v.kim@petrel.ai');
+      expect(component.usersForImport.length).toEqual(1);
+      expect(component.usersForImport[0].email.trim()).toEqual('v.kim@j.smith@gmail.com');
       expect(component.usersForImport.length).toEqual(1);
     });
   });
