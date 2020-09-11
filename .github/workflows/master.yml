@@ -60,8 +60,4 @@ jobs:
     - name: Test
       working-directory: ${{env.working-directory}}
       run: npm run test-headless-ci-only
-      
-    - name: E2E
-      working-directory: ${{env.working-directory}}
-      run: npm run e2e -- --configuration=staging
     
