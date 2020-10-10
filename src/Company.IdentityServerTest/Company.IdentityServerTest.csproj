@@ -22,7 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PC.Database.Repositories.Tests\PC.Database.Repositories.Tests.csproj" />
+	<ProjectReference Include="..\PC.Domain\PC.Domain.csproj" />
+	<ProjectReference Include="..\PC.Database.Repositories.Tests\PC.Database.Repositories.Tests.csproj" />
     <ProjectReference Include="..\PC.Database\PC.Database.csproj" />
     <ProjectReference Include="..\Company.IdentityServer\Company.IdentityServer.csproj" />
     <ProjectReference Include="..\TestUtils\TestUtils.csproj" />

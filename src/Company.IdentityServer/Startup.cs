@@ -9,10 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
-using PC.BL.Logging;
-using PC.BL.Middlewares;
 using PC.Database;
-using PC.Services.Mappings;
+using PC.Domain.Logging;
+using PC.Domain.Middlewares;
+using PC.Domain.Services.Mappings;
 using Serilog;
 
 namespace Company.IdentityServer

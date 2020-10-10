@@ -2,7 +2,7 @@
 using Company.IdentityServer.Services.User;
 using Microsoft.AspNetCore.Identity;
 using PC.Database.Models.Users;
-using PC.Services.User;
+using PC.Domain.Services.User;
 
 namespace Company.IdentityServerTest.Services.User
 {

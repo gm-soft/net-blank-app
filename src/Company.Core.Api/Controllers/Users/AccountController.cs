@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using PC.BL.Attributes;
+using PC.Domain.Attributes;
+using PC.Domain.Services.Auth;
 using PC.Models.Users;
-using PC.Services.Auth;
 using Utils.Enums;
 
 namespace Company.Core.Api.Controllers.Users

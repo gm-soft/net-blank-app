@@ -4,10 +4,10 @@ using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PC.BL.Database;
 using PC.Database.Repositories.Users;
-using PC.Services.Auth;
-using PC.Services.User;
+using PC.Domain.Database;
+using PC.Domain.Services.Auth;
+using PC.Domain.Services.User;
 using Utils.AsyncUtils;
 
 namespace Company.IdentityServer.Config

@@ -13,8 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using PC.Database.Models.Users;
+using PC.Domain.Services.User;
 using PC.Models.Users;
-using PC.Services.User;
 using Utils.Enums;
 using Utils.Exceptions;
 

@@ -38,10 +38,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
-using PC.BL.Logging;
-using PC.BL.Middlewares;
 using PC.Database;
-using PC.Services.Mappings;
+using PC.Domain.Logging;
+using PC.Domain.Middlewares;
+using PC.Domain.Services.Mappings;
 using Serilog;
 using Utils.Middleware;
 

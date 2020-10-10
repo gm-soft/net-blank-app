@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PC.BL\PC.Domain.csproj" />
+    <ProjectReference Include="..\PC.Domain\PC.Domain.csproj" />
     <ProjectReference Include="..\PC.Database.Repositories\PC.Database.Repositories.csproj" />
     <ProjectReference Include="..\PC.Database\PC.Database.csproj" />
     <ProjectReference Include="..\PC.Models\PC.Models.csproj" />

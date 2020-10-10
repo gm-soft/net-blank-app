@@ -1,7 +1,6 @@
 ﻿using Coravel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using PC.BL.ScheduleJobs;
 
 namespace Company.Core.Api.Config
 {

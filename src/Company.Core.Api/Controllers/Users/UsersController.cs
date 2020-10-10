@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using PC.BL.Attributes;
+using PC.Domain.Attributes;
+using PC.Domain.Services.User;
 using PC.Models.Users;
-using PC.Services.User;
 using Utils.Enums;
 
 namespace Company.Core.Api.Controllers.Users

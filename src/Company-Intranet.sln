@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Company.Core", "Company.Core", "{E6B9D456-05A0-471A-892D-D993050D172E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{E6B9D456-05A0-471A-892D-D993050D172E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PC.Database.Repositories.Tests", "PC.Database.Repositories.Tests\PC.Database.Repositories.Tests.csproj", "{F54E6380-7E5B-4A87-A199-B52394DD7375}"
 EndProject
@@ -22,7 +22,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PC.Database", "PC.Database\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PC.Models", "PC.Models\PC.Models.csproj", "{5B348B9E-6BB4-4591-9334-2C696AB312FF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PC.Domain.Test", "PC.Services.Test\PC.Domain.Test.csproj", "{D06CCAE8-7C7C-4F43-A099-C978804022B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PC.Domain.Test", "PC.Domain.Test\PC.Domain.Test.csproj", "{D06CCAE8-7C7C-4F43-A099-C978804022B4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Company.Core.Api", "Company.Core.Api\Company.Core.Api.csproj", "{E820792B-616D-4C20-A963-F049F9518E63}"
 EndProject
@@ -38,7 +38,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestUtils", "TestUtils\Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PC.Models.Test", "PC.Models.Test\PC.Models.Test.csproj", "{D1ACF1D3-01FA-4B07-A132-E7C9DC1320A6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PC.Domain", "PC.BL\PC.Domain.csproj", "{0B42CC4F-06EC-4225-8196-137801F23284}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PC.Domain", "PC.Domain\PC.Domain.csproj", "{0B42CC4F-06EC-4225-8196-137801F23284}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{BA4FC0C4-FC9A-4266-AB9D-A59999434B24}"
 EndProject

@@ -3,8 +3,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using PC.Database.Models.Users;
-using PC.Services.Claims;
-using PC.Services.User;
+using PC.Domain.Services.Claims;
+using PC.Domain.Services.User;
 using Utils.Enums;
 using Xunit;
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using PC.Services.User;
+using PC.Domain.Services.User;
 using Utils.Exceptions;
 using Xunit;
 

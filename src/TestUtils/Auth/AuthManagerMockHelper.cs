@@ -1,6 +1,6 @@
 ﻿using Moq;
+using PC.Domain.Services.Auth;
 using PC.Models.Users;
-using PC.Services.Auth;
 using Utils.Enums;
 using Utils.Exceptions;
 
