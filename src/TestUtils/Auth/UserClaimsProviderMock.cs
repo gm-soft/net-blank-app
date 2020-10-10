@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
 using Moq;
+using PC.Domain.Services.Auth;
 using PC.Models.Users;
-using PC.Services.Auth;
 using Utils.Authorization;
 using Utils.Enums;
 

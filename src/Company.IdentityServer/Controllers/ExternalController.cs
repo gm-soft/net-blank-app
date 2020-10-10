@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PC.Database.Models.Users;
+using PC.Domain.Services.Claims;
+using PC.Domain.Services.User;
 using PC.Models.Users;
-using PC.Services.Claims;
-using PC.Services.User;
 using Utils.Exceptions;
 
 namespace Company.IdentityServer.Controllers

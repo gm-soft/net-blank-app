@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PC.BL.Health;
+using PC.Domain.Health;
 
 namespace Company.Core.Api.Controllers
 {

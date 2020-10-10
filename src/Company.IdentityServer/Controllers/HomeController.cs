@@ -6,7 +6,7 @@ using Company.IdentityServer.Security;
 using IdentityServer4.Extensions;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
-using PC.BL.Health;
+using PC.Domain.Health;
 using PC.Models.Users;
 
 namespace Company.IdentityServer.Controllers
