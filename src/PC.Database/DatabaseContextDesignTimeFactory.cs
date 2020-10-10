@@ -1,19 +1,27 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.IO;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace PC.Database
 {
     public class DatabaseContextDesignTimeFactory : IDesignTimeDbContextFactory<DatabaseContext>
     {
-        // TODO Maxim: load connection string from settings
-        private const string ConnectionString =
-            "Server=localhost;Database=companycore;Trusted_Connection=False;MultipleActiveResultSets=true;User ID=SA;Password=Str0ngPassword!";
-
         public DatabaseContext CreateDbContext(string[] args)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<DatabaseContext>();
-            optionsBuilder.UseSqlServer(ConnectionString);
-            return new DatabaseContext(optionsBuilder.Options);
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(new DirectoryInfo("../Company.Core.Api").FullName)
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.Development.json")
+                .AddEnvironmentVariables()
+                .Build();
+
+            var builder = new DbContextOptionsBuilder<DatabaseContext>();
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            System.Console.WriteLine(connectionString);
+            builder.UseNpgsql(connectionString);
+
+            return new DatabaseContext(builder.Options);
         }
     }
 }
