@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PC.Database.Repositories.Tests\PC.Database.Repositories.Tests.csproj" />
-    <ProjectReference Include="..\PC.Services\PC.Services.csproj" />
     <ProjectReference Include="..\Company.Core.Api\Company.Core.Api.csproj" />
     <ProjectReference Include="..\TestUtils\TestUtils.csproj" />
     <ProjectReference Include="..\Utils\Utils.csproj" />

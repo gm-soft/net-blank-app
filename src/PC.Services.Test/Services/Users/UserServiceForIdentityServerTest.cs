@@ -7,7 +7,7 @@ using TestUtils.Mappings;
 using Utils.Enums;
 using Xunit;
 
-namespace PC.Services.Test.Users
+namespace PC.Domain.Test.Services.Users
 {
     public class UserServiceForIdentityServerTest
     {

@@ -7,7 +7,7 @@ using Utils.Enums;
 using Utils.Exceptions;
 using Xunit;
 
-namespace PC.Services.Test.Auth
+namespace PC.Domain.Test.Services.Auth
 {
     public class AuthorizationManagerTest
     {

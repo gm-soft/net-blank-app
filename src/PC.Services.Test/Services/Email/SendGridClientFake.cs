@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
-namespace PC.Services.Test.Email
+namespace PC.Domain.Test.Services.Email
 {
     /// <summary>
     /// This fake class is for test purposes only.

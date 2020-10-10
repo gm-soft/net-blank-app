@@ -5,7 +5,7 @@ using Utils.Authorization;
 using Utils.Enums;
 using Xunit;
 
-namespace PC.Services.Test.Claims
+namespace PC.Domain.Test.Services.Claims
 {
     public class ClaimsUserTest
     {

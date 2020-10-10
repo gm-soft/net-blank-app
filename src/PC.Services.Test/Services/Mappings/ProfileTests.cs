@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using PC.Database.Models.Users;
+﻿using PC.Database.Models.Users;
 using PC.Models.Users;
 using TestUtils.Mappings;
 using Xunit;
 
-namespace PC.Services.Test.Mappings
+namespace PC.Domain.Test.Services.Mappings
 {
     public class ProfileTests
     {

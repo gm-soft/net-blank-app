@@ -10,10 +10,10 @@ using PC.Database;
 using PC.Database.Models.Users;
 using PC.Database.Repositories.Tests.Utils;
 using PC.Database.Repositories.Users;
+using PC.Domain.Test.Services.Email;
 using PC.Models.Users;
 using PC.Services.Auth;
 using PC.Services.Email;
-using PC.Services.Test.Email;
 using PC.Services.User;
 using TestUtils.Auth;
 using TestUtils.EntityFactories;
@@ -22,7 +22,7 @@ using Utils.Enums;
 using Utils.Exceptions;
 using Xunit;
 
-namespace PC.Services.Test.Users
+namespace PC.Domain.Test.Services.Users
 {
     public class UserServiceTest
     {

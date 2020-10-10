@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PC.Database\PC.Database.csproj" />
-    <ProjectReference Include="..\PC.Services\PC.Services.csproj" />
     <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>
 

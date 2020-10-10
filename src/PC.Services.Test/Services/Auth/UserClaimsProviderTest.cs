@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
+﻿using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Moq;
@@ -8,7 +6,7 @@ using PC.Services.Auth;
 using TestUtils.Identity;
 using Xunit;
 
-namespace PC.Services.Test.Auth
+namespace PC.Domain.Test.Services.Auth
 {
     public class UserClaimsProviderTest
     {

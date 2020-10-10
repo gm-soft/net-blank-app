@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using PC.Services.Email;
 
-namespace PC.Services.Test.Email
+namespace PC.Domain.Test.Services.Email
 {
     public class ViewRendererFake : IViewRenderer
     {

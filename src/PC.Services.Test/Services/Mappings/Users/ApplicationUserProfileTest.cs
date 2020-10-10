@@ -6,7 +6,7 @@ using TestUtils.Mappings;
 using Utils.Enums;
 using Xunit;
 
-namespace PC.Services.Test.Mappings.Users
+namespace PC.Domain.Test.Services.Mappings.Users
 {
     public class ApplicationUserProfileTest
     {
