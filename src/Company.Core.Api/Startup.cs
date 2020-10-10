@@ -76,7 +76,7 @@ namespace Company.Core.Api
             });
             services
                 .AddDbContextPool<DatabaseContext>(options => options
-                    .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                    .UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddCors(options =>
             {

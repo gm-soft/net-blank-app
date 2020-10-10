@@ -40,3 +40,30 @@ frontend test:
     - npm run lint
     - npm run build-stage
     - npm run test-headless-ci-only
+
+docker:
+  stage: docker
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_IMAGE/promo:$CI_PIPELINE_IID
+  before_script:
+    - "cd ./src"
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $IMAGE_TAG .
+    - docker push $IMAGE_TAG
+  only:
+    - tags
+
+deploy:
+  stage: deploy
+  image: docker/compose:latest
+  services:
+    - docker:dind
+  before_script:
+    - "cd ."
+  script:
+    - docker-compose up -d
+  when: manual
