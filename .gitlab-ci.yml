@@ -59,7 +59,7 @@ docker build:
     - docker build -t $IMAGE_TAG .
     - docker push $IMAGE_TAG
   only:
-    - tags
+    - master
 
 deploy:
   stage: deploy
@@ -70,4 +70,6 @@ deploy:
     - "cd ."
   script:
     - docker-compose up -d
+  only:
+    - master
   when: manual
