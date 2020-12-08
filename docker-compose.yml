@@ -8,21 +8,21 @@ networks:
 
 services:
   database.identity:
-      container_name: nba-postgresql-13
-      image: postgres:13
-      restart: always
-      environment:
-        POSTGRES_USER: dbuser
-        POSTGRES_PASSWORD: Str0ngPass!
-        POSTGRES_DB: identity
-        POSTGRES_ADMIN_PASSWORD: Str0ngPass!
-      ports:
-        - 5433:5432
-      networks:
-        - nba-network
+    container_name: nba-identity-db
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: Str0ngPass!
+      POSTGRES_DB: identity
+      POSTGRES_ADMIN_PASSWORD: Str0ngPass!
+    ports:
+      - 5433:5432
+    networks:
+      - nba-network
 
   database.api:
-    container_name: nba-postgresql-13
+    container_name: nba-api-db
     image: postgres:13
     restart: always
     environment:
@@ -42,6 +42,7 @@ services:
     depends_on:
       - database.identity
       - elasticsearch
+      - rabbitmq
     build:
       context: ./src
       dockerfile: Dockerfile_Identity
@@ -52,11 +53,42 @@ services:
       ASPNETCORE_URLS: https://+:44393
       ASPNETCORE_HTTPS_PORT: 44393
       ElasticSearch:ConnectionString: http://elasticsearch:9200
-      MessageBroker:Host: kafka:9094
+      MessageBroker:RabbitHost: "rabbitmq://admin:admin@rabbitmq:5672"
+      MessageBroker:KafkaHost: kafka:9092
       IssuerUri: https://identityserver
-      ConnectionStrings:DefaultConnection: Host=database.identity;Database=identity;User Id=dbuser;Password=Str0ngPassword!
+      ConnectionStrings:DefaultConnection: Host=database.identity;Database=identity;User Id=dbuser;Password=Str0ngPass!
     ports:
       - 44393:44393
+    networks:
+      - nba-network
+    volumes:
+      - ~/.aspnet/https:/https:ro
+
+  api:
+    container_name: nba-api
+    image: nba/api
+    restart: always
+    depends_on:
+      - database.api
+      - rabbitmq
+      - elasticsearch
+      - identityserver
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_Kestrel__Certificates__Default__Password: password
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp.pfx
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:44338
+      ASPNETCORE_HTTPS_PORT: 44338
+      ConnectionStrings:DefaultConnection: Host=database.api;Database=core;User Id=dbUser;Password=Str0ngPass!
+      ElasticSearch:ConnectionString: http://elasticsearch:9200
+      IdentityServer:Authority: https://identityserver:44393
+      MessageBroker:RabbitHost: "rabbitmq://admin:admin@rabbitmq:5672"
+      MessageBroker:KafkaHost: kafka:9092
+    ports:
+      - 44338:44338
     networks:
       - nba-network
     volumes:

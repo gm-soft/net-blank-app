@@ -13,11 +13,6 @@ namespace Domain.Dtos.Users
         }
 
         public UserDto(string firstName, string lastName, string userName, Role role)
-            : this(firstName, lastName, userName, role, null)
-        {
-        }
-
-        public UserDto(string firstName, string lastName, string userName, Role role, long? functionalManagerId)
         {
             firstName.ThrowIfNullOrEmpty(nameof(firstName));
             lastName.ThrowIfNullOrEmpty(nameof(lastName));
@@ -27,7 +22,6 @@ namespace Domain.Dtos.Users
             LastName = lastName;
             UserName = userName;
             Role = role;
-            FunctionalManagerId = functionalManagerId;
         }
 
         public UserDto(string firstName, string lastName, string userName)
@@ -52,8 +46,6 @@ namespace Domain.Dtos.Users
         [Required]
         [StringLength(150, MinimumLength = 1)]
         public string LastName { get; set; }
-
-        public long? FunctionalManagerId { get; set; }
 
         [Required]
         public string UserName { get; set; }

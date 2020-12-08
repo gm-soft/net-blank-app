@@ -1,17 +1,14 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ApplicationUser } from '@models/application-user';
-import { NumberExtended } from '@shared/value-objects';
 import Assertion from '@shared/validation/assertion';
 import { UserService } from '@services/user.service';
 import { environment } from '@environments/environment';
 import { Router } from '@angular/router';
 import { AlertService } from '@shared/alert/services/alert.service';
 import { UserRole } from '@models/enums';
-import { ApplicationUserExtended } from '@models/extended';
 
 export class CreateUserForm extends FormGroup {
   constructor(
-    currentUser: ApplicationUserExtended,
     private readonly userService: UserService,
     private readonly router: Router,
     private readonly alertService: AlertService
@@ -19,8 +16,7 @@ export class CreateUserForm extends FormGroup {
     super({
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required]),
-      functionalManagerId: new FormControl(currentUser.id)
+      email: new FormControl('', [Validators.required])
     });
 
     Assertion.notNull(userService, 'userService');
@@ -53,7 +49,6 @@ export class CreateUserForm extends FormGroup {
     return new ApplicationUser({
       firstName: this.firstName(),
       lastName: this.lastName(),
-      functionalManagerId: this.functionalManagerId(),
       userName: this.email(),
       role: UserRole.Employee
     });
@@ -69,9 +64,5 @@ export class CreateUserForm extends FormGroup {
 
   private email(): string | null {
     return this.value.email;
-  }
-
-  private functionalManagerId(): number | null {
-    return new NumberExtended(this.value.functionalManagerId).valueOrNull();
   }
 }

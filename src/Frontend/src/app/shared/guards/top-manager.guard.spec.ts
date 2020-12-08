@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { Router, RouterModule } from '@angular/router';
-import { SessionStorageWrapper } from '@shared/services/session-storage-wrapper.service';
 import { OidcUserManager } from '@shared/services/auth/oidc-user-manager.service';
 import { AuthorizationService } from '@services/authorization.service';
 import { UserRole } from '@models/enums';

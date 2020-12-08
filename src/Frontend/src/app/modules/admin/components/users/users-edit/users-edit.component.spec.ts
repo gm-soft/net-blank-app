@@ -3,19 +3,16 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UsersEditComponent } from './users-edit.component';
 import { UserAdminService } from '@modules/admin/services/user.admin.service';
 import { testUtilStubs, mostUsedServices, mostUsedImports, spyOnCurrentUserServiceWithUser } from '@shared/test-utils';
-import { WorklogService } from '@services/worklog.service';
 import { UserRole } from '@models/enums';
 import { UserEditForm } from '@modules/admin/components/users/users-edit/user-edit-form';
 import { TestApplicationUser } from '@shared/test-utils/models';
 import { ApplicationUserExtended } from '@models/extended';
 import { AlertService } from '@shared/alert/services/alert.service';
-import { UserRestoreRequestService } from '@admin-services/user-restore-request-service';
 
 describe('Admin.UsersEditComponent', () => {
   let component: UsersEditComponent;
   let fixture: ComponentFixture<UsersEditComponent>;
   let userService: UserAdminService;
-  let timeRecordService: WorklogService;
 
   const user = new ApplicationUserExtended(new TestApplicationUser(UserRole.Employee, 1));
 
@@ -23,7 +20,7 @@ describe('Admin.UsersEditComponent', () => {
     TestBed.configureTestingModule({
       imports: [...mostUsedImports],
       declarations: [UsersEditComponent],
-      providers: [...testUtilStubs, ...mostUsedServices, UserAdminService, WorklogService, UserRestoreRequestService],
+      providers: [...testUtilStubs, ...mostUsedServices, UserAdminService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
@@ -31,7 +28,6 @@ describe('Admin.UsersEditComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UsersEditComponent);
     userService = TestBed.inject(UserAdminService);
-    timeRecordService = TestBed.inject(WorklogService);
 
     component = fixture.componentInstance;
     component.user = user;

@@ -61,8 +61,7 @@ export class UserEditForm extends FormGroup {
       lastName: this.lastName(),
       role: this.userRole(),
       phoneNumber: this.user.phoneNumber,
-      emailConfirmed: this.user.emailConfirmed,
-      functionalManagerId: this.user.functionalManagerId
+      emailConfirmed: this.user.emailConfirmed
     });
   }
 

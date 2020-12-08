@@ -29,7 +29,7 @@ namespace IdentityServerTest.Services.User
                 (user, role) => { Assert.Equal(roleOfCreatedUser.ToString(), role); },
                 IdentityResult.Success);
 
-            var emailDomainValidatorService = new EmailDomainValidatorService("gmail.com");
+            var emailDomainValidatorService = new EmailDomainValidatorService("example.com");
 
             var target = new UserIdentityServiceStub(stub, emailDomainValidatorService, hasAnyOtherUser);
 

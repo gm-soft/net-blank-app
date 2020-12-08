@@ -1,4 +1,3 @@
-export * from './department-attachment-request-item';
 export * from './select-item';
 export * from './number-extended';
 export * from './form-date-field';

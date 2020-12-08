@@ -3,13 +3,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MeComponent } from './me.component';
 import { AuthorizationService } from '@services/authorization.service';
 import { mostUsedImports, mostUsedServices, testUtilStubs } from '@shared/test-utils';
-import { WorklogService } from '@services/worklog.service';
 import { of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestApplicationUser } from '@shared/test-utils/models';
 import { UserRole } from '@models/enums';
 import { UserService } from '@services/user.service';
-import { SickleaveService } from '@services/sickleave.service';
 
 describe('MeComponent', () => {
   let component: MeComponent;
@@ -20,14 +18,7 @@ describe('MeComponent', () => {
     TestBed.configureTestingModule({
       imports: [...mostUsedImports],
       declarations: [MeComponent],
-      providers: [
-        ...testUtilStubs,
-        ...mostUsedServices,
-        AuthorizationService,
-        WorklogService,
-        UserService,
-        SickleaveService
-      ],
+      providers: [...testUtilStubs, ...mostUsedServices, AuthorizationService, UserService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));

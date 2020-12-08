@@ -11,14 +11,6 @@
     <app-go-back-button></app-go-back-button>
     <div class="d-inline-block ml-1" *ngIf="isActive">
       <a routerLink="/users/{{ user.id }}" class="btn btn-secondary mr-1" title="Go to public page">Public page</a>
-
-      <a
-        routerLink="/users/{{ user.id }}/salaries"
-        class="btn btn-secondary"
-        title="Go to salaries management page"
-        *ngIf="showGoToSalariesButton"
-        >User's salaries</a
-      >
     </div>
   </div>
 
@@ -98,9 +90,6 @@
             </div>
           </div>
           <div *ngIf="!isActive">
-            <div class="btn btn-primary" (click)="restoreUser()" color="primary" *ngIf="showRestoreRequestButton">
-              Restore User
-            </div>
             <div class="btn btn-danger ml-1" (click)="removeUserFromDatabase()" *appHasRole="'systemadministrator'">
               Remove User From Database
             </div>
@@ -109,31 +98,6 @@
       </form>
     </div>
   </div>
-
-  <div class="card mt-3" *ngIf="functionManagerForm != null">
-    <div class="card-body">
-      <h5 class="card-title">Functional Manager</h5>
-      <div class="card-text">
-        <form [formGroup]="functionManagerForm" (ngSubmit)="onFunctionalManagerSetSubmit()">
-          <ng-select
-            formControlName="functionManagerId"
-            [items]="functionManagers"
-            bindLabel="label"
-            bindValue="id"
-            placeholder="No function manager"
-          >
-          </ng-select>
-          <div class="mt-2 pr-2 float-right">
-            <button class="btn btn-outline-primary" type="submit">Set</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
 </div>
 
 <app-confirm-dialog *ngIf="confirmDeletionMessage != null" [message]="confirmDeletionMessage"></app-confirm-dialog>
-<app-confirm-dialog
-  *ngIf="removeUserFromDatabaseDialogMessage != null"
-  [message]="removeUserFromDatabaseDialogMessage"
-></app-confirm-dialog>

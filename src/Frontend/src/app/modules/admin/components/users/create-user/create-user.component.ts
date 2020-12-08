@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '@services/user.service';
-import { ApplicationUser } from '@models/application-user';
 import { Router } from '@angular/router';
 import { AlertService } from '@shared/alert/services/alert.service';
 import { AuthService } from '@shared/services/auth/auth.service';
-import { forkJoin } from 'rxjs';
 import { UserRole } from '@models/enums';
 import { CreateUserForm } from './create-user-form';
 import { ApplicationUserExtended } from '@models/extended';
 import { TitleService } from '@services/title.service';
-import { UserSelectItem } from '@shared/models/user-select-item';
 
 @Component({
   templateUrl: './create-user.component.html',
@@ -18,7 +15,6 @@ import { UserSelectItem } from '@shared/models/user-select-item';
 export class CreateUserComponent implements OnInit {
   wrongEmailsArray = [];
   addForm: CreateUserForm;
-  users: UserSelectItem[];
   currentUser: ApplicationUserExtended | null;
 
   constructor(
@@ -30,16 +26,15 @@ export class CreateUserComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    forkJoin([this.userService.getAll(), this.authService.getCurrentUser()]).subscribe(([users, currentUser]) => {
+    this.authService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.users = users.map(x => new UserSelectItem(x));
       this.initFormGroup();
     });
     this.titleService.setTitle('Create user');
   }
 
   initFormGroup(): void {
-    this.addForm = new CreateUserForm(this.currentUser, this.userService, this.router, this.alertService);
+    this.addForm = new CreateUserForm(this.userService, this.router, this.alertService);
   }
 
   onSubmit(): void {

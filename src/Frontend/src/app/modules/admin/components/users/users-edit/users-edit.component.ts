@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ApplicationUser } from '@models/application-user';
 import { AuthService } from '@shared/services/auth/auth.service';
 import { UserAdminService } from '@modules/admin/services/user.admin.service';
 import { UserRole } from '@models/enums';
@@ -8,18 +7,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ActivatedRouteExtended } from '@shared/routes/activated-route-extended';
 import { AlertService } from '@shared/alert/services/alert.service';
 import { UserEditForm } from './user-edit-form';
-import { FunctionManagerEditForm } from './function-manager-edit-form';
 import { ConfirmMsg } from '@shared/components/dialogs/models/confirm-msg';
 import { DialogMessage } from '@shared/components/dialogs/models/dialog-message';
-import Assertion from '@shared/validation/assertion';
 import { UserRoleSelectItem } from '@shared/value-objects/user-role-select-item';
 import { DeleteUserDialogMessage } from './delete-user-dialog-message';
 import { ApplicationUserExtended } from '@models/extended';
 import { TitleService } from '@services/title.service';
-import { RestoreUserDialogMessage } from '@modules/admin/components/users/users-edit/restore-user-dialog-message';
-import { UserRestoreRequestService } from '@admin-services/user-restore-request-service';
 import { RemoveUserFromDatabaseDialogMessage } from '@modules/admin/components/users/users-edit/remove-user-from-database-dialog-message';
-import { UserSelectItem } from '@shared/models/user-select-item';
 
 @Component({
   templateUrl: 'users-edit.component.html'
@@ -29,9 +23,6 @@ export class UsersEditComponent implements OnInit {
   userName = '';
 
   editForm: UserEditForm | null = null;
-  functionManagerForm: FunctionManagerEditForm | null = null;
-
-  functionManagers: Array<UserSelectItem> = [];
   user: ApplicationUserExtended | null = null;
   currentUser: ApplicationUserExtended | null;
   userRolesForSelect: UserRoleSelectItem[] = [];
@@ -48,13 +39,10 @@ export class UsersEditComponent implements OnInit {
 
   private readonly activatedRouteExtended: ActivatedRouteExtended;
   isActive = false;
-  showRestoreRequestButton = false;
-  showGoToSalariesButton = false;
   removeUserFromDatabaseDialogMessage: DialogMessage<ConfirmMsg>;
 
   constructor(
     private readonly userService: UserAdminService,
-    private readonly userRestoreRequestService: UserRestoreRequestService,
     private readonly authService: AuthService,
     private readonly router: Router,
     private readonly alertService: AlertService,
@@ -83,23 +71,8 @@ export class UsersEditComponent implements OnInit {
     });
   }
 
-  private reloadFunctionalManagersForm(): void {
-    if (!this.isActive) {
-      return;
-    }
-
-    this.userService.getAll().subscribe(users => {
-      this.functionManagers = users.filter(x => x.id !== this.userId).map(x => new UserSelectItem(x));
-      this.functionManagerForm =
-        this.functionManagers.length > 0
-          ? new FunctionManagerEditForm(this.user, this.userService, this.alertService)
-          : null;
-    });
-  }
-
   private reloadUser(): void {
     this.userService.userForAdminPanel(this.userId).subscribe(user => {
-      Assertion.notNull(user.salaries, 'user.salaries');
       this.user = user;
       this.userName = user.userName;
       this.editForm = new UserEditForm(this.user, this.userService, this.alertService);
@@ -107,12 +80,7 @@ export class UsersEditComponent implements OnInit {
       this.userRolesForSelect = this.getRolesForSelectBasedOnUserRole();
       this.selectedUserRole = this.userRolesForSelect.find(x => x.item === this.currentUser.roleAsEnum);
       this.isActive = user.isActive;
-      this.reloadFunctionalManagersForm();
       this.titleService.setTitle(`Edit ${this.user.fullName}`);
-      this.checkIfRestoreRequestCreated();
-      this.showGoToSalariesButton =
-        this.isActive &&
-        (this.currentUser?.hasRole(UserRole.TopManager) || this.user.isSubordinateFor(this.currentUser?.id));
     });
   }
 
@@ -137,15 +105,6 @@ export class UsersEditComponent implements OnInit {
     ).create();
   }
 
-  onFunctionalManagerSetSubmit(): void {
-    if (!this.isActive) {
-      this.alertService.warn('User is inactive');
-      return;
-    }
-
-    this.functionManagerForm.onSucessfulSubmit(() => {});
-  }
-
   enableUserRoleField(role: UserRole): boolean {
     return (
       this.currentUser != null &&
@@ -154,28 +113,6 @@ export class UsersEditComponent implements OnInit {
       this.currentUser.id !== this.user.id &&
       this.currentUser.hasRole(role)
     );
-  }
-
-  restoreUser() {
-    if (!this.isActive) {
-      this.confirmDeletionMessage = new RestoreUserDialogMessage(
-        this.currentUser,
-        this.user,
-        this.userRestoreRequestService,
-        this.router
-      ).create();
-    } else {
-      this.alertService.warn('User is active');
-      return;
-    }
-  }
-
-  private checkIfRestoreRequestCreated() {
-    if (!this.isActive) {
-      this.userRestoreRequestService.isRequested(this.userId).subscribe(result => {
-        this.showRestoreRequestButton = !result;
-      });
-    }
   }
 
   removeUserFromDatabase() {

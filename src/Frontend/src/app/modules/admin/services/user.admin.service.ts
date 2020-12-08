@@ -37,17 +37,4 @@ export class UserAdminService extends UserService {
   import(users: Array<ApplicationUser>): Observable<number> {
     return this.api.post<number>(this.apiUrl + 'import', users);
   }
-
-  updateFunctionManager(userId: number, functionalManagerId: number): Observable<void> {
-    let params = new HttpParams();
-    params = params.set('userId', userId.toString());
-    if (functionalManagerId !== null) {
-      params = params.set('functionalManagerId', functionalManagerId.toString());
-    }
-    return this.api.put<void>(this.apiUrl + `update-function-manager` + '?' + params, null);
-  }
-
-  restore(userId: number) {
-    return this.api.post(this.apiUrl + `restore/${userId}`, null);
-  }
 }

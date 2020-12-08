@@ -28,20 +28,6 @@
             <app-field-error [formGroup]="addForm" [fieldName]="'email'"></app-field-error>
           </div>
 
-          <div class="form-group">
-            <label>Functional Manager</label>
-            <ng-select
-              formControlName="functionalManagerId"
-              [items]="users"
-              bindLabel="label"
-              bindValue="id"
-              placeholder="No function manager"
-            >
-            </ng-select>
-            <small class="form-text text-muted">Field is optional</small>
-            <app-field-error [formGroup]="addForm" [fieldName]="'functionalManagerId'"></app-field-error>
-          </div>
-
           <div class="form-group d-flex justify-content-between">
             <app-go-back-button></app-go-back-button>
             <app-submit-button (btnSubmit)="onSubmit()">Create</app-submit-button>

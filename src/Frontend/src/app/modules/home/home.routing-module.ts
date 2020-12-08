@@ -6,7 +6,6 @@ import { NotFoundErrorComponent } from './components/not-found-error/not-found-e
 import { MeComponent } from './components/me/me.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { NoPermissionComponent } from './components/no-permission/no-permission.component';
-import { ToDoListComponent } from '@modules/home/components/to-do-list/to-do-list.component';
 import { ServerUnavailableComponent } from '@modules/home/components/server-unavailable/server-unavailable.component';
 
 const routes: Routes = [
@@ -16,8 +15,7 @@ const routes: Routes = [
   { path: 'not-permission', component: NoPermissionComponent },
   { path: 'not-authorized', component: NotAuthorizedErrorComponent },
   { path: 'server-unavailable', component: ServerUnavailableComponent },
-  { path: 'not-found', component: NotFoundErrorComponent },
-  { path: 'to-do-list', component: ToDoListComponent }
+  { path: 'not-found', component: NotFoundErrorComponent }
 ];
 
 @NgModule({

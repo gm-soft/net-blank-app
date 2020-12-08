@@ -36,8 +36,7 @@ namespace IdentityServer.Config
             services
                 .AddTransient<DatabaseHealthCheck>()
                 .AddHealthChecks()
-                .AddCheck<DatabaseHealthCheck>("Database")
-                .AddKafka(new AppKafkaOptions(configuration).ProducerConfig());
+                .AddCheck<DatabaseHealthCheck>("Database");
 
             return services;
         }
@@ -48,13 +47,7 @@ namespace IdentityServer.Config
                 .AddScoped<IProfileService, ProfileService>()
                 .AddScoped<IUserClaimsProvider, UserClaimsProvider>()
                 .AddScoped<IUserIdentityService, UserIdentityService>()
-                .AddScoped<IUserServiceForIdentityServer, UserServiceForIdentityServer>()
-                .AddTransient<AppKafkaOptions>()
-                .AddConsumer<UserCreateKafkaConsumer>()
-                .AddConsumer<UserUpdateKafkaConsumer>()
-                .AddConsumer<UsersImportKafkaConsumer>()
-                .AddConsumer<UserDeleteConsumer>()
-                .AddConsumer<UserRemoveConsumer>();
+                .AddScoped<IUserServiceForIdentityServer, UserServiceForIdentityServer>();
 
             services.AddTransient(c => new EmailDomainValidatorService(configuration["AllowedDomainEmails:Domains"]?.Trim()));
 

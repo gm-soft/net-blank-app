@@ -8,9 +8,7 @@ import { NotFoundErrorComponent } from './components/not-found-error/not-found-e
 import { MeComponent } from './components/me/me.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { NoPermissionComponent } from './components/no-permission/no-permission.component';
-import { ToDoListComponent } from './components/to-do-list/to-do-list.component';
 import { ServerUnavailableComponent } from './components/server-unavailable/server-unavailable.component';
-import { ProfileCtaCardComponent } from './components/me/profile-cta-card/profile-cta-card.component';
 
 @NgModule({
   declarations: [
@@ -20,9 +18,7 @@ import { ProfileCtaCardComponent } from './components/me/profile-cta-card/profil
     MeComponent,
     LoginPageComponent,
     NoPermissionComponent,
-    ToDoListComponent,
-    ServerUnavailableComponent,
-    ProfileCtaCardComponent
+    ServerUnavailableComponent
   ],
   imports: [CommonModule, SharedModule, HomeRoutingModule]
 })

@@ -7,7 +7,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ApplicationUserExtended } from '@models/extended';
 import { UserService } from '@services/user.service';
 import { mostUsedImports, mostUsedServices, testUtilStubs } from '@shared/test-utils';
-import { WorklogService } from '@services/worklog.service';
 
 describe('UserProfileComponent', () => {
   let component: UserProfileComponent;
@@ -18,7 +17,7 @@ describe('UserProfileComponent', () => {
       imports: [...mostUsedImports],
       declarations: [UserProfileComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [...testUtilStubs, ...mostUsedServices, UserService, WorklogService]
+      providers: [...testUtilStubs, ...mostUsedServices, UserService]
     }).compileComponents();
   }));
 
