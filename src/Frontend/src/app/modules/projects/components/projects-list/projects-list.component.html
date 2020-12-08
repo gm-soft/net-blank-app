@@ -1,0 +1,23 @@
+<app-page-header>
+  <div class="app-page-header-label">Projects</div>
+</app-page-header>
+
+<div class="container mt-3">
+  <div class="w-100 d-flex justify-content-between">
+    <div class="d-inline-block text-muted">
+      You are able to create your own project, but this project will be reviewed by a Top Manager of the company.
+      <br />
+      If the Project is approved, you will get your own project. Otherwise, you will get an email notification about the
+      deny.
+    </div>
+    <div class="d-inline-block">
+      <a class="btn btn-outline-primary my-2 my-sm-0" routerLink="/projects/create" title="Create a new project"
+        >Create</a
+      >
+    </div>
+  </div>
+
+  <div class="mt-3" *ngIf="projects != null">
+    <app-projects-table [projects]="projects"></app-projects-table>
+  </div>
+</div>

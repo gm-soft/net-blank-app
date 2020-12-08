@@ -1,0 +1,239 @@
+<div class="sidebar" [hidden]="!isAuthenticated">
+  <nav class="sidebar-nav">
+    <ul class="nav">
+      <div class="nav-side-menu">
+        <div class="menu-list">
+          <div class="header fixed">
+            <div>
+              <div class="dynamic-part">
+                <div class="ul">
+                  <div class="li">
+                    <div>
+                      <b [routerLink]="['/']">Net App <span class="fa fa-chevron-down ml-1 position-fixed"></span></b>
+                    </div>
+                    <div class="ul list-group">
+                      <div class="li list-group-item"><a routerLink="/me">Profile</a></div>
+                      <div class="li list-group-item"><a routerLink="" (click)="signout()">Sign out</a></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="text-muted mr-3">{{ name }}</div>
+          </div>
+          <ul id="menu-content" class="menu-content collapse show">
+            <hr class="sidebar-hr" />
+
+            <li data-toggle="collapse" data-target="#admin-panel" class="collapsed" *appHasRole="'hrmanager'">
+              <div class="m-l-15"><i class="fa fa-user-ninja fa-lg mr-2"></i> Admin panel</div>
+            </li>
+            <div class="sub-menu collapse" id="admin-panel" *appHasRole="'hrmanager'">
+              <li data-toggle="collapse" data-target="#admin-users" class="collapsed">
+                <div class="m-l-15"><i class="fa fa-user-friends fa-lg"></i> Users</div>
+              </li>
+              <ul class="sub-menu collapse" id="admin-users">
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a [routerLink]="['/admin/users']"><i class="fa fa-sort-numeric-down"></i> Users</a>
+                </li>
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a [routerLink]="['/admin/inactive-users']"><i class="fa fa-user-lock"></i> Inactive users</a>
+                </li>
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a [routerLink]="['/admin/inactive-users/requests']"
+                    ><i class="fa fa-user-times"></i> User restore requests</a
+                  >
+                </li>
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a [routerLink]="['/admin/skills']"><i class="fa fa-toolbox"></i> Skills</a>
+                </li>
+              </ul>
+
+              <li data-toggle="collapse" data-target="#admin-departments" class="collapsed">
+                <div class="m-l-15"><i class="fa fa-cubes fa-lg"></i> Departments</div>
+              </li>
+              <ul class="sub-menu collapse" id="admin-departments">
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a [routerLink]="['/admin/departments']"><i class="fa fa-sort-numeric-down"></i> Departments</a>
+                </li>
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a routerLink="/admin/departments/requests"
+                    ><i class="fa fa-cube m-l-15"></i> Department attachment requests</a
+                  >
+                </li>
+              </ul>
+
+              <li data-toggle="collapse" data-target="#admin-projects" class="collapsed">
+                <div class="m-l-15"><i class="fa fa-parking fa-lg"></i> Projects</div>
+              </li>
+              <ul class="sub-menu collapse" id="admin-projects">
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a routerLink="/admin/projects"><i class="fa fa-sort-numeric-down"></i> Projects</a>
+                </li>
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a routerLink="/admin/projects/requests"><i class="fa fa-list"></i> Project assign requests</a>
+                </li>
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a routerLink="/admin/customers"><i class="fa fa-chess-board"></i> Customers</a>
+                </li>
+              </ul>
+
+              <li data-toggle="collapse" data-target="#admin-vacations" class="collapsed">
+                <div class="m-l-15"><i class="fa fa-plane-departure fa-lg"></i> Vacations</div>
+              </li>
+              <ul class="sub-menu collapse" id="admin-vacations">
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a routerLink="/admin/annual-leaves"><i class="fa fa-sun"></i> Annual Leaves</a>
+                </li>
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a routerLink="/admin/sick-leaves"><i class="fa fa-viruses"></i> Sickleaves</a>
+                </li>
+              </ul>
+
+              <li data-toggle="collapse" data-target="#administrative-stuff" class="collapsed">
+                <div class="m-l-15"><i class="fa fa-box-open"></i> Business stuff</div>
+              </li>
+              <ul class="sub-menu collapse" id="administrative-stuff">
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a routerLink="/admin/expenses"><i class="fa fa-money-bill-wave"></i> Expenses</a>
+                </li>
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a routerLink="/admin/month-work-hours"><i class="fa fa-history"></i> Month work hours</a>
+                </li>
+              </ul>
+
+              <li data-toggle="collapse" data-target="#emails" class="collapsed">
+                <div class="m-l-15"><i class="fa fa-envelope"></i> Emails</div>
+              </li>
+              <ul class="sub-menu collapse" id="emails">
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a routerLink="/admin/emails/send"><i class="fa fa-reply"></i> Send email</a>
+                </li>
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a routerLink="/admin/emails/preview"><i class="fa fa-envelope"></i> Emails preview</a>
+                </li>
+              </ul>
+
+              <li data-toggle="collapse" data-target="#reports" class="collapsed">
+                <div class="m-l-15"><i class="fa fa-chart-bar"></i> Reports</div>
+              </li>
+              <ul class="sub-menu collapse" id="reports">
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a routerLink="/admin/reports/salary"><i class="fa fa-money-bill-wave"></i> Salaries</a>
+                </li>
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a routerLink="/admin/reports/company-finance"><i class="fa fa-coins"></i> Company Finance</a>
+                </li>
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a routerLink="/admin/reports/projects"><i class="fa fa-project-diagram"></i> Projects profit</a>
+                </li>
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                  <a routerLink="/admin/reports/company-skills"><i class="fa fa-skiing"></i> Company Skills</a>
+                </li>
+              </ul>
+              <li
+                data-toggle="collapse"
+                data-target="#admin-stuff"
+                class="collapsed"
+                *appHasRole="'systemadministrator'"
+              >
+                <div class="m-l-15"><i class="fa fa-tools fa-lg"></i> Admin stuff</div>
+              </li>
+              <ul class="sub-menu collapse" id="admin-stuff">
+                <li
+                  [routerLinkActive]="['active']"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  *appHasRole="'systemadministrator'"
+                >
+                  <a routerLink="/admin/background-jobs" title="Background jobs and tools"
+                    ><i class="fa fa-sort-numeric-down"></i> Jobs and health</a
+                  >
+                </li>
+                <li
+                  [routerLinkActive]="['active']"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  *appHasRole="'systemadministrator'"
+                >
+                  <a routerLink="/admin/app-configs" title="App config"><i class="fa fa-cogs"></i> App config</a>
+                </li>
+              </ul>
+            </div>
+            <hr class="sidebar-hr" *appHasRole="'hrmanager'" />
+
+            <li *appIsDesktop [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+              <a class="pl-1" routerLink="/to-do-list">
+                <i class="far fa-check-circle"></i> TODO
+                <app-todo-badge *ngIf="isAuthenticated" class="ml-3"></app-todo-badge>
+              </a>
+            </li>
+            <li data-toggle="collapse" data-target="#users" class="collapsed" *appIsDesktop>
+              <div class="m-l-15"><i class="fa fa-user-friends mr-2"></i> Users</div>
+            </li>
+            <ul class="sub-menu collapse" id="users">
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a routerLink="/users"><i class="fa fa-sort-numeric-down"></i>Users</a>
+              </li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a routerLink="/users/my-subordinates"><i class="fa fa-sort-numeric-down"></i>My subordinates</a>
+              </li>
+            </ul>
+            <li data-toggle="collapse" data-target="#projects" class="collapsed" *appIsDesktop>
+              <div class="m-l-15"><i class="fa fa-parking fa-lg mr-2"></i> Projects</div>
+            </li>
+            <ul class="sub-menu collapse" id="projects">
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a routerLink="/projects"><i class="fa fa-sort-numeric-down"></i>Projects</a>
+              </li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }" *appHasRole="'employee'">
+                <a routerLink="/projects/requests"><i class="fa fa-cube"></i>My assign requests</a>
+              </li>
+            </ul>
+
+            <li data-toggle="collapse" data-target="#departments" class="collapsed" *appIsDesktop>
+              <div class="m-l-15"><i class="fa fa-cubes fa-lg mr-2"></i> Departments</div>
+            </li>
+
+            <ul class="sub-menu collapse" id="departments">
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a routerLink="/departments"><i class="fa fa-sort-numeric-down"></i>Departments</a>
+              </li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }" *appHasRole="'employee'">
+                <a routerLink="/departments/attachment-requests"><i class="fa fa-cube"></i>My attachment requests</a>
+              </li>
+            </ul>
+
+            <li data-toggle="collapse" data-target="#vacations" class="collapsed" *appIsDesktop>
+              <div class="m-l-15"><i class="fa fa-plane-departure fa-lg mr-2"></i> Vacations</div>
+            </li>
+
+            <ul class="sub-menu collapse" id="vacations">
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a routerLink="/vacations/sickleaves/my"><i class="fa fa-viruses"></i> My sickleaves</a>
+              </li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a routerLink="/vacations/sickleaves/of-subordinates"
+                  ><i class="fa fa-user-shield"></i> Subordinates' SLs</a
+                >
+              </li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a routerLink="/vacations/annual-leaves/my"><i class="fa fa-sun"></i> My annual leaves</a>
+              </li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+                <a routerLink="/vacations/annual-leaves/of-subordinates"
+                  ><i class="fa fa-pause"></i> Subordinates' ALs</a
+                >
+              </li>
+            </ul>
+
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }" *appIsMobile>
+              <a routerLink="/timesheet/worklog"><i class="fa fa-clock"></i> Log time </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="nav-side-env" *ngIf="showEnvName" title="Current environment">
+          {{ envName }}
+        </div>
+      </div>
+    </ul>
+  </nav>
+</div>

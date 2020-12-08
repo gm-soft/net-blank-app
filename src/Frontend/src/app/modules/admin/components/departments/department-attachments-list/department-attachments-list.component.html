@@ -1,0 +1,26 @@
+<app-page-header>
+  <div class="app-page-header-label">Department Attachment Requests</div>
+</app-page-header>
+
+<div class="container mt-3">
+  <div class="text-muted">
+    <b>Department attachment request</b> is a request to add new users to a department. Department manager is not able
+    to add whoever he wants.
+    <br />
+    Department manager requests a new user to his department, and Functional manager of the user approves or declines
+    the request.
+  </div>
+
+  <div class="mt-3" *ngIf="departmentAttachmentRequestArguments != null">
+    <div *ngIf="departmentAttachmentRequestArguments.hasItems; else noItems">
+      <div class="table-responsive">
+        <app-attachment-request-table [attachmentRequests]="departmentAttachmentRequestArguments">
+        </app-attachment-request-table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noItems>
+  <app-nothing-to-show-label></app-nothing-to-show-label>
+</ng-template>

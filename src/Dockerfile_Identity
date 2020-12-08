@@ -9,15 +9,15 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY . .
 
-RUN dotnet restore "Company.IdentityServer/Company.IdentityServer.csproj"
+RUN dotnet restore "IdentityServer/IdentityServer.csproj"
 
-WORKDIR "/src/Company.IdentityServer"
-RUN dotnet build "Company.IdentityServer.csproj" -c Release -o /app/build
+WORKDIR "/src/IdentityServer"
+RUN dotnet build "IdentityServer.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Company.IdentityServer.csproj" -c Release -o /app/publish
+RUN dotnet publish "IdentityServer.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Company.IdentityServer.dll"]
+ENTRYPOINT ["dotnet", "IdentityServer.dll"]

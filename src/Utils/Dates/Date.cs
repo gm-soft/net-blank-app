@@ -58,6 +58,19 @@ namespace Utils.Dates
         {
         }
 
+        public Date(int year, int month, int day, int hour, int minute, int seconds)
+            : this(
+                new DateTimeOffset(
+                    new DateTime(
+                        year: year,
+                        month: month,
+                        day: day,
+                        hour: hour,
+                        minute: minute,
+                        second: seconds)))
+        {
+        }
+
         public Date AddDays(int days)
         {
             return new Date(Source.AddDays(days));
@@ -76,19 +89,6 @@ namespace Utils.Dates
         public bool IsLastDayOfMonth()
         {
             return Day == DateTime.DaysInMonth(Year, Month);
-        }
-
-        public DateTimeOffset FirstDayOfMonth()
-        {
-            return new DateTimeOffset(
-                new DateTime(
-                    year: Source.Year,
-                    month: Source.Month,
-                    day: 1,
-                    hour: 0,
-                    minute: 0,
-                    second: 0),
-                Source.Offset);
         }
 
         // TODO Maxim: rename to Morning
@@ -117,29 +117,26 @@ namespace Utils.Dates
                 offset: Source.Offset);
         }
 
-        // // TODO Maxim: change return type to Date
-        public DateTimeOffset LastDayOfMonth()
-        {
-            return new DateTimeOffset(
-                year: Source.Year,
-                month: Source.Month,
-                day: DateTime.DaysInMonth(Source.Year, Source.Month),
-                hour: 23,
-                minute: 59,
-                second: 59,
-                offset: Source.Offset);
-        }
-
         public bool Weekend()
         {
             return Source.DayOfWeek == DayOfWeek.Saturday || Source.DayOfWeek == DayOfWeek.Sunday;
         }
 
-        public Month MonthAsEnum() => (Month)Month;
-
         public override string ToString()
         {
             const string format = "yyyy-MM-dd";
+            return ToFormat(format);
+        }
+
+        public string ToJiraIso()
+        {
+            return ToFormat("yyyy-MM-ddTHH:mm:ss.ffzzzz");
+        }
+
+        public string ToFormat(string format)
+        {
+            format.ThrowIfNullOrEmpty(nameof(format));
+
             return Source.ToString(format);
         }
 
@@ -192,6 +189,16 @@ namespace Utils.Dates
         {
             const int daysTillToday = 6;
             return new Date(Source.AddDays(-daysTillToday));
+        }
+
+        public Date FirstDayOfMonth()
+        {
+            return new Date(Year, Month, 1);
+        }
+
+        public Date LastDayOfMonth()
+        {
+            return new Date(Year, Month, DateTime.DaysInMonth(Year, Month));
         }
     }
 }

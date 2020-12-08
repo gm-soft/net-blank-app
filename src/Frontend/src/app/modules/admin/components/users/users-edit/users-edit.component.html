@@ -1,0 +1,139 @@
+<app-page-header>
+  <div class="app-page-header-label">
+    User <b>{{ userName }}</b>
+
+    <div *ngIf="!isActive" class="badge badge-warning ml-1">Inactive</div>
+  </div>
+</app-page-header>
+
+<div class="container mt-3" *ngIf="user != null">
+  <div class="mt-3 d-flex justify-content-between">
+    <app-go-back-button></app-go-back-button>
+    <div class="d-inline-block ml-1" *ngIf="isActive">
+      <a routerLink="/users/{{ user.id }}" class="btn btn-secondary mr-1" title="Go to public page">Public page</a>
+
+      <a
+        routerLink="/users/{{ user.id }}/salaries"
+        class="btn btn-secondary"
+        title="Go to salaries management page"
+        *ngIf="showGoToSalariesButton"
+        >User's salaries</a
+      >
+    </div>
+  </div>
+
+  <div class="card mt-3">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <div>
+          <div class="d-flex justify-content-between text-muted">
+            <small>ID</small>
+          </div>
+          <div class="h-5" title="{{ user.id == user.identityId ? 'The Identity Id is the same' : '' }}">
+            <strong>{{ user.id }}</strong>
+          </div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div>
+          <div class="d-flex justify-content-between text-muted">
+            <small>Username</small>
+          </div>
+          <div>{{ user.userName }}</div>
+        </div>
+      </li>
+
+      <li class="list-group-item" *ngIf="user.id != user.identityId">
+        <div>
+          <div class="d-flex justify-content-between text-muted">
+            <small>Identity Id</small>
+          </div>
+          <div
+            title="This Id is SSO identifier and may be not equal to User Id."
+            *ngIf="user.identityId != null; else noIdentityYet"
+          >
+            {{ user.identityId }}
+          </div>
+          <ng-template #noIdentityYet>
+            <div title="The user has never loggend in the system">
+              <i>No identity yet</i>
+            </div>
+          </ng-template>
+        </div>
+      </li>
+    </ul>
+
+    <div class="card-body">
+      <form class="mt-3" *ngIf="editForm != null" [formGroup]="editForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label>First name</label>
+          <input type="text" class="form-control" formControlName="firstName" />
+        </div>
+
+        <div class="form-group">
+          <label>Last name</label>
+          <input type="text" class="form-control" formControlName="lastName" />
+        </div>
+
+        <div class="form-group">
+          <label>Role</label>
+          <select class="form-control" formControlName="role">
+            <option *ngFor="let userRole of userRolesForSelect" [value]="userRole.item" [disabled]="!userRole.enabled">
+              {{ userRole.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group d-flex justify-content-between">
+          <app-go-back-button></app-go-back-button>
+          <div class="row" *ngIf="isActive">
+            <div class="col-md-6">
+              <button class="btn btn-outline-danger" type="button" [disabled]="editingMyself" (click)="deleteUser()">
+                Delete
+              </button>
+            </div>
+            <div class="col-md-6 pl-1">
+              <button class="btn btn-primary" type="submit" color="primary">Save</button>
+            </div>
+          </div>
+          <div *ngIf="!isActive">
+            <div class="btn btn-primary" (click)="restoreUser()" color="primary" *ngIf="showRestoreRequestButton">
+              Restore User
+            </div>
+            <div class="btn btn-danger ml-1" (click)="removeUserFromDatabase()" *appHasRole="'systemadministrator'">
+              Remove User From Database
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card mt-3" *ngIf="functionManagerForm != null">
+    <div class="card-body">
+      <h5 class="card-title">Functional Manager</h5>
+      <div class="card-text">
+        <form [formGroup]="functionManagerForm" (ngSubmit)="onFunctionalManagerSetSubmit()">
+          <ng-select
+            formControlName="functionManagerId"
+            [items]="functionManagers"
+            bindLabel="label"
+            bindValue="id"
+            placeholder="No function manager"
+          >
+          </ng-select>
+          <div class="mt-2 pr-2 float-right">
+            <button class="btn btn-outline-primary" type="submit">Set</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-confirm-dialog *ngIf="confirmDeletionMessage != null" [message]="confirmDeletionMessage"></app-confirm-dialog>
+<app-confirm-dialog
+  *ngIf="removeUserFromDatabaseDialogMessage != null"
+  [message]="removeUserFromDatabaseDialogMessage"
+></app-confirm-dialog>

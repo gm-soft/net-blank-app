@@ -6,4 +6,4 @@ dotnet dev-certs https -ep $env:USERPROFILE\.aspnet\https\aspnetapp.pfx -p passw
 dotnet dev-certs https --trust
 
 # Run the IdentityServer https://localhost:44393/
-docker-compose up --build identityserver
+docker-compose up --build identityserver database.api

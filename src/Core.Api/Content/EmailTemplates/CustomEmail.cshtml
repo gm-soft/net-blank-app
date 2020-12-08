@@ -1,0 +1,9 @@
+﻿@model Domain.Emails.Models.CustomEmail
+@{
+    Layout = "/Content/EmailTemplates/Layouts/_Layout.cshtml";
+    ViewData["EmailTitle"] = @Model.EmailTitle;
+}
+
+<div>
+    @Html.Raw(@Model.Content)
+</div>

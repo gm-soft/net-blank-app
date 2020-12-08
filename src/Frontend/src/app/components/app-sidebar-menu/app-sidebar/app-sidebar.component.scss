@@ -1,0 +1,40 @@
+.dynamic-part {
+  margin: 0 !important;
+  padding: 0 !important;
+  float: left;
+  width: 100%;
+  z-index: 99999;
+}
+
+a {
+  border-bottom: 0px;
+  display: block;
+}
+
+.li {
+  list-style-type: none;
+  color: #fff;
+}
+
+.dynamic-part > .ul {
+  width: 43%;
+  height: 100%;
+  position: relative;
+  padding: 0 !important;
+  overflow: visible;
+}
+
+.dynamic-part > .ul > .li > .ul {
+  display: none;
+  position: absolute;
+  right: -100%;
+  top: 0;
+  padding: 0 !important;
+  width: 100%;
+  background-color: #193d8e;
+  height: 100%;
+}
+
+.dynamic-part > .ul > .li:hover > .ul {
+  display: block;
+}

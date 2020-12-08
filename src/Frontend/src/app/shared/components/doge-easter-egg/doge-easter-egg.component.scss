@@ -1,0 +1,21 @@
+$spacer: 16px;
+
+:host {
+  position: relative;
+  overflow: hidden;
+}
+
+@mixin position {
+  position: fixed;
+  bottom: $spacer;
+}
+
+.little-doge-wrapper {
+  @include position;
+  right: $spacer;
+}
+
+.big-doge-wrapper {
+  @include position;
+  left: $spacer * 3;
+}

@@ -1,0 +1,14 @@
+<app-page-header>
+  <div class="app-page-header-label">User Restore Requests</div>
+</app-page-header>
+
+<div class="container mt-3">
+  <div *ngIf="requests?.length > 0; else noItems">
+    <div class="table-responsive">
+      <app-user-restore-request-table [requests]="requests"></app-user-restore-request-table>
+    </div>
+  </div>
+  <ng-template #noItems>
+    <app-nothing-to-show-label></app-nothing-to-show-label>
+  </ng-template>
+</div>

@@ -1,4 +1,6 @@
-﻿namespace Utils.Dates
+﻿using Utils.Helpers;
+
+namespace Utils.Dates
 {
     /// <summary>
     /// Represents Time Range between start and end of the one single day.
@@ -33,5 +35,14 @@
         /// </summary>
         /// <returns>True if weekend.</returns>
         public bool Weekend() => _source.Weekend();
+
+        public Date AsDate() => _source;
+
+        public bool NextFor(DayRange second)
+        {
+            second.ThrowIfNull(nameof(second));
+
+            return this.AsDate().SameDay(second.AsDate().AddDays(1));
+        }
     }
 }

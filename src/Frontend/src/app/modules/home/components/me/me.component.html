@@ -1,0 +1,16 @@
+<app-page-header>
+  <div class="app-page-header-label">
+    <b>{{ user?.fullName }}</b>
+  </div>
+</app-page-header>
+
+<div class="container cta-wrapper">
+  <div class="h5 mb-3">What you are able to do</div>
+  <div class="mt-3">
+    <app-profile-cta-card [cards]="cards"></app-profile-cta-card>
+  </div>
+</div>
+
+<app-user-profile *ngIf="userProfileArguments != null" [userProfileArguments]="userProfileArguments"></app-user-profile>
+
+<app-confirm-dialog *ngIf="sickleaveConfirmDialog != null" [message]="sickleaveConfirmDialog"></app-confirm-dialog>

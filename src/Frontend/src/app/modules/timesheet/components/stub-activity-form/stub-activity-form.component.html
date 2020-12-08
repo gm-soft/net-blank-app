@@ -1,0 +1,37 @@
+<form disabled>
+  <div class="form-group">
+    <label>Category</label>
+    <select class="form-control">
+      <option [value]="null" disabled selected>Select the category</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Title</label>
+    <input type="text" class="form-control" placeholder="What did you do?" />
+    <small class="form-text text-muted">You may clarify your activity, but you don't have to</small>
+  </div>
+
+  <div class="form-group">
+    <label>Time spent</label>
+    <input type="text" class="form-control" placeholder="1h 30m" />
+    <small class="form-text text-muted">Field is required. <i>For example, 1h 30m</i></small>
+  </div>
+
+  <div class="my-1">
+    <label>Date of work</label>
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="yyyy-mm-dd" />
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary calendar" type="button">
+          <i class="far fa-calendar-alt"></i> Pick
+        </button>
+      </div>
+    </div>
+    <small class="form-text text-muted">Field is required</small>
+  </div>
+
+  <div class="form-group">
+    <button type="submit" class="btn btn-block btn-lg btn-primary" disabled>Log</button>
+  </div>
+</form>

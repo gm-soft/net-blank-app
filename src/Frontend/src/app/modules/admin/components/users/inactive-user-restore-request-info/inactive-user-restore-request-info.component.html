@@ -1,0 +1,46 @@
+<app-page-header>
+  <div class="w-100 d-flex justify-content-between">
+    <div class="app-page-header-label">User Restore Request</div>
+  </div>
+</app-page-header>
+
+<div class="container mt-3" *ngIf="request != null">
+  <div class="table-responsive">
+    <div class="card">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <div>
+            <div class="text-muted">
+              <small>User to restore</small>
+            </div>
+            <div>{{ request.userToRestore.userName }}</div>
+          </div>
+        </li>
+
+        <li class="list-group-item">
+          <div>
+            <div class="text-muted">
+              <small>Requester</small>
+            </div>
+            <div>{{ request.requester.userName }}</div>
+          </div>
+        </li>
+      </ul>
+
+      <div class="px-3 pb-3 d-flex justify-content-between mt-3">
+        <app-go-back-button></app-go-back-button>
+
+        <div class="d-inline-block" *ngIf="showApproveDeclineButtons">
+          <button type="button" class="btn btn-outline-danger mr-1" (click)="decline()">
+            Decline
+          </button>
+
+          <button type="button" class="btn btn-success" (click)="approve()">
+            Approve
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-decline-dialog *ngIf="declineFormModalMessage != null" [message]="declineFormModalMessage"></app-decline-dialog>

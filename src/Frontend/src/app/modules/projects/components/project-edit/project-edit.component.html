@@ -1,0 +1,148 @@
+<app-page-header>
+  <div class="w-100 d-flex justify-content-between">
+    <div class="app-page-header-label">
+      Project <b>{{ projectName }}</b>
+      <div class="badge badge-warning ml-1" *ngIf="isInactive">Inactive</div>
+      <div class="badge badge-danger ml-1" *ngIf="isComingSoon">Coming Soon</div>
+    </div>
+  </div>
+</app-page-header>
+
+<div class="container mt-3 d-flex justify-content-between">
+  <app-go-back-button></app-go-back-button>
+  <button
+    type="button"
+    *appHasRole="'systemadministrator'"
+    class="btn btn-outline-danger ml-1"
+    (click)="deleteProject()"
+  >
+    Delete
+  </button>
+</div>
+
+<div class="container" *ngIf="project != null">
+  <ng-template #inactiveProject>
+    <div class="mt-3 h2">
+      The project is inactive
+    </div>
+  </ng-template>
+
+  <div class="card mt-3" *ngIf="editForm != null; else inactiveProject">
+    <div class="card-body">
+      <form [formGroup]="editForm">
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" class="form-control" formControlName="fullName" />
+          <small class="form-text text-muted">Field is required</small>
+          <app-field-error [formGroup]="editForm" [fieldName]="'fullName'"></app-field-error>
+        </div>
+
+        <div class="form-group">
+          <label>Short Code</label>
+          <input type="text" class="form-control" formControlName="shortCode" />
+          <small class="form-text text-muted">Field is required</small>
+          <app-field-error [formGroup]="editForm" [fieldName]="'shortCode'"></app-field-error>
+        </div>
+
+        <div class="form-group">
+          <label>Contract Price</label>
+          <input type="text" class="form-control" formControlName="contractPrice" appOnlyNumber />
+          <small class="form-text text-muted">Field is required</small>
+          <app-field-error [formGroup]="editForm" [fieldName]="'contractPrice'"></app-field-error>
+        </div>
+
+        <div class="form-group">
+          <label
+            >Margin
+            <app-popover class="ml-1" [title]="'About Margin'" [icon]="'far fa-question-circle'">
+              Margin is the difference between Revenue and expenses.
+            </app-popover>
+          </label>
+          <input type="text" class="form-control" formControlName="margin" placeholder="20" appOnlyNumber />
+          <app-field-error [formGroup]="editForm" [fieldName]="'margin'"></app-field-error>
+        </div>
+
+        <app-project-start-end-dates [formGroup]="editForm"></app-project-start-end-dates>
+        <div class="form-group" *ngIf="customers.length > 0">
+          <label>Customer</label>
+          <ng-select
+            formControlName="customerId"
+            [items]="customers"
+            bindLabel="name"
+            bindValue="id"
+            placeholder="Choose customer"
+          >
+          </ng-select>
+          <small class="form-text text-muted">Customer is optional</small>
+          <app-field-error [formGroup]="editForm" [fieldName]="'customerId'"></app-field-error>
+        </div>
+
+        <div class="form-group">
+          <label>Jira id</label>
+          <select formControlName="jiraId" class="form-control">
+            <option [value]="null" selected>No jira id</option>
+            <option *ngFor="let project of jiraProjects" [value]="project.id">
+              {{ project.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group d-flex justify-content-between">
+          <app-go-back-button></app-go-back-button>
+          <app-submit-button (btnSubmit)="onSubmit()">Save</app-submit-button>
+        </div>
+      </form>
+
+      <div *ngIf="managerChangeForm != null">
+        <hr />
+        <div class="mt-1">
+          <form [formGroup]="managerChangeForm">
+            <label>Manager</label>
+            <ng-select formControlName="managerId" [items]="potentialManagers" bindLabel="label" bindValue="id">
+            </ng-select>
+            <div class="mt-2 float-right">
+              <button type="submit" class="btn btn-outline-secondary" (click)="changeManagerSumbit()">Set</button>
+            </div>
+            <small class="text-muted">Previous manager wil become an executor</small>
+            <app-field-error [formGroup]="managerChangeForm" [fieldName]="'managerId'"></app-field-error>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-3" *appHasRole="'systemadministrator'">
+    <div class="card" *ngIf="attachEmployeeForm != null">
+      <div class="card-body">
+        <form [formGroup]="attachEmployeeForm">
+          <h5>Employee to attach</h5>
+          <div class="mb-1">Select an user from the select below to attach him to the project immediately.</div>
+          <div class="form-group">
+            <ng-select
+              formControlName="selectedEmployeeId"
+              [items]="potentialParticipants"
+              bindLabel="label"
+              bindValue="id"
+              placeholder="Choose employee"
+            >
+            </ng-select>
+            <app-field-error [formGroup]="attachEmployeeForm" [fieldName]="'selectedEmployeeId'"></app-field-error>
+          </div>
+
+          <div class="form-group d-flex justify-content-between">
+            <app-submit-button (btnSubmit)="onEmployeeToAttachFormSubmit()">Attach employee</app-submit-button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-3" *ngIf="tableArguments != null">
+    <app-project-participants-table
+      [tableArguments]="tableArguments"
+      (reload)="reloadPotentialProjectParticipants()"
+    ></app-project-participants-table>
+  </div>
+</div>
+
+<app-confirm-dialog *ngIf="confirmDeletionMessage != null" [message]="confirmDeletionMessage"></app-confirm-dialog>

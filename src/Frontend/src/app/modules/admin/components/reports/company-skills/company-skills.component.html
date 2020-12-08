@@ -1,0 +1,7 @@
+<app-page-header>
+  <div class="app-page-header-label">Company Skills Report</div>
+</app-page-header>
+
+<div class="container mt-3">
+  <app-pie-chart *ngIf="skills != null" [data]="skills"></app-pie-chart>
+</div>

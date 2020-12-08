@@ -1,0 +1,121 @@
+<div class="card" *ngIf="projectAssignRequestForm != null">
+  <div class="px-3 pt-3">
+    <h5 class="d-inline-block">Project assign request</h5>
+    <app-popover class="ml-1" [title]="'About request'" [icon]="'far fa-question-circle'">
+      Project assign request is used by project managers to attach new employees to their projects. The Manager should
+      first select an employee to assign, then he should select a role of the participation.
+      <br />
+      <br />
+      Function Manager will approve or decline the request after it was created.
+      <br />
+      <br />
+      If the request is approved, the enployee will be assigned to the project. If the request is declined, the project
+      manager will receive a notification with a comment from FM.
+    </app-popover>
+  </div>
+  <hr />
+  <div class="card-body">
+    <form [formGroup]="projectAssignRequestForm">
+      <div class="form-group">
+        <ng-select
+          formControlName="selectedEmployeeId"
+          [items]="potentialParticipants"
+          bindLabel="label"
+          bindValue="userId"
+          placeholder="Select employee"
+          (change)="checkParticipationsOfUser($event)"
+        >
+        </ng-select>
+        <div>
+          <div class="small text-muted d-inline-block">
+            An employee you want to attach to the project
+          </div>
+          <div class="d-inline-block ml-2 p-1 small alert-warning" *ngIf="showUserParticipatesInOtherProjectsBlock">
+            User participates in another project
+          </div>
+          <div class="d-inline-block ml-2">
+            <app-field-error
+              [formGroup]="projectAssignRequestForm"
+              [fieldName]="'selectedEmployeeId'"
+            ></app-field-error>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group"></div>
+
+      <div class="form-group row">
+        <div class="col-md-6">
+          <label>Role</label>
+          <app-popover class="ml-1" [title]="'About project role'" [icon]="'far fa-question-circle'">
+            <div class="mt-1"><b>Executor</b> is an usual executor who will perform project tickets</div>
+            <div class="mt-1"><b>Product Owner</b> is a person who is responsible for the project</div>
+
+            <div class="mt-1"><b>Stakeholder</b> is a person who is who is interested in the project success</div>
+            <div class="mt-1">
+              <b>Project Manager</b> is a person who <s>cries</s> manages budget and allocates resources for the project
+              (<i
+                >It is not allowed to create requests for a new Manager. If you want to attach a new manager, you should
+                attach him as an Executor or any other role and then change the manager</i
+              >)
+            </div>
+          </app-popover>
+
+          <ng-select
+            formControlName="selectedParticipationRole"
+            [items]="projectParticipationRoles"
+            bindLabel="label"
+            bindValue="item"
+          >
+          </ng-select>
+          <div>
+            <div class="d-inline-block small text-muted">
+              Field is required.
+            </div>
+            <div class="d-inline-block ml-1">
+              <app-field-error
+                [formGroup]="projectAssignRequestForm"
+                [fieldName]="'selectedParticipationRole'"
+              ></app-field-error>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label>Utilization for</label>
+          <app-popover class="ml-1" [title]="'About utilization rate'" [icon]="'far fa-question-circle'">
+            <div>
+              If you want to charge employee for <i>Full time</i>, you should set 100% here.
+              <br />
+              Otherwise, any other value would be recognized as <i>Part time</i>.
+            </div>
+            <div class="mt-1">
+              Min value for the field is 10%.
+            </div>
+          </app-popover>
+          <div class="input-group">
+            <input type="tel" appOnlyNumber formControlName="utilization" class="form-control" />
+            <div class="input-group-append">
+              <span class="input-group-text">%</span>
+              <span class="input-group-text time-wrapper">{{ projectAssignRequestForm?.utilizationTextValue }}</span>
+            </div>
+          </div>
+          <small class="text-muted">
+            Field is required. Max 100, min 10.
+          </small>
+        </div>
+      </div>
+
+      <app-date-range-picker
+        [formGroup]="projectAssignRequestForm"
+        [fromRequired]="true"
+        [toRequired]="true"
+        (dateChange)="checkParticipationOnDatesChange($event)"
+      ></app-date-range-picker>
+
+      <div class="mt-1 form-group w-100">
+        <app-submit-button (btnSubmit)="onSubmit()">Create request</app-submit-button>
+      </div>
+    </form>
+  </div>
+</div>

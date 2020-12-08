@@ -1,0 +1,58 @@
+<div class="card" *ngIf="form != null">
+  <div class="px-3 pt-3">
+    <div class="">
+      <h5 class="d-inline-block">Attachment request</h5>
+
+      <app-popover class="ml-1" [title]="'About the request'" [icon]="'far fa-question-circle'">
+        Deaprtment assign request is used by department managers to attach new employees to their departments. The
+        Manager should first select an employee to assign.
+        <br />
+        <br />
+        If you want to assign any user as a new manager of the department, you should assign the user as 'Employee' anfd
+        then swap roles with somebody else from this department.
+        <br />
+        <br />
+        Function Manager will approve or decline the request after it was created.
+        <br />
+        <br />
+        If the request is approved, the enployee will be assigned to the department. If the request is declined, the
+        department manager will receive a notification with a comment from FM.
+      </app-popover>
+    </div>
+  </div>
+  <hr />
+  <div class="px-3 pb-3">
+    <form [formGroup]="form">
+      <div class="form-group">
+        <label>Employee</label>
+        <ng-select
+          formControlName="selectedEmployeeId"
+          [items]="potentialUsersForTheDepartment"
+          bindLabel="label"
+          bindValue="id"
+          placeholder="Select an employee"
+        >
+        </ng-select>
+        <app-field-error [formGroup]="form" [fieldName]="'selectedEmployeeId'"></app-field-error>
+      </div>
+
+      <div class="form-group">
+        <label>Participation type</label>
+        <ng-select
+          formControlName="selectedParticipationItem"
+          [items]="participationTypes"
+          bindLabel="label"
+          bindValue="item"
+        >
+        </ng-select>
+        <app-field-error [formGroup]="form" [fieldName]="'selectedParticipationItem'"></app-field-error>
+      </div>
+
+      <app-date-range-picker [formGroup]="form" [fromRequired]="true"></app-date-range-picker>
+
+      <div class="form-group">
+        <app-submit-button (btnSubmit)="onSubmit()">Create request</app-submit-button>
+      </div>
+    </form>
+  </div>
+</div>

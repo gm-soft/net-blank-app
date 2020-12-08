@@ -9,6 +9,30 @@ namespace Utils.Test.Helpers
 {
     public class ClaimHelperTest
     {
+        [Fact]
+        public void ClaimsForException_NoClaims()
+        {
+            var target = CreateTestInstance(new List<Claim>());
+            Assert.Equal(string.Empty, target.Claims.ClaimsForException());
+        }
+
+        [Fact]
+        public void ClaimsForException_SeveralClaims()
+        {
+            var target = CreateTestInstance(new List<Claim>
+            {
+                new Claim(ClaimTypes.Email, "j.smith@example.com"),
+                new Claim(ClaimTypes.GivenName, "John"),
+                new Claim(ClaimTypes.Surname, "Smith")
+            });
+
+            Assert.Equal(
+                $"{ClaimTypes.Email}: j.smith@example.com\r\n" +
+                $"{ClaimTypes.GivenName}: John\r\n" +
+                $"{ClaimTypes.Surname}: Smith\r\n",
+                target.Claims.ClaimsForException());
+        }
+
         [Theory]
         [InlineData(Role.System)]
         [InlineData(Role.SystemAdministrator)]
@@ -23,7 +47,7 @@ namespace Utils.Test.Helpers
                 new Claim(ClaimTypes.Role, roleToCheck.ToString())
             });
 
-            Assert.Equal(roleToCheck, principal.Role());
+            Assert.Equal(roleToCheck, principal.RoleOrFail());
         }
 
         [Fact]
@@ -105,9 +129,7 @@ namespace Utils.Test.Helpers
 
         private ClaimsPrincipal CreateTestInstance(IEnumerable<Claim> claims)
         {
-            var principal = new ClaimsPrincipal(new ClaimsIdentity(claims));
-
-            return principal;
+            return new ClaimsPrincipal(new ClaimsIdentity(claims));
         }
     }
 }

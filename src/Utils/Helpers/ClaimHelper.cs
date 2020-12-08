@@ -8,11 +8,26 @@ namespace Utils.Helpers
 {
     public static class ClaimHelper
     {
-        public static Role Role(this ClaimsPrincipal principal)
+        public static bool HasClaims(this ClaimsPrincipal principal)
         {
-            return principal
+            return principal.Claims.HasClaims();
+        }
+
+        public static bool HasClaims(this IEnumerable<Claim> claims)
+        {
+            return claims.Any();
+        }
+
+        public static Role RoleOrFail(this IEnumerable<Claim> claims)
+        {
+            return claims
                 .GetClaimValue(ClaimTypes.Role)
                 .ToEnum<Role>();
+        }
+
+        public static Role RoleOrFail(this ClaimsPrincipal principal)
+        {
+            return RoleOrFail(principal.Claims);
         }
 
         public static string GetClaimValue(this ClaimsPrincipal principal, string type, bool throwExIfNotFound = true)
@@ -41,10 +56,18 @@ namespace Utils.Helpers
 
             if (claim == null && throwExIfNotFound)
             {
-                throw new InvalidOperationException($"Cannot find claim value for type '{type}'");
+                throw new InvalidOperationException(
+                    $"Cannot find claim value for type '{type}'\r\n" +
+                    $"Claims:\r\n\r\n{ClaimsForException(claims)}");
             }
 
             return claim?.Value;
+        }
+
+        public static string ClaimsForException(this IEnumerable<Claim> claims)
+        {
+            return claims.Aggregate(
+                string.Empty, (seed, c) => seed + c.ToString() + "\r\n");
         }
     }
 }

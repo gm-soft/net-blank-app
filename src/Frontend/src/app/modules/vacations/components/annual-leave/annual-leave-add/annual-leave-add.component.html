@@ -1,0 +1,92 @@
+<app-page-header>
+  <div class="app-page-header-label">Create an annual leave request</div>
+</app-page-header>
+
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-2">
+        <b>Annual leave</b> is paid time off work granted by employers to employees to be used for whatever the employee
+        wishes.
+      </div>
+
+      <div class="mb-3 text-muted">
+        It is not allowed to create AL with the past dates.
+      </div>
+
+      <div class="form" *ngIf="leaveForm != null" [formGroup]="leaveForm">
+        <div class="form-group row">
+          <div class="col-md-6">
+            <div class="">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">From</span>
+                </div>
+                <input
+                  class="form-control"
+                  placeholder="yyyy-mm-dd"
+                  autocomplete="off"
+                  name="from"
+                  formControlName="from"
+                  appDateRange="to"
+                  ngbDatepicker
+                  #startDatePicker="ngbDatepicker"
+                />
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary calendar" (click)="startDatePicker.toggle()" type="button">
+                    <i class="far fa-calendar-alt"></i> Pick
+                  </button>
+                </div>
+              </div>
+              <small class="form-text text-muted">Field is required</small>
+              <app-field-error [formGroup]="leaveForm" [fieldName]="'from'"></app-field-error>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">To</span>
+                </div>
+                <input
+                  class="form-control"
+                  placeholder="yyyy-mm-dd"
+                  autocomplete="off"
+                  name="to"
+                  formControlName="to"
+                  appDateRange="from"
+                  ngbDatepicker
+                  #endDatePicker="ngbDatepicker"
+                />
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary calendar" (click)="endDatePicker.toggle()" type="button">
+                    <i class="far fa-calendar-alt"></i> Pick
+                  </button>
+                </div>
+              </div>
+              <small class="form-text text-muted">Field is required</small>
+              <app-field-error [formGroup]="leaveForm" [fieldName]="'to'"></app-field-error>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input type="checkbox" (change)="createAwaiting($event)" /> Create awaiting annual leave
+        </div>
+
+        <div class="form-group d-flex justify-content-between mb-3">
+          <app-go-back-button></app-go-back-button>
+          <app-submit-button (btnSubmit)="onSubmit()"
+            >Create {{ createAsAwaiting ? 'awaiting' : 'draft' }} vacation</app-submit-button
+          >
+        </div>
+
+        <div class="mt-3">
+          <div><i>Draft</i> means that you are able to edit the vacation, and nobody will receive notification</div>
+          <div>When you create <i>awaiting</i> vacation, your FM will receive a notification.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

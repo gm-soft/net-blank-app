@@ -1,0 +1,22 @@
+<table class="table table-striped table-bordered table-hover">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th>Requester</th>
+      <th>Assignee</th>
+      <th>Department</th>
+      <th>Participation Type</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of requests">
+      <th scope="row">{{ item.id }}</th>
+      <td>{{ item.requesterEmail }}</td>
+      <td>{{ item.employeeEmail }}</td>
+      <td>{{ item.departmentName }}</td>
+      <td>{{ item.departmentParticipationType }}</td>
+      <td><a routerLink="{{ item.link }}" title="Open the Request">View</a></td>
+    </tr>
+  </tbody>
+</table>

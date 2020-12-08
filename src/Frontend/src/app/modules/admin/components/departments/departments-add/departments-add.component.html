@@ -1,0 +1,53 @@
+<app-page-header>
+  <div class="app-page-header-label">Create new department</div>
+</app-page-header>
+
+<div class="container">
+  <div class="mt-3" *ngIf="addForm != null">
+    <div class="card">
+      <div class="card-body">
+        <form [formGroup]="addForm">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" class="form-control" formControlName="name" />
+            <small class="form-text text-muted">Field is required</small>
+            <app-field-error [formGroup]="addForm" [fieldName]="'name'"></app-field-error>
+          </div>
+
+          <div class="form-group">
+            <label>Short Code</label>
+            <input type="text" class="form-control" formControlName="shortCode" />
+            <small class="form-text text-muted">Field is required</small>
+            <app-field-error [formGroup]="addForm" [fieldName]="'shortCode'"></app-field-error>
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <input type="text" class="form-control" formControlName="description" />
+            <app-field-error [formGroup]="addForm" [fieldName]="'description'"></app-field-error>
+          </div>
+
+          <!-- TODO Maxim: ng-select -->
+          <div class="form-group">
+            <label>Manager</label>
+            <ng-select
+              formControlName="managerId"
+              [items]="users"
+              bindLabel="label"
+              bindValue="id"
+              placeholder="No manager"
+              (click)="checkManagerDepartment($event)"
+            >
+            </ng-select>
+            <app-field-error [formGroup]="addForm" [fieldName]="'managerId'"></app-field-error>
+          </div>
+
+          <div class="form-group d-flex justify-content-between">
+            <app-go-back-button></app-go-back-button>
+            <app-submit-button (btnSubmit)="onSubmit()">Create</app-submit-button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

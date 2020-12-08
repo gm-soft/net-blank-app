@@ -1,0 +1,45 @@
+﻿@using IdentityServer.Models.Account
+@model IdentityServer.Models.Account.LoginAsAnotherPersonViewModel
+@{
+    Layout = "/Views/Shared/_AccountLayout.cshtml";
+}
+<div class="login">
+    <div class="container">
+        <div class="login-width mx-auto">
+            <div class="shadow-lg bg-white rounded">
+                <div class="mt-5 w-75 m-auto">
+                    <div class="pt-5 text-center ">
+                        <h1>Sign in to Net App</h1>
+                    </div>
+                    <div class="mt-5 pt-5">
+                        <form asp-route="">
+                            <input type="hidden" asp-for="ReturnUrl" />
+                            <div class="form-group">
+                                <label>Select the User you want to sign in as.</label>
+                                <select class="form-control" placeholder="SelectedUserId" asp-for="SelectedUserId" required>
+                                    <option value="">Choose the user</option>
+                                    @foreach (UserForSelectBox user in Model.Usernames)
+                                    {
+                                        <option value="@user.Id">@user.Label</option>
+                                    }
+                                </select>
+                                <small>This feature is available only on the Development environment</small>
+                            </div>
+
+                            <div class="mt-5 row">
+                                <div class="col-6 pr-2">
+                                    <button class="btn btn-block btn-primary text-center btn-google" name="button" value="login">Login</button>
+                                </div>
+                                <div class="col-6 pl-2">
+                                    <button class="btn btn-block btn-block text-center" name="button" value="cancel">Cancel</button>
+                                </div>
+                            </div>
+
+                            <partial name="_ValidationSummary" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+<app-page-header>
+  <div class="app-page-header-label">
+    Salaries of <b>{{ user?.fullName }}</b>
+  </div>
+</app-page-header>
+
+<div class="mt-3 container" *ngIf="user != null">
+  <div class="d-flex justify-content-between">
+    <app-go-back-button></app-go-back-button>
+    <a routerLink="/users/{{ user.id }}" class="btn btn-secondary" title="Go to user profile">User profile</a>
+  </div>
+
+  <form class="mt-3" *ngIf="salaryForm != null" [formGroup]="salaryForm" (ngSubmit)="onSalaryAddSubmit()">
+    <div class="row">
+      <div class="form-group col-md-5">
+        <input type="text" class="form-control" formControlName="monthRate" appOnlyNumber placeholder="Month salary" />
+        <small class="form-text text-muted">Month salary including all necessary taxes</small>
+        <app-field-error [formGroup]="salaryForm" [fieldName]="'monthRate'"></app-field-error>
+      </div>
+
+      <div class="form-group col-md-5">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">From</span>
+          </div>
+          <input
+            class="form-control"
+            placeholder="yyyy-mm-dd"
+            autocomplete="off"
+            name="from"
+            [formControl]="salaryForm.controls.from"
+            appDateRange="from"
+            ngbDatepicker
+            #endDatePicker="ngbDatepicker"
+          />
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" (click)="endDatePicker.toggle()" type="button">
+              <i class="far fa-calendar-alt"></i> Pick
+            </button>
+          </div>
+        </div>
+        <small class="form-text text-muted">The salary should start in the past or today</small>
+        <app-field-error [formGroup]="salaryForm" [fieldName]="'from'"></app-field-error>
+      </div>
+
+      <div class="col-md-2">
+        <button class="btn btn-outline-primary w-100" type="submit" [disabled]="!salaryForm.valid">Add</button>
+      </div>
+    </div>
+  </form>
+
+  <table class="mt-3 table table-striped table-hover table-sm" *ngIf="salariesCollection.hasSalaries">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th class="w-50">Rate</th>
+        <th class="small">To</th>
+        <th class="small">From</th>
+        <th class="small" *appHasRole="'systemadministrator'">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let salary of salariesCollection.salaries; let i = index" [attr.data-index]="i">
+        <th>{{ i + 1 }}</th>
+        <td class="w-50">{{ salary.monthRate }}</td>
+        <td class="small">{{ salary.to ? (salary.to | date) : 'current salary' }}</td>
+        <td class="small">{{ salary.from | date }}</td>
+        <td *appHasRole="'systemadministrator'">
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-danger"
+            (click)="deleteUserSalary(salary.salaryId)"
+            title="Remove user salary"
+          >
+            <i class="far fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<app-confirm-dialog *ngIf="confirmDeletionMessage != null" [message]="confirmDeletionMessage"></app-confirm-dialog>

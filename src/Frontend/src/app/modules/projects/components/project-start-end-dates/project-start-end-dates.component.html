@@ -1,0 +1,55 @@
+<div class="form-group row">
+  <div class="col-md-6">
+    <div class="">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">From</span>
+        </div>
+        <input
+          class="form-control"
+          placeholder="yyyy-mm-dd"
+          autocomplete="off"
+          name="from"
+          [formControl]="formGroup.controls.from"
+          appDateRange="to"
+          ngbDatepicker
+          #startDatePicker="ngbDatepicker"
+        />
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary calendar" (click)="startDatePicker.toggle()" type="button">
+            <i class="far fa-calendar-alt"></i> Pick
+          </button>
+        </div>
+      </div>
+      <small class="form-text text-muted">Field is required</small>
+      <app-field-error [formGroup]="formGroup" [fieldName]="'from'"></app-field-error>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">To</span>
+        </div>
+        <input
+          class="form-control"
+          placeholder="yyyy-mm-dd"
+          autocomplete="off"
+          name="to"
+          [formControl]="formGroup.controls.to"
+          appDateRange="from"
+          ngbDatepicker
+          #endDatePicker="ngbDatepicker"
+        />
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary calendar" (click)="endDatePicker.toggle()" type="button">
+            <i class="far fa-calendar-alt"></i> Pick
+          </button>
+        </div>
+      </div>
+      <small class="form-text text-muted">Field is required</small>
+      <app-field-error [formGroup]="formGroup" [fieldName]="'to'"></app-field-error>
+    </div>
+  </div>
+</div>

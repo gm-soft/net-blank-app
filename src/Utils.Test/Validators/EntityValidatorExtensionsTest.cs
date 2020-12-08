@@ -1,5 +1,6 @@
 ﻿using System;
 using Utils.Dates;
+using Utils.Exceptions;
 using Utils.Helpers;
 using Utils.Interfaces;
 using Utils.Validators;
@@ -20,7 +21,7 @@ namespace Utils.Test.Validators
 
             Assert.True(target.From.Earlier(TimeRange.Min));
 
-            Assert.Throws<InvalidOperationException>(() => target.ThrowIfDateRangeIsNotValid(isRequired));
+            Assert.Throws<InvalidDateRangeException>(() => target.ThrowIfDateRangeIsNotValid(isRequired));
         }
 
         [Theory]
@@ -34,7 +35,7 @@ namespace Utils.Test.Validators
 
             Assert.True(target.To.Later(TimeRange.Max));
 
-            Assert.Throws<InvalidOperationException>(() => target.ThrowIfDateRangeIsNotValid(isRequired));
+            Assert.Throws<InvalidDateRangeException>(() => target.ThrowIfDateRangeIsNotValid(isRequired));
         }
 
         [Theory]
@@ -48,7 +49,7 @@ namespace Utils.Test.Validators
 
             Assert.True(target.From.Later(target.ToOrFail()));
 
-            Assert.Throws<InvalidOperationException>(() => target.ThrowIfDateRangeIsNotValid(isRequired));
+            Assert.Throws<InvalidDateRangeException>(() => target.ThrowIfDateRangeIsNotValid(isRequired));
         }
 
         [Fact]

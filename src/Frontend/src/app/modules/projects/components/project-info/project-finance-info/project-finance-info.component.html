@@ -1,0 +1,104 @@
+<div *ngIf="project != null">
+  <div class="h5">Finances</div>
+  <div class="row">
+    <div class="col-6">
+      <div class="card">
+        <div class="card-body text-center">
+          <div class="text-muted">
+            Project Staff Cost
+            <app-popover class="ml-1" [title]="'About Project Staff Cost'" [icon]="'far fa-question-circle'">
+              All costs based on employees salaries and their workday price.
+            </app-popover>
+          </div>
+          <app-finance-value [content]="projectStaffCosts" [hideZero]="true"></app-finance-value>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="card">
+        <div class="card-body text-center">
+          <div class="text-muted">
+            Actual Staff Cost
+            <app-popover class="ml-1" [title]="'About Actual Staff Cost'" [icon]="'far fa-question-circle'">
+              All costs based on employees' worklogs`
+            </app-popover>
+          </div>
+          <app-finance-value [content]="actualStaffCosts" [hideZero]="true"></app-finance-value>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-6">
+      <div class="card">
+        <div class="card-body text-center">
+          <div class="text-muted">
+            Total Project Cost
+            <app-popover class="ml-1" [title]="'About Total Project Cost Cost'" [icon]="'far fa-question-circle'">
+              All costs based on employees salaries and their workday price with Fixed Costs.
+            </app-popover>
+          </div>
+          <app-finance-value [content]="totalProjectStaffCosts" [hideZero]="true"></app-finance-value>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="card">
+        <div class="card-body text-center">
+          <div class="text-muted">
+            Total Actual Cost
+            <app-popover class="ml-1" [title]="'About Total Actual Cost'" [icon]="'far fa-question-circle'">
+              All costs based on employees' worklogs` with Fixed Costs.
+            </app-popover>
+          </div>
+          <app-finance-value [content]="totalActualStaffCosts" [hideZero]="true"></app-finance-value>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <div class="text-muted">Contract Price</div>
+          <app-finance-value [content]="contractPrice" [hideZero]="true"></app-finance-value>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <div class="text-muted">
+            Margin
+            <app-popover class="ml-1" [title]="'About Margin'" [icon]="'far fa-question-circle'">
+              Margin is the difference between Revenue and expenses.
+            </app-popover>
+          </div>
+          <app-finance-value [content]="margin" [hideZero]="true" [title]="marginRate + '%'"></app-finance-value>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <div class="text-muted">Salary current costs</div>
+          <app-finance-value [content]="salariesCurrentCosts" [hideZero]="true"></app-finance-value>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <div class="text-muted">Budget</div>
+          <app-finance-value [content]="budget" [hideZero]="true"></app-finance-value>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noValue>
+  <div class="text-center"><span>-</span></div>
+</ng-template>

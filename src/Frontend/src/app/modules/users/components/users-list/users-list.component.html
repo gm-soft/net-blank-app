@@ -1,0 +1,39 @@
+<app-page-header>
+  <div class="app-page-header-label">Users</div>
+</app-page-header>
+
+<div class="container mt-3">
+  <div class="text-muted">
+    Here you are able to find any user by his public information.
+  </div>
+
+  <div class="mt-3">
+    <form [formGroup]="searchForm" (ngSubmit)="search()">
+      <div class="input-group">
+        <input
+          class="form-control border-secondary py-2"
+          type="text"
+          name="search"
+          formControlName="searchString"
+          autocomplete="off"
+          placeholder="Find user by first name, last name, email, or username"
+        />
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="submit">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
+      </div>
+      <app-field-error [formGroup]="searchForm" [fieldName]="'searchString'"></app-field-error>
+    </form>
+  </div>
+</div>
+
+<div class="container mt-3">
+  <app-users-table
+    *ngIf="paginatedList?.results"
+    [paginatedList]="paginatedList"
+    (pageChange)="search($event)"
+    [withQueryParams]="false"
+  ></app-users-table>
+</div>

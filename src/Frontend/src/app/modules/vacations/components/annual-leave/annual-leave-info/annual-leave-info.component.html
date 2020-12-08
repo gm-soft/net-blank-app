@@ -1,0 +1,15 @@
+<app-page-header>
+  <div class="app-page-header-label">Annual leave #{{ annualLeaveId }}</div>
+</app-page-header>
+
+<div class="container mt-3" *ngIf="annualLeave != null">
+  <app-annual-leave-edit *ngIf="couldBeEdit; else readonly" [annualLeave]="annualLeave"></app-annual-leave-edit>
+
+  <ng-template #readonly>
+    <app-vacation-readonly [annualLeave]="annualLeave" [currentUser]="currentUser"></app-vacation-readonly>
+  </ng-template>
+
+  <div class="mt-3" *ngIf="annualLeave.reviews?.length > 0">
+    <app-vacation-reviews [reviews]="annualLeave.reviews"></app-vacation-reviews>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<app-page-header>
+  <div class="app-page-header-label">Departments</div>
+</app-page-header>
+
+<div class="container mt-3" *ngIf="departments != null">
+  <div class="card">
+    <ul class="list-group list-group-flush" *ngIf="departments.length > 0; else noDepartments">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item" *ngFor="let item of departments">
+          <div class="d-flex justify-content-between">
+            <a [routerLink]="[item.id]" title="Open the department">
+              <span>{{ item.name }} ({{ item.shortCode }})</span>
+            </a>
+            <small class="text-muted" title="Last update">{{ item.updatedAt | date: 'yyyy-MM-dd' }}</small>
+          </div>
+        </li>
+      </ul>
+    </ul>
+  </div>
+</div>
+
+<ng-template #noDepartments>
+  <app-nothing-to-show-label></app-nothing-to-show-label>
+</ng-template>

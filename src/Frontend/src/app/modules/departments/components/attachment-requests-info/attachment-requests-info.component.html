@@ -1,0 +1,12 @@
+<app-page-header>
+  <div class="app-page-header-label">Department attachment request #{{ requestId }}</div>
+</app-page-header>
+
+<div class="container mt-3">
+  <app-department-employee-request-page
+    *ngIf="departmentEmployeeRequestItem != null"
+    [request]="departmentEmployeeRequestItem"
+    (approve)="approve()"
+    (decline)="decline($event)"
+  ></app-department-employee-request-page>
+</div>

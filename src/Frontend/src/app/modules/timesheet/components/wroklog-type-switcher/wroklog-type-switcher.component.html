@@ -1,0 +1,16 @@
+<div class="form-group" *ngIf="showSwitcher">
+  <div class="switcher-first-label">
+    Project
+  </div>
+
+  <div class="custom-control custom-switch">
+    <input
+      type="checkbox"
+      class="custom-control-input cursor-pointer"
+      id="customSwitches"
+      [checked]="showNonProjectSpentTimeForm"
+      (change)="switcherClicked()"
+    />
+    <label class="custom-control-label" for="customSwitches">Non-project activity</label>
+  </div>
+</div>

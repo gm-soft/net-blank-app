@@ -1,0 +1,25 @@
+<app-page-header>
+  <div class="app-page-header-label">Edit app config</div>
+</app-page-header>
+
+<div class="container">
+  <form *ngIf="formGroup != null" [formGroup]="formGroup">
+    <div class="card">
+      <div class="card-body">
+        <div class="form-group">
+          <label>Value</label>
+          <input type="text" class="form-control" formControlName="value" />
+          <small class="form-text text-muted">Field is required</small>
+          <app-field-error [formGroup]="formGroup" [fieldName]="'value'"></app-field-error>
+        </div>
+
+        <div class="form-group d-flex justify-content-between">
+          <app-go-back-button></app-go-back-button>
+          <div class="pl-1 pr-3">
+            <app-submit-button (btnSubmit)="onSubmit()">Edit</app-submit-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

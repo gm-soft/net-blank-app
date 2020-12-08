@@ -1,0 +1,6 @@
+<div class="skill-wrapper" *ngIf="userSkill != null" title="{{ code }}">
+  <span class="badge px-3" [style.backgroundColor]="hex" [style.borderColor]="hex">
+    {{ name }}
+    <a *ngIf="removable" (click)="onDelete()"><i class="fa fa-times-circle white"></i></a>
+  </span>
+</div>

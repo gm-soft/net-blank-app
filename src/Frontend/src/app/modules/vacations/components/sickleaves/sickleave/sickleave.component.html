@@ -1,0 +1,66 @@
+<app-page-header>
+  <div class="app-page-header-label">Sickleave request #{{ sickleaveId }}</div>
+</app-page-header>
+
+<div class="container">
+  <div class="mt-3" *ngIf="request != null">
+    <div class="card">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <div>
+            <div class="text-muted">
+              <small> Sickleave opened by </small>
+            </div>
+            <div>
+              <a [routerLink]="['/users', request.user.id]">{{ request.user.email }}</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="list-group-item">
+          <div>
+            <div class="text-muted">
+              <small>When</small>
+            </div>
+            <div>
+              <span>{{ request.from | date: 'yyyy-MM-dd, EEEE' }}</span>
+            </div>
+          </div>
+        </li>
+
+        <li class="list-group-item">
+          <div>
+            <div class="text-muted">
+              <small>Status</small>
+            </div>
+            <div>
+              <span>{{ request.vacationStatus }}</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <div class="card-body">
+        <div class="d-flex justify-content-between mt-3">
+          <app-go-back-button></app-go-back-button>
+
+          <div class="d-inline-block" *ngIf="hasPermissionsToApproveOrDecline">
+            <button type="button" class="btn btn-outline-danger mr-1" (click)="decline()">
+              Decline
+            </button>
+
+            <button type="button" class="btn btn-success" (click)="approve()">
+              Approve
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-3" *ngIf="request.reviews?.length > 0">
+      <app-vacation-reviews [reviews]="request.reviews"></app-vacation-reviews>
+    </div>
+  </div>
+</div>
+
+<app-decline-dialog *ngIf="declineFormModalMessage != null" [message]="declineFormModalMessage"></app-decline-dialog>

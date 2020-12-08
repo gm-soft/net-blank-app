@@ -1,0 +1,19 @@
+<div class="cards justify-content-between">
+  <div class="card-wrapper mr-2" *ngFor="let item of cards">
+    <div class="card card-body h-100">
+      <div class="py-1 text-muted mb-2 h-75">
+        {{ item.text }}
+      </div>
+      <div class="w-100" title="{{ item.buttonTitle }}">
+        <button
+          type="button"
+          class="btn {{ item.styleClass }} btn-lg w-100"
+          [class.disabled]="item.disabled"
+          (click)="item.action()"
+        >
+          {{ item.title }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

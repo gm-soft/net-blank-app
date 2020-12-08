@@ -60,7 +60,7 @@ namespace Utils.Validators
                     PropertyInfo objPropInfo = _entity.GetType().GetProperty(info.Name)
                         ?? throw new InvalidOperationException($"No property info '{info.Name}'");
 
-                    if (!attribute.IsValid(objPropInfo.GetValue(_entity, null)))
+                    if (attribute.GetValidationResult(objPropInfo.GetValue(_entity, null), new ValidationContext(_entity)) != ValidationResult.Success)
                     {
                         _errors.Add($"{info.Name} is invalid by attribute {attribute.GetType().Name}");
                     }

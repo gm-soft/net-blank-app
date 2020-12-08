@@ -1,0 +1,24 @@
+<app-page-header>
+  <div class="app-page-header-label">Skills</div>
+</app-page-header>
+
+<div class="container mt-3">
+  <div class="w-100 d-flex justify-content-between">
+    <div class="text-muted">
+      Employees of the company are able to set those skills as their primary and secondary ones.
+    </div>
+    <div class="d-inline-block">
+      <a class="btn btn-outline-primary my-2 my-sm-0" routerLink="/admin/skills/create" title="Create a new skill"
+        >Create</a
+      >
+    </div>
+  </div>
+
+  <div class="mt-3">
+    <app-skills-paginated-table
+      *ngIf="paginatedList?.results"
+      [paginatedList]="paginatedList"
+      (pageChange)="loadSkills($event)"
+    ></app-skills-paginated-table>
+  </div>
+</div>

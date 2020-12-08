@@ -1,0 +1,81 @@
+<div class="card">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <div>
+        <div class="text-muted">
+          <small>Assignee</small>
+        </div>
+        <div>
+          <a [routerLink]="[request.linkPrefix, 'users', request.userToAssign.id]">{{ request.userToAssign.email }}</a>
+        </div>
+      </div>
+    </li>
+
+    <li class="list-group-item">
+      <div>
+        <div class="text-muted">
+          <small>Requestor</small>
+        </div>
+        <div>
+          <a [routerLink]="[request.linkPrefix, 'users', request.requester.id]">{{ request.requester.email }}</a>
+        </div>
+      </div>
+    </li>
+
+    <li class="list-group-item">
+      <div>
+        <div class="text-muted">
+          <small>Department</small>
+        </div>
+        <div>
+          <a [routerLink]="[request.linkPrefix, 'departments', request.department.id]" title="View the department">{{
+            request.department.name
+          }}</a>
+        </div>
+      </div>
+    </li>
+
+    <li class="list-group-item">
+      <div>
+        <div class="text-muted">
+          <small>Department role</small>
+        </div>
+        <div>{{ request.departmentParticipationType }}</div>
+      </div>
+    </li>
+
+    <li class="list-group-item" *ngIf="request.from != null">
+      <div>
+        <div class="text-muted">
+          <small>From</small>
+        </div>
+        <div>{{ request.from | date: 'yyyy-MM-dd' }}</div>
+      </div>
+    </li>
+
+    <li class="list-group-item" *ngIf="request.to != null">
+      <div>
+        <div class="text-muted">
+          <small>To</small>
+        </div>
+        <div>{{ request.to | date: 'yyyy-MM-dd' }}</div>
+      </div>
+    </li>
+  </ul>
+
+  <div class="px-3 pb-3 d-flex justify-content-between mt-3">
+    <app-go-back-button></app-go-back-button>
+
+    <div class="d-inline-block" *ngIf="request.showApproveDeclineButtons">
+      <button type="button" class="btn btn-outline-danger mr-1" (click)="onDecline()">
+        Decline
+      </button>
+
+      <button type="button" class="btn btn-success" (click)="onApprove()">
+        Approve
+      </button>
+    </div>
+  </div>
+</div>
+
+<app-decline-dialog *ngIf="declineFormModalMessage != null" [message]="declineFormModalMessage"></app-decline-dialog>

@@ -1,0 +1,104 @@
+<div class="card" *ngIf="leaveForm != null">
+  <div class="mb-3">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <div>
+          <div class="text-muted">
+            <small>Status</small>
+          </div>
+          <div>
+            <b>{{ annualLeave.vacationStatus }}</b>
+          </div>
+        </div>
+      </li>
+      <li class="list-group-item">
+        <div>
+          <div class="text-muted">
+            <small>Created at</small>
+          </div>
+          <div title="{{ annualLeave.createdAt | date: 'yyyy-MM-dd' }}">
+            {{ annualLeave.createdAt | date: 'EEEE, dd, MMMM' }}
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card-body">
+    <div class="form" [formGroup]="leaveForm">
+      <div class="form-group row">
+        <div class="col-md-6">
+          <div class="">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">From</span>
+              </div>
+              <input
+                class="form-control"
+                placeholder="yyyy-mm-dd"
+                autocomplete="off"
+                name="from"
+                formControlName="from"
+                appDateRange="to"
+                ngbDatepicker
+                #startDatePicker="ngbDatepicker"
+              />
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary calendar" (click)="startDatePicker.toggle()" type="button">
+                  <i class="far fa-calendar-alt"></i> Pick
+                </button>
+              </div>
+            </div>
+            <small class="form-text text-muted">Field is required</small>
+            <app-field-error [formGroup]="leaveForm" [fieldName]="'from'"></app-field-error>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">To</span>
+              </div>
+              <input
+                class="form-control"
+                placeholder="yyyy-mm-dd"
+                autocomplete="off"
+                name="to"
+                formControlName="to"
+                appDateRange="from"
+                ngbDatepicker
+                #endDatePicker="ngbDatepicker"
+              />
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary calendar" (click)="endDatePicker.toggle()" type="button">
+                  <i class="far fa-calendar-alt"></i> Pick
+                </button>
+              </div>
+            </div>
+            <small class="form-text text-muted">Field is required</small>
+            <app-field-error [formGroup]="leaveForm" [fieldName]="'to'"></app-field-error>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group d-flex justify-content-between">
+        <div>
+          <app-go-back-button></app-go-back-button>
+          <button class="btn btn-outline-danger ml-2" (click)="delete()">
+            Delete
+          </button>
+        </div>
+        <div class="d-flex justify-content-between">
+          <button class="btn btn-success mr-2" *ngIf="annualLeave.isDraft" (click)="makeAwaiting()">
+            Make Awaiting
+          </button>
+          <app-submit-button class="mr-2" *ngIf="annualLeave.isDeclined" (btnSubmit)="reconfirm()"
+            >Reconfirm
+          </app-submit-button>
+          <app-submit-button *ngIf="!annualLeave.isApproved" (btnSubmit)="onSubmit()">Update</app-submit-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

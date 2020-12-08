@@ -1,0 +1,33 @@
+<app-page-header>
+  <div class="app-page-header-label">
+    Admin tools
+  </div>
+</app-page-header>
+
+<div class="container">
+  <div>
+    <div class="h5">Health check</div>
+    <app-health-check-table [items]="healthCheckItems"></app-health-check-table>
+  </div>
+
+  <div class="mt-5">
+    <div class="h5">Jobs</div>
+    <div class="text-muted mb-3">
+      <small>Those jobs we excute in the background, but you are able to invoke them manually</small>
+    </div>
+    <app-jobs-table [items]="jobItems"></app-jobs-table>
+  </div>
+
+  <div class="mt-5">
+    <div class="h5">Special admin operations</div>
+    <div class="text-muted mb-3">
+      <small>Those operations related to non-business requirements, but are useful for System administrator</small>
+    </div>
+    <app-jobs-table [items]="specialAdminOperations"></app-jobs-table>
+  </div>
+
+  <div class="mt-5">
+    <div class="mb-3 h5">Authorization token</div>
+    <code>{{ authorizationToken }}</code>
+  </div>
+</div>

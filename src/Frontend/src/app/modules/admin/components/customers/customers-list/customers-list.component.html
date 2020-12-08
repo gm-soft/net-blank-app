@@ -1,0 +1,44 @@
+<app-page-header>
+  <div class="app-page-header-label">Customers</div>
+</app-page-header>
+
+<div class="container mt-3">
+  <div class="w-100 d-flex justify-content-between">
+    <div class="d-inline-block text-muted">
+      <b>Customer</b> is a somebody who has ordered a project or has signed a contract for development.
+      <br />
+      Projects could be created without customer, but we may group projects by their customer.
+    </div>
+    <div class="d-inline-block">
+      <a class="btn btn-outline-primary my-2 my-sm-0" routerLink="/admin/customers/create">Create</a>
+    </div>
+  </div>
+
+  <div class="table-responsive mt-3" *ngIf="customers != null">
+    <table class="table table-striped table-bordered table-hover" *ngIf="customers.length > 0; else noItems">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th>Full Name</th>
+          <th>Short Code</th>
+          <th>Last update</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of customers; let i = index" [routerLink]="[item.id]" title="Edit the customer">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ item.name }}</td>
+          <td>{{ item.shortCode }}</td>
+          <td>
+            <span class="text-muted" title="Last update">
+              <small>{{ item.updatedAt | date: 'yyyy-MM-dd' }}</small>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <ng-template #noItems>
+    <div class="card">No customers created. You may create the first one.</div>
+  </ng-template>
+</div>

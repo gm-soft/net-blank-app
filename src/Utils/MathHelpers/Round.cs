@@ -19,7 +19,7 @@ namespace Utils.MathHelpers
 
         public double Value()
         {
-            return System.Math.Round(
+            return Math.Round(
                 value: _source,
                 digits: _digits,
                 mode: _midpoint);
