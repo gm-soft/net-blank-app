@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Utils.Helpers;
-using Utils.Interfaces;
 
 namespace Utils.Dates
 {
@@ -67,6 +66,10 @@ namespace Utils.Dates
         {
         }
 
+        public Date Start() => _from;
+
+        public Date End() => _to;
+
         /// <summary>
         /// Returns a collection of <see cref="TimeRange"/> where
         /// every item represents each day between source From and To dates range.
@@ -110,10 +113,10 @@ namespace Utils.Dates
                 return list;
             }
 
-            DateTimeOffset firstDayOfTheLastTimelineMonth = _to.FirstDayOfMonth();
+            DateTimeOffset firstDayOfTheLastTimelineMonth = _to.FirstDayOfMonth().StartOfTheDay();
 
             // Add first month remaining days
-            list.Add(new MonthRange(_from.StartOfTheDay(), _from.LastDayOfMonth()));
+            list.Add(new MonthRange(_from.StartOfTheDay(), _from.LastDayOfMonth().EndOfTheDay()));
 
             // Add All months days in between
             for (var st = From.AddMonths(1); st < firstDayOfTheLastTimelineMonth; st = st.AddMonths(1))
@@ -149,6 +152,13 @@ namespace Utils.Dates
                    range._to.Source <= _to.Source;
         }
 
+        // TODO Maxim: unittests
+        public bool Contains(Date date)
+        {
+            return date.Source >= _from.Source &&
+                date.Source <= _to.Source;
+        }
+
         public TimeRange IntersectionOrNull(TimeRange second)
         {
             if (this.Contains(second))
@@ -176,6 +186,54 @@ namespace Utils.Dates
             }
 
             return null;
+        }
+
+        public virtual IReadOnlyCollection<TimeRange> RemoveRanges(IReadOnlyCollection<TimeRange> rangesToRemove)
+        {
+            rangesToRemove.ThrowIfNullOrEmpty(nameof(rangesToRemove));
+
+            IReadOnlyCollection<DayRange> days = SplitByDays();
+
+            DayRange[] daysNotInTheRangesToRemove = days
+                .Where(day => rangesToRemove.All(range => !range.Contains(day)))
+                .OrderBy(x => x.From)
+                .ToArray();
+
+            if (!daysNotInTheRangesToRemove.Any())
+            {
+                return Array.Empty<TimeRange>();
+            }
+
+            var result = new List<TimeRange>();
+
+            DayRange previous, start;
+            previous = start = daysNotInTheRangesToRemove.First();
+
+            // index = 1 because we have to skip the first element
+            for (var index = 1; index < daysNotInTheRangesToRemove.Length; index++)
+            {
+                DayRange dayRange = daysNotInTheRangesToRemove[index];
+
+                if (!dayRange.NextFor(previous))
+                {
+                    result.Add(new TimeRange(
+                        start.AsDate(),
+                        daysNotInTheRangesToRemove[index - 1].AsDate()));
+
+                    start = dayRange;
+                }
+
+                if (index == daysNotInTheRangesToRemove.Length - 1)
+                {
+                    result.Add(new TimeRange(
+                        start.AsDate(),
+                        dayRange.AsDate()));
+                }
+
+                previous = dayRange;
+            }
+
+            return result;
         }
 
         public IReadOnlyCollection<DayRange> WorkDays()

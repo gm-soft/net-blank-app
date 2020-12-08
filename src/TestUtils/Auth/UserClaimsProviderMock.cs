@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
+using Domain.Services.Auth;
 using Moq;
-using PC.Domain.Services.Auth;
+using PC.Models.Records.Users;
 using PC.Models.Users;
 using Utils.Authorization;
-using Utils.Enums;
+using Utils.Helpers;
+using Utils.Interfaces;
 
 namespace TestUtils.Auth
 {
@@ -12,21 +14,24 @@ namespace TestUtils.Auth
     {
         private readonly Mock<IUserClaimsProvider> _mock;
 
-        private readonly Role _currentUserClaimRole;
+        private readonly ICollection<Claim> _claims;
 
-        private readonly ApplicationUser _user;
-
-        public UserClaimsProviderMock(Role currentUserClaimRole)
+        public UserClaimsProviderMock(IdentityUser user)
         {
+            user.ThrowIfNull(nameof(user));
             _mock = new Mock<IUserClaimsProvider>();
-            _currentUserClaimRole = currentUserClaimRole;
+
+            _claims = CreateClaimsPrincipal(user);
+            _claims.Add(EmailConfirmedClaim(user.EmailConfirmed));
         }
 
-        public UserClaimsProviderMock(ApplicationUser user)
+        public UserClaimsProviderMock(User user)
         {
+            user.ThrowIfNull(nameof(user));
             _mock = new Mock<IUserClaimsProvider>();
-            _currentUserClaimRole = user.Role;
-            _user = user;
+
+            _claims = CreateClaimsPrincipal(user);
+            _claims.Add(EmailConfirmedClaim(user.EmailConfirmed));
         }
 
         public IUserClaimsProvider GetObject()
@@ -37,27 +42,28 @@ namespace TestUtils.Auth
 
             _mock
                 .Setup(x => x.GetUserClaims())
-                .Returns(CreateClaimsPrincipal(_currentUserClaimRole));
+                .Returns(new ClaimsPrincipal(new ClaimsIdentity(_claims)));
 
             return _mock.Object;
         }
 
-        private ClaimsPrincipal CreateClaimsPrincipal(Role role)
+        private static List<Claim> CreateClaimsPrincipal(IHasUserData data)
         {
-            var claims = new List<Claim>
+            return new List<Claim>
             {
-                new Claim(ClaimTypes.Role, role.ToString())
+                new Claim(ClaimTypes.Role, data.Role.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, data.Id.ToString()),
+                new Claim(ClaimTypes.Email, data.Email),
+                new Claim(ClaimTypes.GivenName, data.FirstName),
+                new Claim(ClaimTypes.Surname, data.LastName),
+                new Claim(CustomClaimTypes.Username, data.UserName)
             };
+        }
 
-            if (_user != null)
-            {
-                claims.Add(new Claim(ClaimTypes.Email, _user.Email));
-                claims.Add(new Claim(ClaimTypes.GivenName, _user.FirstName));
-                claims.Add(new Claim(ClaimTypes.Surname, _user.LastName));
-                claims.Add(new Claim(CustomClaimTypes.Username, _user.UserName));
-            }
-
-            return new ClaimsPrincipal(new ClaimsIdentity(claims));
+        private static Claim EmailConfirmedClaim(bool value)
+        {
+            return new Claim(
+                CustomClaimTypes.EmailConfirmed, value.ToString(), ClaimValueTypes.Boolean);
         }
     }
 }

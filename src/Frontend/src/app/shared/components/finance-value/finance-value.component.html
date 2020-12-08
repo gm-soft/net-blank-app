@@ -1,0 +1,11 @@
+<div *ngIf="content?.hasValue; else noValue">
+  <div class="{{ textDecodationClass }}" title="{{ title }}">
+    {{ content.value | number: '5.2-2' }}
+  </div>
+</div>
+
+<ng-template #noValue>
+  <div class="{{ textDecodationClass }}">
+    <span> {{ zeroValue }}</span>
+  </div>
+</ng-template>

@@ -1,5 +1,6 @@
 ﻿using System;
 using Utils.Dates;
+using Utils.Exceptions;
 using Utils.Helpers;
 using Utils.Interfaces;
 
@@ -24,13 +25,13 @@ namespace Utils.Validators
 
             if (instance.From.Earlier(TimeRange.Min) || instance.From.Later(TimeRange.Max))
             {
-                throw new InvalidOperationException(
+                throw new InvalidDateRangeException(
                     $"{nameof(TimeRange.From)} is not within allowed range");
             }
 
             if (instance.To.Earlier(TimeRange.Min) || instance.To.Later(TimeRange.Max))
             {
-                throw new InvalidOperationException(
+                throw new InvalidDateRangeException(
                     $"{nameof(TimeRange.To)} is not within allowed range");
             }
         }
@@ -40,7 +41,7 @@ namespace Utils.Validators
         {
             if (instance.From.Earlier(TimeRange.Min))
             {
-                throw new InvalidOperationException(
+                throw new InvalidDateRangeException(
                     $"A From Date of the {typeof(T).Name} should not be earlier than MinValue");
             }
 
@@ -51,12 +52,12 @@ namespace Utils.Validators
 
             if (instance.RangeReversed(toIsRequired))
             {
-                throw new InvalidOperationException("To date cannot be greater than From date");
+                throw new InvalidDateRangeException("To date cannot be greater than From date");
             }
 
             if (instance.To.HasValue && instance.To.Value.Later(TimeRange.Max))
             {
-                throw new InvalidOperationException(
+                throw new InvalidDateRangeException(
                     $"A To Date of the {typeof(T).Name} should not be later than MaxValue");
             }
         }

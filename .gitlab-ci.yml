@@ -6,12 +6,12 @@ stages:
 
 backend test:
   stage: backend test
-  image: mcr.microsoft.com/dotnet/core/sdk:3.1
+  image: mcr.microsoft.com/dotnet/sdk:5.0
   only:
     - merge_requests
     - master
   variables:
-    SOLUTION_FILE: "./src/Company-Intranet.sln"
+    SOLUTION_FILE: "./src/NetBlankApp.sln"
   cache:
     key: "build_dependency_dotnet"
     paths:

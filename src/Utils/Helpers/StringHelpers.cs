@@ -77,5 +77,10 @@ namespace Utils.Helpers
                 return false;
             }
         }
+
+        public static bool IsNullOrEmpty(this string @string)
+        {
+            return string.IsNullOrEmpty(@string);
+        }
     }
 }

@@ -5,12 +5,14 @@ namespace Utils.Helpers
 {
     public static class CompareHelpers
     {
-        public static bool EqualTo(this double first, double second, double tolerance = 0.01)
+        private const double Tolerance = 0.01;
+
+        public static bool EqualTo(this double first, double second, double tolerance = Tolerance)
         {
             return Math.Abs(first - second) < tolerance;
         }
 
-        public static bool EqualTo(this double? first, double? second, double tolerance = 0.01)
+        public static bool EqualTo(this double? first, double? second, double tolerance = Tolerance)
         {
             if (first == null && second == null)
             {
@@ -64,9 +66,14 @@ namespace Utils.Helpers
             return first.SameMonth(second.Source) && first.Day == second.Source.Day;
         }
 
-        public static bool SameDay(this DateTimeOffset? first, Date second)
+        public static bool SameDay(this Date first, DateTimeOffset second)
         {
-            return first.HasValue && first.Value.SameMonth(second.Source) && first.Value.Day == second.Source.Day;
+            return first != null && first.Source.SameMonth(second) && first.Day == second.Day;
+        }
+
+        public static bool SameDay(this Date first, Date second)
+        {
+            return first != null && second != null && first.SameMonth(second) && first.Day == second.Day;
         }
 
         public static bool IsToday(this DateTimeOffset date)
@@ -90,14 +97,14 @@ namespace Utils.Helpers
             return first.Value.Earlier(second.Value);
         }
 
-        public static bool EarlierOrEqual(this DateTimeOffset? first, DateTimeOffset? second)
+        public static bool EarlierOrEqual(this Date first, Date second)
         {
             if (first == null || second == null)
             {
                 return false;
             }
 
-            return first.Value.EarlierOrEqual(second.Value);
+            return first.EndOfTheDay().EarlierOrEqual(second.EndOfTheDay());
         }
 
         public static bool EarlierOrEqual(this DateTimeOffset? first, Date second)

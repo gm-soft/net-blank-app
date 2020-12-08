@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Utils.Dates;
+using Utils.Helpers;
 using Xunit;
 
 namespace Utils.Test.Dates
@@ -403,17 +404,133 @@ namespace Utils.Test.Dates
         [Fact]
         public void IntersectionOrNull_NoIntersections_ReturnsNull_Ok()
         {
-            var first = new TimeRange(
-                new Date(2020, 6, 1).StartOfTheDay(),
-                new Date(2020, 6, 30).EndOfTheDay());
+            var first = new TimeRange(new Date(2020, 6, 1), new Date(2020, 6, 30));
 
-            var second = new TimeRange(
-                @from: new Date(2020, 4, 15).StartOfTheDay(),
-                to: new Date(2020, 5, 20).EndOfTheDay());
+            var second = new TimeRange(new Date(2020, 4, 15), new Date(2020, 5, 20));
 
             TimeRange intersection = first.IntersectionOrNull(second);
 
             Assert.Null(intersection);
+        }
+
+        [Fact]
+        public void RemoveRanges_AllRangesIncludedIntoMainOne_Case1_Ok()
+        {
+            var target = new MonthRange(new Date(2020, 6, 1), new Date(2020, 6, 30));
+
+            var rangesToRemove = new List<TimeRange>
+            {
+                new TimeRange(new Date(2020, 6, 1), new Date(2020, 6, 10))
+            };
+
+            IReadOnlyCollection<TimeRange> result = target.RemoveRanges(rangesToRemove);
+
+            Assert.Single(result);
+
+            var first = result.First();
+
+            Assert.True(new Date(2020, 6, 11).SameDay(first.From));
+            Assert.True(new Date(2020, 6, 30).SameDay(first.To));
+        }
+
+        [Fact]
+        public void RemoveRanges_AllRangesIncludedIntoMainOne_Case2_Ok()
+        {
+            var target = new MonthRange(new Date(2020, 6, 1), new Date(2020, 6, 30));
+
+            var rangesToRemove = new List<TimeRange>
+            {
+                new TimeRange(new Date(2020, 6, 1), new Date(2020, 6, 10)),
+                new TimeRange(new Date(2020, 6, 15), new Date(2020, 6, 29))
+            };
+
+            IReadOnlyCollection<TimeRange> result = target.RemoveRanges(rangesToRemove);
+
+            Assert.Equal(2, result.Count);
+
+            var first = result.First();
+            var last = result.Last();
+
+            Assert.True(new Date(2020, 6, 11).SameDay(first.From));
+            Assert.True(new Date(2020, 6, 14).SameDay(first.To));
+
+            Assert.True(new Date(2020, 6, 30).SameDay(last.From));
+            Assert.True(new Date(2020, 6, 30).SameDay(last.To));
+        }
+
+        [Fact]
+        public void RemoveRanges_AllRangesIncludedIntoMainOne_Case3_Ok()
+        {
+            var target = new MonthRange(new Date(2020, 6, 1), new Date(2020, 6, 30));
+
+            var rangesToRemove = new List<TimeRange>
+            {
+                new TimeRange(new Date(2020, 6, 1), new Date(2020, 6, 1)),
+                new TimeRange(new Date(2020, 6, 10), new Date(2020, 6, 20)),
+                new TimeRange(new Date(2020, 6, 28), new Date(2020, 6, 30))
+            };
+
+            IReadOnlyCollection<TimeRange> result = target.RemoveRanges(rangesToRemove);
+
+            Assert.Equal(2, result.Count);
+
+            Assert.True(new Date(2020, 6, 2).SameDay(result.ElementAt(0).From));
+            Assert.True(new Date(2020, 6, 9).SameDay(result.ElementAt(0).To));
+
+            Assert.True(new Date(2020, 6, 21).SameDay(result.ElementAt(1).From));
+            Assert.True(new Date(2020, 6, 27).SameDay(result.ElementAt(1).To));
+        }
+
+        [Fact]
+        public void RemoveRanges_NotAllRangesIncludedIntoMainOne_Case1_Ok()
+        {
+            var target = new TimeRange(new Date(2020, 6, 1), new Date(2020, 6, 30));
+
+            var rangesToRemove = new List<TimeRange>
+            {
+                new TimeRange(new Date(2020, 6, 15), new Date(2020, 7, 20)),
+            };
+
+            IReadOnlyCollection<TimeRange> result = target.RemoveRanges(rangesToRemove);
+
+            Assert.Equal(1, result.Count);
+
+            Assert.True(new Date(2020, 6, 1).SameDay(result.ElementAt(0).From));
+            Assert.True(new Date(2020, 6, 14).SameDay(result.ElementAt(0).To));
+        }
+
+        [Fact]
+        public void RemoveRanges_NotAllRangesIncludedIntoMainOne_Case2_Ok()
+        {
+            var target = new TimeRange(new Date(2020, 6, 1), new Date(2020, 6, 30));
+
+            var rangesToRemove = new List<TimeRange>
+            {
+                new TimeRange(new Date(2020, 5, 15), new Date(2020, 6, 14)),
+            };
+
+            IReadOnlyCollection<TimeRange> result = target.RemoveRanges(rangesToRemove);
+
+            Assert.Equal(1, result.Count);
+
+            Assert.True(new Date(2020, 6, 15).SameDay(result.ElementAt(0).From));
+            Assert.True(new Date(2020, 6, 30).SameDay(result.ElementAt(0).To));
+        }
+
+        [Fact]
+        public void RemoveRanges_NoRangesToRemove_Exception()
+        {
+            var target = new TimeRange(new Date(2020, 6, 1), new Date(2020, 6, 30));
+
+            Assert.Throws<InvalidOperationException>(() => target.RemoveRanges(Array.Empty<TimeRange>()));
+        }
+
+        [Fact]
+        public void RemoveRanges_Null_Exception()
+        {
+            var target = new TimeRange(new Date(2020, 6, 1), new Date(2020, 6, 30));
+
+            Assert.Throws<ArgumentNullException>(() => target.RemoveRanges(null));
         }
     }
 }

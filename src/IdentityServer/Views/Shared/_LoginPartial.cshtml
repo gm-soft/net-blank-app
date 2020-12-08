@@ -1,0 +1,19 @@
+﻿@model IdentityServer.Models.Home.HomeViewModel
+
+<ul class="navbar-nav">
+    @if (Model.HasLoggedUser)
+    {
+        <li class="nav-item">
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello again, @Model.Username</a>
+        </li>
+        <li class="nav-item">
+            <a href="/account/logout" class="btn btn-outline-light btn-block">Log out</a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a href="/account/login" class="btn btn-outline-light btn-block">Log in</a>
+        </li>
+    }
+</ul>

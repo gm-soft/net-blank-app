@@ -1,0 +1,98 @@
+<app-page-header>
+  <div class="app-page-header-label">Send email</div>
+</app-page-header>
+
+<div class="container">
+  <form [formGroup]="sendForm" *ngIf="sendForm != null">
+    <div class="card">
+      <div class="card-body">
+        <div class="form-group">
+          <label>From</label>
+          <select class="form-control" formControlName="from">
+            <option *ngFor="let email of emails" [value]="email.value">
+              {{ email.value }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Recievers *</label>
+          <ng-select
+            *ngIf="receivers"
+            formControlName="recipients"
+            [multiple]="true"
+            [closeOnSelect]="false"
+            [items]="receivers"
+            bindLabel="label"
+            bindValue="email"
+            placeholder="Select recievers"
+            [readonly]="sendToAll"
+          ></ng-select>
+          <small class="form-text text-muted">Field is required</small>
+          <app-field-error [formGroup]="sendForm" [fieldName]="'recipients'"></app-field-error>
+        </div>
+
+        <div class="form-group">
+          <input type="checkbox" (change)="sendAll($event)" /> Send to all company active users
+        </div>
+
+        <div class="form-group">
+          <label>Copy</label>
+          <ng-select
+            *ngIf="receivers"
+            formControlName="cc"
+            [multiple]="true"
+            [items]="receivers"
+            bindLabel="label"
+            bindValue="email"
+            placeholder="Select users to copy"
+            [closeOnSelect]="false"
+          ></ng-select>
+        </div>
+
+        <div class="form-group">
+          <label>Blind copy</label>
+          <ng-select
+            *ngIf="receivers"
+            formControlName="hiddenCc"
+            [multiple]="true"
+            [items]="receivers"
+            bindLabel="label"
+            bindValue="email"
+            placeholder="Select employee"
+            [closeOnSelect]="false"
+          ></ng-select>
+        </div>
+
+        <div class="form-group">
+          <label>Subject *</label>
+          <input type="text" class="form-control" formControlName="subject" />
+          <small class="form-text text-muted">Field is required</small>
+          <app-field-error [formGroup]="sendForm" [fieldName]="'subject'"></app-field-error>
+        </div>
+
+        <div class="form-group">
+          <label>Body *</label>
+          <ckeditor [editor]="editor" formControlName="body" [config]="{ toolbar: toolbar }"></ckeditor>
+          <small class="form-text text-muted">Field is required</small>
+          <app-field-error [formGroup]="sendForm" [fieldName]="'body'"></app-field-error>
+        </div>
+
+        <div class="form-group d-flex justify-content-between">
+          <app-go-back-button></app-go-back-button>
+          <div class="row">
+            <div>
+              <button (click)="getPreview()" class="btn btn-light">Preview</button>
+            </div>
+            <div class="pl-1 pr-3">
+              <app-submit-button (btnSubmit)="onSubmit()">Create</app-submit-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<app-email-preview-modal *ngIf="preview != null" [item]="preview"></app-email-preview-modal>
+<app-confirm-dialog *ngIf="confirmSendToAll != null" [message]="confirmSendToAll"></app-confirm-dialog>

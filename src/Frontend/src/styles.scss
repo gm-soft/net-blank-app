@@ -1,0 +1,22 @@
+/* You can add global styles to this file, and also import other style files */
+$petrel-grey: #f9f9f9;
+$petrel-blue: #002ff7;
+
+.bg-petrel-grey {
+  background-color: $petrel-grey;
+}
+
+@import 'spacing';
+@import 'typography';
+@import '~bootstrap/scss/bootstrap.scss';
+@import '~@ng-select/ng-select/themes/default.theme.css';
+
+input.ng-touched.ng-invalid {
+  @extend .is-invalid;
+}
+
+input.ng-touched.ng-valid {
+  @extend .is-valid;
+}
+
+@import 'sidebar/core';

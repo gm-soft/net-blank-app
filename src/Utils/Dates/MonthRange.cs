@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Utils.Helpers;
 
 namespace Utils.Dates
 {
@@ -55,6 +57,27 @@ namespace Utils.Dates
         public int WorkDaysCount()
         {
             return SplitByDays().Count(x => !x.Weekend());
+        }
+
+        public override IReadOnlyCollection<TimeRange> RemoveRanges(IReadOnlyCollection<TimeRange> rangesToRemove)
+        {
+            rangesToRemove.ThrowIfNullOrEmpty(nameof(rangesToRemove));
+
+            var rangesToRemoveInThisMonth = new List<TimeRange>();
+
+            foreach (var range in rangesToRemove)
+            {
+                TimeRange intersection = IntersectionOrNull(range);
+                if (intersection == null)
+                {
+                    throw new InvalidOperationException(
+                        $"Range {range} not included into the Month {this}");
+                }
+
+                rangesToRemoveInThisMonth.Add(intersection);
+            }
+
+            return base.RemoveRanges(rangesToRemoveInThisMonth);
         }
     }
 }

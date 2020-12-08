@@ -1,7 +1,7 @@
 FROM node:13.13.0-alpine AS compile-image
 
 WORKDIR /app
-COPY ./PC.Frontend .
+COPY ./Frontend .
 
 ENV PATH /app/node_modules/.bin:$PATH
 

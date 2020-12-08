@@ -6,6 +6,27 @@ namespace Utils.Test.Dates
 {
     public class DateTest
     {
+        [Theory]
+        [InlineData("2020-09-01T00:00:00.00+0{0}:00", "yyyy-MM-ddTHH:mm:ss.ffzzzz")]
+        [InlineData("2020-09-01", "yyyy-MM-dd")]
+        public void ToFormat_DifferentFormats(string expected, string format)
+        {
+            var timezone = DateTimeOffset.Now.Offset.Hours;
+            expected = string.Format(expected, timezone.ToString());
+
+            Assert.Equal(
+                expected,
+                new Date(2020, 9, 1).ToFormat(format));
+        }
+
+        [Fact]
+        public void ToJiraIso_Ok()
+        {
+            Assert.Equal(
+                $"2020-09-01T00:00:00.00+0{DateTimeOffset.Now.Offset.Hours}:00",
+                new Date(2020, 9, 1).ToJiraIso());
+        }
+
         [Fact]
         public void Today_Ok()
         {
@@ -65,7 +86,7 @@ namespace Utils.Test.Dates
         {
             Assert.Equal(
                 expected: DateOffset(2020, 2, 1),
-                actual: new Date(2020, 2, day).FirstDayOfMonth());
+                actual: new Date(2020, 2, day).FirstDayOfMonth().StartOfTheDay());
         }
 
         [Theory]
@@ -77,7 +98,7 @@ namespace Utils.Test.Dates
         {
             Assert.Equal(
                 expected: DateOffset(2020, 2, 29, 23, 59, 59),
-                actual: new Date(2020, 2, day).LastDayOfMonth());
+                actual: new Date(2020, 2, day).LastDayOfMonth().EndOfTheDay());
         }
 
         [Theory]
