@@ -35,9 +35,6 @@
                 <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
                   <a [routerLink]="['/admin/users']"><i class="fa fa-sort-numeric-down"></i> Users</a>
                 </li>
-                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
-                  <a [routerLink]="['/admin/inactive-users']"><i class="fa fa-user-lock"></i> Inactive users</a>
-                </li>
               </ul>
 
               <li data-toggle="collapse" data-target="#emails" class="collapsed">
@@ -79,9 +76,6 @@
             <ul class="sub-menu collapse" id="users">
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
                 <a routerLink="/users"><i class="fa fa-sort-numeric-down"></i>Users</a>
-              </li>
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
-                <a routerLink="/users/my-subordinates"><i class="fa fa-sort-numeric-down"></i>My subordinates</a>
               </li>
             </ul>
           </ul>

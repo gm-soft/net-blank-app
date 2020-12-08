@@ -29,46 +29,7 @@ export class JobInvocationComponent implements OnInit {
   ngOnInit() {
     this.authorizationToken = this.authService.getAuthorizationHeaderValue();
 
-    this.jobItems = [
-      new JobItem(
-        'Project Staff Cost',
-        'Project Staff Cost means all costs based on employees salaries and their workday price',
-        () => this.jobInvocationService.projectTheoreticalCosts()
-      ),
-      new JobItem(
-        'Project Actual Staff Cost',
-        `Project Actual Staff Cost means all costs based on employees' worklogs`,
-        () => this.jobInvocationService.projectFactCosts()
-      ),
-      new JobItem(
-        'Department Employee Statuses',
-        `Department employees' statuses that end by the date of the job execution should be set to Outdated`,
-        () => this.jobInvocationService.departmentEmployeeStatuses()
-      ),
-      new JobItem(
-        'Project Employee Statuses',
-        `Project participations' statuses that end by the date of the job execution should be set to Outdated`,
-        () => this.jobInvocationService.projetEmployeeStatuses()
-      ),
-      new JobItem(
-        'Send Worklog Report',
-        'Sends reports about worklog gaps, if the employee has no records during one single day on the previous week',
-        () => this.jobInvocationService.sendLogGapReport()
-      ),
-      new JobItem(
-        'Send Project Worklog Report',
-        'Sends reports about project worklog gaps, if the project participant has no single records on the previous week',
-        () => this.jobInvocationService.sendProjectLogGapReport()
-      ),
-      new JobItem(
-        'Send Subordinates Worklog Report',
-        'Sends reports about subordinates worklog gaps, if subordinates have no records during one single day on the previous week',
-        () => this.jobInvocationService.sendSubordinatesLogGapReport()
-      ),
-      new JobItem('Sync Jira tasks', 'Sync time logs from jira issues with intra time records', () =>
-        this.jobInvocationService.syncJiraTasks()
-      )
-    ];
+    this.jobItems = [];
 
     this.specialAdminOperations = [
       new JobItem('Remove all non-confirmed users', 'Remove all non-confirmed users from the system', () =>
