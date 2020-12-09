@@ -54,7 +54,7 @@ services:
       ASPNETCORE_HTTPS_PORT: 44393
       ElasticSearch:ConnectionString: http://elasticsearch:9200
       MessageBroker:RabbitHost: "rabbitmq://admin:admin@rabbitmq:5672"
-      MessageBroker:KafkaHost: kafka:9092
+      MessageBroker:KafkaHost: kafka:9093
       IssuerUri: https://identityserver
       ConnectionStrings:DefaultConnection: Host=database.identity;Database=identity;User Id=dbuser;Password=Str0ngPass!
     ports:
@@ -86,7 +86,7 @@ services:
       ElasticSearch:ConnectionString: http://elasticsearch:9200
       IdentityServer:Authority: https://identityserver:44393
       MessageBroker:RabbitHost: "rabbitmq://admin:admin@rabbitmq:5672"
-      MessageBroker:KafkaHost: kafka:9092
+      MessageBroker:KafkaHost: kafka:9093
     ports:
       - 44338:44338
     networks:
@@ -95,7 +95,7 @@ services:
       - ~/.aspnet/https:/https:ro
 
   elasticsearch:
-    container_name: elasticsearch
+    container_name: nba-elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
     environment:
       - discovery.type=single-node
@@ -110,7 +110,7 @@ services:
       - logging-network
 
   kibana:
-    container_name: kibana
+    container_name: nba-kibana
     image: docker.elastic.co/kibana/kibana:7.5.2
     depends_on:
       - elasticsearch
@@ -145,6 +145,7 @@ services:
     networks:
       - nba-network
 
+  # https://www.kaaproject.org/blog/kafka-docker
   kafka:
     container_name: nba-kafka
     image: wurstmeister/kafka
@@ -154,9 +155,12 @@ services:
     depends_on:
       - zookeeper
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9093,OUTSIDE://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_CREATE_TOPICS: "user-change-queue:1:1,healthcheck-topic:1:1"
     networks:
       - nba-network
 

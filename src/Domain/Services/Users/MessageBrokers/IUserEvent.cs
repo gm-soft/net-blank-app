@@ -12,10 +12,10 @@ namespace Domain.Services.Users.MessageBrokers
 
         Task CreateAsync(IReadOnlyCollection<User> users);
 
-        Task DeleteAsync(string userName);
+        Task DeleteAsync(User user);
 
         Task RestoreAsync(User user);
 
-        Task RemoveAsync(string userName);
+        Task RemoveAsync(User user);
     }
 }

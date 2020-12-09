@@ -173,7 +173,7 @@ namespace Domain.Services.Users
 
             await _userRepository.DeleteAsync(id);
 
-            await _userEvent.DeleteAsync(user.UserName);
+            await _userEvent.DeleteAsync(user);
         }
 
         public async Task<PaginatedList<User>> SearchAsync(string searchString, PageModel pageModel)
@@ -262,7 +262,7 @@ namespace Domain.Services.Users
 
             await _userRepository.RemoveInactiveUserFromDatabaseAsync(id);
 
-            await _userEvent.RemoveAsync(user.UserName);
+            await _userEvent.RemoveAsync(user);
         }
 
         public async Task<int> RemoveNonConfirmedUsersFromDatabaseAsync()

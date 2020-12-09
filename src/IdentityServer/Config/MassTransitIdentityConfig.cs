@@ -17,25 +17,13 @@ namespace IdentityServer.Config
                     paramName: "(\"MessageBroker\")[\"RabbitHost\"]"),
                 addConsumers: (cfg) =>
                 {
-                    cfg.AddConsumer<UserCreateRabbitConsumer>();
-                    cfg.AddConsumer<UserUpdateRabbitConsumer>();
-                    cfg.AddConsumer<UsersImportRabbitConsumer>();
+                    cfg.AddConsumer<UserChangeRabbitConsumer>();
                 },
                 configureConsumers: (context, cfg) =>
                 {
-                    cfg.ReceiveEndpoint(UserCreateRabbitConsumer.Queue, e =>
+                    cfg.ReceiveEndpoint(UserChangeRabbitConsumer.Queue, e =>
                     {
-                        e.ConfigureConsumer<UserCreateRabbitConsumer>(context);
-                    });
-
-                    cfg.ReceiveEndpoint(UserUpdateRabbitConsumer.Queue, e =>
-                    {
-                        e.ConfigureConsumer<UserUpdateRabbitConsumer>(context);
-                    });
-
-                    cfg.ReceiveEndpoint(UsersImportRabbitConsumer.Queue, e =>
-                    {
-                        e.ConfigureConsumer<UsersImportRabbitConsumer>(context);
+                        e.ConfigureConsumer<UserChangeRabbitConsumer>(context);
                     });
                 });
 

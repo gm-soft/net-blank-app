@@ -9,11 +9,11 @@ namespace Web.MessageBrokers.RabbitMQ
     public abstract class BaseRabbitConsumer<TMessage> : IConsumer<TMessage>
         where TMessage : class, new()
     {
-        private readonly ILogger _logger;
+        protected ILogger Logger { get; }
 
         protected BaseRabbitConsumer(ILogger logger)
         {
-            _logger = logger;
+            Logger = logger;
         }
 
 #pragma warning disable UseAsyncSuffix // Use Async suffix
@@ -22,7 +22,7 @@ namespace Web.MessageBrokers.RabbitMQ
         {
             try
             {
-                _logger.LogInformation($"Consuming message {typeof(TMessage).Name}");
+                Logger.LogInformation($"Consuming message {typeof(TMessage).Name}");
                 await ConsumeAsync(context);
             }
             catch (Exception exception)

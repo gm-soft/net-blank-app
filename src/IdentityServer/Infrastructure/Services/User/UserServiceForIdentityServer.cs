@@ -156,5 +156,17 @@ namespace IdentityServer.Infrastructure.Services.User
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task RestoreAsync(string userName)
+        {
+            Database.Models.User user = await InactiveUserByUserNameAsync(userName);
+
+            if (user != null)
+            {
+                user.DeletedAt = null;
+
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

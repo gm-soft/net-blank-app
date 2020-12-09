@@ -26,9 +26,9 @@ namespace TestUtils.ServiceStubs
             return Task.CompletedTask;
         }
 
-        public Task DeleteAsync(string userName)
+        public Task DeleteAsync(User user)
         {
-            Console.WriteLine($"User soft delete event\r\n{userName}");
+            Console.WriteLine($"User soft delete event\r\n{user.UserName}");
             return Task.CompletedTask;
         }
 
@@ -38,9 +38,9 @@ namespace TestUtils.ServiceStubs
             return Task.CompletedTask;
         }
 
-        public Task RemoveAsync(string userName)
+        public Task RemoveAsync(User user)
         {
-            Console.WriteLine($"User remove event\r\n{userName}");
+            Console.WriteLine($"User remove event\r\n{user.UserName}");
             return Task.CompletedTask;
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MassTransit;
+using Microsoft.Extensions.Logging;
 using PC.Models.Users;
 using Web.MessageBrokers.Exceptions;
 using Web.MessageBrokers.Messages;
@@ -10,53 +11,55 @@ namespace Domain.Services.Users.MessageBrokers
 {
     public class RabbitUserEvent : IUserEvent
     {
+        private readonly ILogger<RabbitUserEvent> _logger;
         private readonly IPublishEndpoint _publishEndpoint;
 
-        public RabbitUserEvent(IPublishEndpoint publishEndpoint)
+        public RabbitUserEvent(IPublishEndpoint publishEndpoint, ILogger<RabbitUserEvent> logger)
         {
             _publishEndpoint = publishEndpoint;
+            _logger = logger;
         }
 
         public async Task UpdateAsync(User user)
         {
-            await PublishAsync(new UserUpdateMessage(user));
+            await PublishAsync(new UserChangeMessage(user, ChangeType.Update));
         }
 
         public async Task CreateAsync(User user)
         {
-            await PublishAsync(new UserCreateMessage(user));
+            await PublishAsync(new UserChangeMessage(user, ChangeType.Create));
         }
 
         public async Task CreateAsync(IReadOnlyCollection<User> users)
         {
-            await PublishAsync(new UsersImportMessage(users));
+            await PublishAsync(new UserChangeMessage(users, ChangeType.BulkImport));
         }
 
-        public async Task DeleteAsync(string userName)
+        public async Task DeleteAsync(User user)
         {
-            await PublishAsync(new UserDeleteMessage(userName));
+            await PublishAsync(new UserChangeMessage(user, ChangeType.SoftDelete));
         }
 
-        public Task RestoreAsync(User user)
+        public async Task RestoreAsync(User user)
         {
-            return Task.CompletedTask;
+            await PublishAsync(new UserChangeMessage(user, ChangeType.Restore));
         }
 
-        public async Task RemoveAsync(string userName)
+        public async Task RemoveAsync(User user)
         {
-            await PublishAsync(new UserRemoveMessage(userName));
+            await PublishAsync(new UserChangeMessage(user, ChangeType.Remove));
         }
 
-        private async Task PublishAsync<TMessage>(TMessage message)
-            where TMessage : class, new()
+        private async Task PublishAsync(UserChangeMessage message)
         {
             try
             {
+                _logger.LogInformation($"Publish to topic {UserChangeMessage.Queue}:{message.ChangeType}");
                 await _publishEndpoint.Publish(message);
             }
             catch (Exception exception)
             {
-                throw new CannotPublishMessageException<TMessage>(exception);
+                throw new CannotPublishMessageException<UserChangeMessage>(exception);
             }
         }
     }

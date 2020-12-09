@@ -22,5 +22,7 @@ namespace IdentityServer.Infrastructure.Services.User
         Task DeleteAsync(string userName);
 
         Task RemoveAsync(string userName);
+
+        Task RestoreAsync(string userName);
     }
 }
